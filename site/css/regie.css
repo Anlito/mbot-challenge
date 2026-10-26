@@ -1,0 +1,119 @@
+/* Régie du tournoi : fond sombre (salle du tournoi), gros boutons pour chronométrer sans viser, contrastes ≥ 4,5:1. */
+
+.page-regie {
+  --fond: #0E1621; --carte: #172334; --bord: #2A3B52; --bord-fort: #3A4F69; --encre: #F2F5F9; --texte-2: #B7C4D4;
+  --bleu: #3D8BE0; --bleu-pale: #1E3550; --nuit: #0A111A; --nuit-texte: #B7C4D4;
+  background: var(--fond); color: var(--encre);
+}
+.page-regie h1, .page-regie h2 { color: var(--encre); }
+.page-regie .aide { color: var(--texte-2); }
+.page-regie .btn-secondaire { background: var(--carte); color: var(--encre); border-color: var(--bord-fort); }
+.page-regie .btn-secondaire:hover { background: var(--bleu-pale); }
+.page-regie .btn-principal { background: #2F78C8; }
+.page-regie .btn-lien { color: #8CC0F5; }
+.page-regie .btn-lien:disabled { color: #6C7D91; text-decoration: none; }
+.page-regie .prof-carte.carte-sombre { background: var(--carte); border-color: var(--bord-fort); }
+.page-regie .prof-carte.carte-sombre strong { color: var(--encre); }
+.page-regie .prof-carte .icone { stroke: #8CC0F5 !important; }
+.page-regie .message-bref { background: #FFC21A; color: #0E1621; }
+.page-regie .ecurie-pastille { width: 2rem; height: 2rem; }
+
+.regie-bandeau { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; padding: 0.625rem 1.5rem; background: var(--nuit); border-bottom: 1px solid var(--bord); position: sticky; top: 0; z-index: 20; }
+.regie-bandeau .marque em { font-style: normal; color: #FFC21A; }
+.regie-onglets { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.regie-onglets button { min-height: 2.5rem; padding: 0 0.75rem; border-radius: 0.5rem; border: 1px solid var(--bord); background: var(--carte); color: var(--encre); font: 600 0.875rem var(--police); cursor: pointer; }
+.regie-onglets button[aria-current="page"] { background: var(--encre); color: var(--fond); }
+.regie-etat { font-size: 0.8125rem; color: var(--texte-2); }
+
+.regie-ecran-commande { display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem; padding: 0.5rem 1.5rem; background: #121C2A; border-bottom: 1px solid var(--bord); font-size: 0.875rem; }
+.regie-ecran-commande > span { color: var(--texte-2); font-weight: 600; margin-right: 0.25rem; }
+.regie-ecran-commande button { min-height: 2.25rem; padding: 0 0.75rem; border-radius: 999px; border: 1px solid var(--bord-fort); background: transparent; color: var(--encre); font: 600 0.875rem var(--police); cursor: pointer; }
+.regie-ecran-commande button[aria-pressed="true"] { background: #FFC21A; border-color: #FFC21A; color: #0E1621; }
+.regie-ecran-commande button[aria-pressed="true"]::before { content: '● '; }
+.suspense { margin-left: auto; display: flex; align-items: center; gap: 0.375rem; color: var(--texte-2); }
+
+.regie-contenu { max-width: 100rem; margin: 0 auto; padding: 1.25rem 1.5rem 2.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.regie-entete { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1rem; }
+.regie-entete h1 { margin: 0; font-size: 2rem; }
+.regie-entete h2 { margin: 0; }
+.deux-postes { margin-left: auto; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+.regie-panneau { background: var(--carte); border: 1px solid var(--bord); border-radius: 1rem; padding: 1rem 1.25rem; }
+.regie-panneau h1 { margin-top: 0; }
+.regie-panneau h2 { font-size: 1.25rem; margin: 1rem 0 0.5rem; }
+.regie-panneau > h2:first-child { margin-top: 0; }
+.regie-deux { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
+.regie-deux > * { flex: 1 1 26rem; min-width: 0; }
+.zone-postes { display: flex; flex-wrap: wrap; gap: 1rem; flex: 1.4 1 34rem; }
+.zone-postes > * { flex: 1 1 22rem; }
+.liste-reprendre { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.liste-ordre, .liste-passages, .liste-matchs, .classement-court { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.375rem; }
+.liste-ordre li, .liste-passages li { display: flex; align-items: center; gap: 0.625rem; padding: 0.5rem 0.625rem; border-radius: 0.625rem; background: #1B2A3E; border: 1px solid var(--bord); }
+.liste-ordre .nom, .liste-passages .nom { flex: 1; font-weight: 700; min-width: 0; }
+.liste-passages .detail { display: block; font-weight: 400; font-size: 0.8125rem; color: var(--texte-2); }
+.liste-passages .valeur { font-size: 0.9375rem; white-space: nowrap; }
+.liste-passages .actions { display: flex; gap: 0.25rem; }
+.liste-passages li.en-piste { border: 2px solid #FFC21A; background: #2A2A1A; }
+.liste-jury li { cursor: grab; }
+.liste-jury .rang { font-family: var(--chiffres); color: #FFC21A; min-width: 1.5rem; }
+.contre { color: var(--texte-2); font-size: 0.875rem; }
+.btn-petit { min-height: 2.5rem; min-width: 2.5rem; padding: 0 0.625rem; border-radius: 0.5rem; border: 1px solid var(--bord-fort); background: var(--carte); color: var(--encre); font: 600 0.875rem var(--police); cursor: pointer; }
+.btn-petit:hover:not(:disabled) { background: var(--bleu-pale); }
+.btn-petit:disabled { opacity: 0.4; cursor: default; }
+.liste-jours { display: flex; flex-direction: column; gap: 0.375rem; }
+.liste-jours label { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.liste-jours select, .liste-votes input { min-height: 2.5rem; border-radius: 0.5rem; border: 1px solid var(--bord-fort); background: #0E1621; color: var(--encre); padding: 0 0.5rem; font: inherit; }
+.choix-jour { display: flex; align-items: center; gap: 0.5rem; }
+.choix-jour button { min-height: 2.5rem; padding: 0 1rem; border-radius: 999px; border: 1px solid var(--bord-fort); background: transparent; color: var(--encre); font: 600 0.9375rem var(--police); cursor: pointer; }
+.choix-jour button.actif { background: #FFC21A; color: #0E1621; border-color: #FFC21A; }
+.liste-votes { display: flex; flex-direction: column; gap: 0.375rem; }
+.liste-votes label { display: flex; align-items: center; gap: 0.625rem; }
+.liste-votes .nom { flex: 1; font-weight: 700; }
+.liste-votes input { width: 6rem; font-family: var(--chiffres); font-size: 1.125rem; }
+.classement-court li { padding: 0.375rem 0; border-bottom: 1px solid var(--bord); }
+.classement-court strong:first-child { color: #FFC21A; font-family: var(--chiffres); margin-right: 0.375rem; }
+
+/* Poste de chronométrage */
+.poste { background: var(--carte); border: 1px solid var(--bord); border-radius: 1rem; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.875rem; }
+.poste-entete { display: flex; align-items: center; gap: 0.625rem; min-height: 2.5rem; }
+.poste-nom { font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--texte-2); font-weight: 700; }
+.poste-ecurie { font-family: var(--titres); font-size: 1.75rem; }
+.poste-chrono { font-size: 5rem; line-height: 1; letter-spacing: -0.02em; }
+.poste-chrono.presque { color: #FFC21A; }
+.poste-infos { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; color: var(--texte-2); }
+.poste-infos strong { color: var(--encre); }
+.poste-boutons { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.625rem; }
+.poste-secondaires { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.poste-secondaires .btn-principal { margin-left: auto; }
+.btn-geant {
+  min-height: 5rem; border: 0; border-radius: 0.875rem; font: 800 1.75rem var(--titres); text-transform: uppercase; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.125rem;
+}
+.btn-depart { background: #1E7A4C; color: #FFFFFF; }
+.btn-arrivee { background: #FFC21A; color: #0E1621; }
+.btn-attente { background: #2A3B52; color: #B7C4D4; }
+.btn-geant:disabled { opacity: 0.55; cursor: default; }
+.btn-malus { min-height: 5rem; border-radius: 0.875rem; border: 2px solid #FFC21A; background: transparent; color: #FFC21A; font: 700 1.125rem var(--police); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.btn-malus.btn-objet { border-color: #7FD8A4; color: #7FD8A4; }
+.btn-malus:disabled { opacity: 0.4; cursor: default; }
+.touche { font: 600 0.75rem var(--chiffres); opacity: 0.8; text-transform: none; }
+
+.duel { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem; }
+.duel-camp { flex: 1 1 12rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 0.75rem; border-radius: 0.875rem; background: #1B2A3E; }
+.duel-camp strong { font-family: var(--titres); font-size: 1.5rem; text-align: center; }
+.duel-score { font-size: 4rem; color: #FFC21A; line-height: 1; }
+.duel-boutons { display: flex; gap: 0.5rem; align-items: center; }
+.duel-boutons .btn-geant { min-height: 3.5rem; font-size: 1.25rem; padding: 0 1rem; }
+.duel-contre { color: var(--texte-2); font-family: var(--titres); text-transform: uppercase; }
+
+.tableau-general { width: 100%; border-collapse: collapse; }
+.tableau-general th, .tableau-general td { padding: 0.5rem; border-bottom: 1px solid var(--bord); text-align: center; }
+.tableau-general th[scope=row] { text-align: left; }
+.tableau-general thead th { font-size: 0.8125rem; color: var(--texte-2); text-transform: uppercase; }
+.tableau-general .total { color: #FFC21A; font-size: 1.25rem; }
+
+/* Le chrono reste devant les yeux : avant la liste quand l'écran est étroit. */
+.zone-postes { order: -1; }
+.poste-secondaires .btn-geant { min-height: 3.5rem; padding: 0 1.75rem; font-size: 1.25rem; }
+.tableau-general th[scope=row] { white-space: nowrap; }
+.tableau-general th[scope=row] .ecurie-pastille { display: inline-flex; vertical-align: middle; margin-right: 0.5rem; }

@@ -1,7 +1,6 @@
 # mBot Challenge — mode d’emploi
 
-**Version en cours de construction (jalon 4).** Espace des écuries et outil professeur prêts. À venir : régie du
-jour J.
+**Version en cours de construction (jalon 5).** Espace des écuries, outil professeur et régie du tournoi prêts.
 
 ## Pour les élèves
 
@@ -43,3 +42,16 @@ Internet est nécessaire.
   chaque changement (sinon, les évaluations restent seulement dans ce navigateur).
 - Exports : **Excel** (élèves et écuries), **CSV**, **Pronote** (une ligne par élève, compétences au vocabulaire de
   Pronote), **Affiches à imprimer** (dernière version de chaque affiche, pour le vote des autres classes).
+
+## Le jour du tournoi
+
+1. Sur le PC relié au vidéoprojecteur : https://anlito.github.io/mbot-challenge/regie.html (ou « Régie du jour J »
+   dans l’outil professeur), puis « Ouvrir le dossier de la classe ».
+2. **Préparation** : ordre de passage, jours, matchs de la Récolte. « Écran projeté » ouvre une 2ᵉ fenêtre : la mettre
+   sur le vidéoprojecteur, en plein écran.
+3. Chaque épreuve : « En piste » sur l’écurie, puis **barre d’espace** au départ et à l’arrivée, **M** pour un malus,
+   **O** pour un objet sorti (défi 2). « Valider le passage ».
+4. En haut, « À l’écran » choisit ce que voit la salle : passage en direct, résultats de l’épreuve, classement, podium.
+   « Suspense » cache le classement général jusqu’au dernier jour.
+5. Le 2ᵉ jour : rouvrir la régie sur le même PC, « Reprendre le tournoi » (ou « Ouvrir un fichier de tournoi » sur un
+   autre PC si vous l’avez enregistré dans un fichier).

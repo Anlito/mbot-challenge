@@ -1,0 +1,66 @@
+/* Écran projeté du tournoi : grand, contrasté, lisible du fond de la salle. Fond nuit, accents jaunes. */
+:root { --nuit: #0E1621; --panneau: #172334; --bord: #2A3B52; --texte: #F2F5F9; --texte-2: #B7C4D4; --jaune: #FFC21A; --vert: #7FD8A4; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: var(--nuit); color: var(--texte); font-family: 'Barlow', 'Segoe UI', sans-serif; }
+.damier { height: 1.5vw; background: repeating-linear-gradient(90deg, #F2F5F9 0 1.5vw, var(--nuit) 1.5vw 3vw) top / 100% 0.75vw no-repeat, repeating-linear-gradient(90deg, var(--nuit) 0 1.5vw, #F2F5F9 1.5vw 3vw) bottom / 100% 0.75vw no-repeat; }
+.ecran { padding: 2vw 3vw; min-height: calc(100vh - 1.5vw); display: flex; flex-direction: column; gap: 2vw; }
+h1, .titre-epreuve { font-family: 'Saira Condensed', sans-serif; font-weight: 800; text-transform: uppercase; margin: 0; }
+.titre-epreuve { font-size: 4vw; color: var(--jaune); letter-spacing: 0.02em; }
+.titre-geant { margin: auto; text-align: center; }
+.titre-geant h1 { font-size: 9vw; line-height: 1; }
+.titre-geant p { font-size: 2.6vw; color: var(--texte-2); margin: 1vw 0 0; }
+.plein-ecran { position: fixed; right: 1vw; bottom: 1vw; opacity: 0.35; background: var(--panneau); color: var(--texte); border: 1px solid var(--bord); border-radius: 0.5rem; padding: 0.5rem 1rem; font: inherit; cursor: pointer; }
+.plein-ecran:hover, .plein-ecran:focus-visible { opacity: 1; }
+:fullscreen .plein-ecran { display: none; }
+
+.pastille { width: 2.6vw; height: 2.6vw; border-radius: 0.6vw; background: var(--fond); color: var(--texte); display: inline-flex; align-items: center; justify-content: center; font-family: 'Saira Condensed', sans-serif; font-weight: 800; font-size: 1.6vw; flex: none; }
+.pastille.grande { width: 7vw; height: 7vw; border-radius: 1.5vw; font-size: 4.5vw; }
+
+.postes { display: grid; gap: 2vw; flex: 1; }
+.postes-2 { grid-template-columns: 1fr 1fr; }
+.poste { background: var(--panneau); border: 0.3vw solid var(--ecurie); border-radius: 1.5vw; padding: 2vw; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5vw; }
+.poste-ecurie { display: flex; align-items: center; gap: 1.5vw; font-family: 'Saira Condensed', sans-serif; font-size: 4vw; }
+.chrono-geant { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12vw; line-height: 1; letter-spacing: -0.03em; text-align: center; }
+.postes-2 .chrono-geant { font-size: 8vw; }
+.chrono-geant.arrete { color: var(--vert); }
+.poste-infos { display: flex; flex-wrap: wrap; gap: 1vw 2.5vw; justify-content: center; font-size: 2.2vw; }
+.malus { color: var(--jaune); font-weight: 700; }
+.arrive { color: var(--vert); font-weight: 700; }
+
+.duel { display: flex; align-items: center; justify-content: center; gap: 3vw; }
+.camp { background: var(--panneau); border: 0.3vw solid var(--ecurie); border-radius: 1.5vw; padding: 2vw 3vw; display: flex; flex-direction: column; align-items: center; gap: 1vw; min-width: 30vw; }
+.camp strong { font-family: 'Saira Condensed', sans-serif; font-size: 3.4vw; }
+.camp .score { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 11vw; line-height: 1; color: var(--jaune); }
+.camp .unite { font-size: 2vw; color: var(--texte-2); }
+.contre { font-family: 'Saira Condensed', sans-serif; font-size: 3vw; color: var(--texte-2); text-transform: uppercase; }
+
+@keyframes entree { from { opacity: 0; transform: translateX(-3vw); } to { opacity: 1; transform: none; } }
+.classement { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.8vw; }
+.classement li { display: flex; align-items: center; gap: 1.5vw; background: var(--panneau); border-left: 0.6vw solid var(--ecurie); border-radius: 0.8vw; padding: 1vw 1.5vw; font-size: 2.4vw; animation: entree 0.5s both; }
+.classement .place { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--jaune); min-width: 3vw; }
+.classement .nom { flex: 1; font-weight: 700; }
+.classement .valeur { color: var(--texte-2); }
+.classement .points { font-family: 'JetBrains Mono', monospace; font-weight: 700; min-width: 8vw; text-align: right; }
+
+.general { width: 100%; border-collapse: separate; border-spacing: 0 0.6vw; font-size: 1.9vw; }
+.general th { text-align: center; color: var(--texte-2); font-weight: 600; font-size: 1.4vw; text-transform: uppercase; }
+.general tbody tr { background: var(--panneau); animation: entree 0.5s both; }
+.general td { padding: 0.8vw 1vw; text-align: center; font-family: 'JetBrains Mono', monospace; }
+.general td.nom { text-align: left; font-family: 'Barlow', sans-serif; font-weight: 700; display: flex; align-items: center; gap: 1vw; }
+.general td.place { color: var(--jaune); font-weight: 700; }
+.general td.total { color: var(--jaune); font-weight: 700; font-size: 2.4vw; }
+
+@keyframes monte { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes apparait { from { opacity: 0; transform: translateY(2vw) scale(0.9); } to { opacity: 1; transform: none; } }
+.podium { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); align-items: end; gap: 2vw; padding: 0 6vw; }
+.marche { display: flex; flex-direction: column; align-items: center; gap: 1vw; }
+.socle { width: 100%; border-radius: 1vw 1vw 0 0; display: flex; justify-content: center; padding-top: 1vw; transform-origin: bottom; animation: monte 0.8s both; animation-delay: calc(var(--ordre) * 1.4s); font-family: 'Saira Condensed', sans-serif; font-weight: 800; font-size: 6vw; color: var(--nuit); }
+.marche-1 .socle { height: 22vw; background: var(--jaune); }
+.marche-2 .socle { height: 16vw; background: #D7DFE9; }
+.marche-3 .socle { height: 11vw; background: #D99A5B; }
+.laureat { display: flex; flex-direction: column; align-items: center; gap: 0.5vw; animation: apparait 0.7s both; animation-delay: calc(var(--ordre) * 1.4s + 0.7s); }
+.laureat strong { font-family: 'Saira Condensed', sans-serif; font-size: 3vw; text-align: center; }
+.laureat span { font-family: 'JetBrains Mono', monospace; font-size: 2vw; color: var(--texte-2); }
+.suite { display: flex; flex-wrap: wrap; gap: 0.5vw 2.5vw; justify-content: center; list-style: none; padding: 0; margin: 0; font-size: 1.8vw; color: var(--texte-2); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01s !important; animation-delay: 0s !important; } }

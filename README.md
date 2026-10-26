@@ -5,12 +5,28 @@ autonomie (programmation du mBot avec Labo Blocs, affiche, style du mBot, vidéo
 suit et note leur travail en direct, puis anime le tournoi avec la régie du jour J.
 
 - **Élèves** : `site/index.html` (en ligne : https://anlito.github.io/mbot-challenge/).
-- **Professeur** : `site/prof.html` (code professeur : le même que Labo Blocs). **Régie du jour J** : jalon 5.
+- **Professeur** : `site/prof.html` ; **régie du tournoi** : `site/regie.html`, qui ouvre l’**écran projeté** `site/ecran.html` (code professeur : le même que Labo Blocs).
 
 Plan de construction et décisions : [`docs/PLAN.md`](docs/PLAN.md). Recette : [`docs/RECETTE.md`](docs/RECETTE.md).
 Maquette validée : https://claude.ai/artifact/HxMYDzR9oyhdrdu5gdXG1f
 
-## État — jalon 4 (outil professeur), 26 octobre 2026
+## État — jalon 5 (régie du jour J), 26 octobre 2026
+
+- **Préparation** : écuries lues dans le dossier de la classe (ou des `.json`), ordre de passage (tiré au sort ou
+  réglé à la main), jour de chaque épreuve (classes à 1 h : jour 1 style, ligne, obstacles ; jour 2 labyrinthe,
+  Récolte, affiche), matchs de la Récolte tirés au sort (chaque écurie : 2 matchs, 2 adversaires différents).
+- **Épreuves chronométrées** : barre d’espace (départ, arrivée), M (malus), O (objet sorti), annuler le dernier
+  appui, abandon ; défi 2 en compte à rebours de 2 min, arrêt automatique aux 3 objets ou au temps ; deux postes en
+  même temps en option ; l’écurie suivante monte en piste toute seule.
+- **Récolte** (90 s, scores en direct), **votes de l’affiche**, **classement du jury** (glisser ou ↑ ↓).
+- **Classement** : points par place (10, 8, 6, 5, 4, 3, 2, 1 ; égalités ; non réussi = 1), classement général,
+  classement de toutes les classes (fichiers des tournois des autres classes), export CSV.
+- **Écran projeté** (2ᵉ fenêtre) : accueil, passage en direct avec chrono, résultats d’une épreuve, classement
+  général, podium animé ; « suspense » : pas de classement général avant le dernier jour.
+- Le tournoi est gardé dans le navigateur à chaque saisie (et dans un fichier si on le choisit) : il se reprend le 2ᵉ jour.
+- Réglages du tournoi : `site/donnees/tournoi.js` (épreuves, malus de 5 s, temps maximal, points).
+
+## Jalon 4 (outil professeur), 26 octobre 2026
 
 - **Accueil** : ouvrir le dossier `MBOT CHALLENGE` de la classe (suivi en direct, relu toutes les 10 s), reprendre le
   dernier dossier, ou importer des `.json`.
@@ -64,8 +80,8 @@ Maquette validée : https://claude.ai/artifact/HxMYDzR9oyhdrdu5gdXG1f
 
 | Dossier | Contenu |
 |---|---|
-| `site/donnees/` | `projet.js` (identité du projet), `calendrier.js` (séances par classe), `defis.js` (mesures du carnet d’essais), `livrables.js` (textes et réglages : taille maximale des pièces 3D…), `comprendre.js` (vidéos, chapitres, QCM, chaînes), `notation.js` (critères, compétences, coefficients), `college.js` (copie de secours des réglages du collège, rafraîchie à chaque publication) |
-| `site/js/moteur/` | `progression.js` (fichier de l'écurie), `ecurie.js` (identité, rôles, permis, défis, essais), `livrables.js` (séances, rapports, affiche, STL, vidéos, QCM, chaînes), `classe.js` (outil professeur : lecture, alertes, notes, exports), `calendrier.js` (circuit des séances), `catalogue.js` (données), `xlsx.js` (archive ZIP) |
+| `site/donnees/` | `projet.js` (identité du projet), `calendrier.js` (séances par classe), `defis.js` (mesures du carnet d’essais), `livrables.js` (textes et réglages : taille maximale des pièces 3D…), `comprendre.js` (vidéos, chapitres, QCM, chaînes), `notation.js` (critères, compétences, coefficients), `tournoi.js` (épreuves du jour J, malus, points), `college.js` (copie de secours des réglages du collège, rafraîchie à chaque publication) |
+| `site/js/moteur/` | `progression.js` (fichier de l'écurie), `ecurie.js` (identité, rôles, permis, défis, essais), `livrables.js` (séances, rapports, affiche, STL, vidéos, QCM, chaînes), `classe.js` (outil professeur : lecture, alertes, notes, exports), `tournoi.js` (épreuves, points, classements), `calendrier.js` (circuit des séances), `catalogue.js` (données), `xlsx.js` (archive ZIP) |
 | `site/js/` | `accueil.js`, `fichiers.js`, `session.js` (repris du modèle commun de l'atelier du distributeur), `dossier-ecurie.js`, `medias.js` (fichiers du dossier de l'écurie), `paddock.js`, `ecurie-ecran.js`, `programmation.js` (permis, défis, carnet d'essais, écran de Labo Blocs), `seance.js`, `livrables-ecran.js` (affiche, style, vidéos), `comprendre-ecran.js`, `photo-editeur.js` (webcam, flou), `stl-vue.js` (aperçu 3D), `parcours-source.js`, `icones.js`, `connexion-labo.js` |
 | `site/css/` | `atelier.css` (charte), `ecurie.css` (rubriques), `livrables.css` (séance, affiche, style, vidéos, comprendre), `polices.css` |
 | `tools/` | `serve.js` (`npm start`, http://localhost:8080), `exemples-equipes.js` (`npm run exemples`), `archive.js` (`npm run archive`), `polices.js`, `dependances-tests.js` |

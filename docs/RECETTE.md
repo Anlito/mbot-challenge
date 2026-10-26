@@ -132,3 +132,24 @@ d'une écurie, fichier d'évaluations, téléchargement des exports, impression 
   quand elle est lisible, sinon « format pas vérifié ». Le dépôt n'est jamais bloqué : l'écart s'affiche en ambre, la
   fiche de l'écurie le montre et « À regarder » signale « Affiche à reprendre : pas au format A3 portrait ».
 - À vérifier par Thomas : un PDF A3 portrait exporté de Canva → « ✓ A3 portrait ».
+
+## Jalon 5 — régie du jour J et écran projeté (26/10/2026)
+
+Vérifié par Claude :
+- `npm test` : 43 tests (ordre tiré au sort, matchs de la Récolte : 2 matchs et 2 adversaires différents par écurie
+  pour 3 à 8 écuries, jamais deux de suite dès 5 écuries ; défi 1 temps + malus ; défi 2 validé seulement avec les
+  3 objets en 2 min ; égalités ; Récolte victoires puis balles ; jury ; classement jour 1 / général ; toutes classes).
+- Chrome, tournoi fictif de 7 écuries : préparation (3B à 1 h → 2 jours), défi 1 au clavier (espace, M, espace,
+  valider) → 8,83 s + 5 s = 13,83 s, 10 points, écurie suivante en piste ; écran projeté dans un 2ᵉ onglet : chrono
+  en direct et malus ; Récolte : décompte 90 s et scores à l'écran ; classement général avec égalités ; podium animé
+  avec deux écuries 3ᵉˢ ex æquo.
+
+Pas vérifié par Claude : vidéoprojecteur réel et plein écran, deux postes en même temps avec deux personnes,
+enregistrement du tournoi dans un fichier et reprise le 2ᵉ jour sur un autre poste.
+
+À vérifier par Thomas :
+1. Préparer un tournoi d'essai avec la classe d'essai ; ouvrir l'écran projeté sur un 2ᵉ écran, plein écran.
+2. Chronométrer quelques passages (espace, M, O, annuler, abandon) ; défi 2 : laisser filer les 2 minutes.
+3. Récolte : jouer un match ; votes ; classement du jury par glisser.
+4. Fermer et rouvrir la régie : « Reprendre le tournoi » retrouve tout.
+5. Me dire si le malus de 5 s te convient (réglable dans `site/donnees/tournoi.js`).

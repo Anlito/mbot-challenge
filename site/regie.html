@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Régie du tournoi · mBot Challenge</title>
+<link rel="icon" href="img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/polices.css">
+<link rel="stylesheet" href="css/atelier.css">
+<link rel="stylesheet" href="css/prof.css">
+<link rel="stylesheet" href="css/regie.css">
+<!-- Code professeur : même code que Labo Blocs (empreinte seulement) -->
+<script src="js/porte-professeur.js"></script>
+<script src="code-professeur.js"></script>
+</head>
+<body class="page-regie">
+
+<header class="regie-bandeau">
+  <div class="marque"><img src="img/logo.svg" alt="" width="36" height="36"><span>Régie <em class="regie-classe">· tournoi</em></span></div>
+  <nav class="regie-onglets" aria-label="Épreuves"></nav>
+  <span class="bandeau-espace"></span>
+  <span class="regie-etat" aria-live="polite"></span>
+  <button type="button" class="btn-bande btn-ecran" data-icone="oeil">Écran projeté</button>
+</header>
+
+<div class="regie-ecran-commande" hidden>
+  <span>À l’écran :</span>
+  <button type="button" data-ecran="accueil">Accueil</button>
+  <button type="button" data-ecran="passage">Passage en direct</button>
+  <button type="button" data-ecran="epreuve">Résultats de l’épreuve</button>
+  <button type="button" data-ecran="general">Classement général</button>
+  <button type="button" data-ecran="podium">Podium</button>
+  <label class="suspense"><input type="checkbox" class="case-suspense"> Suspense : pas de classement général avant le dernier jour</label>
+</div>
+
+<main class="regie-contenu"></main>
+
+<div class="message-bref" role="status" hidden></div>
+
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/labo-blocs-noyau.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/catalogue.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/progression.js"></script>
+<script type="application/x-atelier" data-src="donnees/projet.js"></script>
+<script type="application/x-atelier" data-src="donnees/calendrier.js"></script>
+<script type="application/x-atelier" data-src="donnees/tournoi.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/calendrier.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/ecurie.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/tournoi.js"></script>
+<script type="application/x-atelier" data-src="js/icones.js"></script>
+<script type="application/x-atelier" data-src="js/dossier-ecurie.js"></script>
+<script type="application/x-atelier" data-src="js/regie.js"></script>
+<script type="application/x-atelier">Atelier.demarrerRegie();</script>
+<script src="js/connexion-labo.js"></script>
+</body>
+</html>
