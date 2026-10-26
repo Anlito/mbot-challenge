@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const C = require('../site/js/moteur/calendrier.js');
 const { calendrier } = require('../site/js/moteur/catalogue.js');
 
-const avec = (classes) => Object.assign({}, calendrier, { classes });
+const avec = (classes) => Object.assign({}, calendrier, { defaut: 'heure-et-demie', classes });
 
 test('classe à 1 h 30 : 10 séances, affiche en 8, tournoi en 10', () => {
   const c = C.circuit(avec({}), '3B');
@@ -42,4 +42,9 @@ test('séances restantes avant le tournoi', () => {
   const c = C.circuit(avec({ '3B': 'une-heure' }), '3B');
   assert.equal(C.seancesAvantTournoi(c, 5), 5);
   assert.equal(C.seancesAvantTournoi(c, 11), 0);
+});
+
+test('réglages du collège : 3C1, 3C2, 3D1, 3D2 à 1 h 30 ; 3B, 3E, 3G à 1 h', () => {
+  for (const c of ['3C1', '3C2', '3D1', '3D2']) assert.equal(C.circuit(calendrier, c).seances.length, 10, c);
+  for (const c of ['3B', '3E', '3G']) assert.equal(C.circuit(calendrier, c).seances.length, 11, c);
 });

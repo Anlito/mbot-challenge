@@ -17,4 +17,4 @@ Vérifié par Claude :
 4. Fermer l'onglet, rouvrir : « Reprendre le travail de … » ramène au paddock.
 5. Refaire « Nouvelle écurie » avec les mêmes prénoms dans le même dossier : l'outil propose d'ouvrir la sauvegarde
    existante, rien n'est écrasé.
-6. Me dire quelles classes ont des séances de 1 h (11 séances).
+6. Vérifier le circuit : 11 séances pour 3B, 3E, 3G ; 10 séances pour 3C1, 3C2, 3D1, 3D2.

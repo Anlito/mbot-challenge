@@ -2,12 +2,14 @@
 // Deux modèles, selon la durée des séances de la classe :
 //   une-heure        : 11 séances, affiche à rendre en séance 8, tournoi sur deux séances (10 et 11)
 //   heure-et-demie   : 10 séances, affiche à rendre en séance 8, tournoi en séance 10
-// classes : les classes à 1 h (« 3B »: 'une-heure'). Un groupe (3D1, 3D2) prend le réglage de sa classe (3D) s'il
-// n'a pas le sien. Une classe absente de la liste prend le modèle par défaut.
+// classes : les classes qui n'ont pas le modèle par défaut. Un groupe (3D1, 3D2) prend le réglage de sa classe (3D)
+// s'il n'a pas le sien. Réglages de Thomas (26/10/2026) : 3C1, 3C2, 3D1 et 3D2 (dont le groupe 3C2D1) à 1 h 30,
+// les autres classes à 1 h.
 definirCalendrier({
-  defaut: 'heure-et-demie',
+  defaut: 'une-heure',
   classes: {
-    // '3B': 'une-heure',
+    '3C': 'heure-et-demie',
+    '3D': 'heure-et-demie',
   },
   modeles: {
     'heure-et-demie': {

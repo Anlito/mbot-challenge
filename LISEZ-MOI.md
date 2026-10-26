@@ -12,7 +12,7 @@
 ## Calendrier des classes
 
 Les classes à 1 h ont 11 séances (tournoi en séances 10 et 11), les autres 10 séances (tournoi en séance 10).
-Les classes à 1 h se déclarent dans `site/donnees/calendrier.js` (`classes: { '3B': 'une-heure' }`).
+Réglage actuel : 3C1, 3C2, 3D1 et 3D2 à 1 h 30, les autres à 1 h (`site/donnees/calendrier.js`).
 
 ## Labo Blocs
 
