@@ -80,6 +80,18 @@
     }
   }
 
+  // Texte d'un fichier de l'écurie écrit par le professeur (validations.json), sans fenêtre : null s'il n'est pas lisible.
+  async function lireTexte(session, chemin) {
+    const racine = session.dossier || (await A.dossierEcurie.retrouver(session.donnees));
+    if (!racine) return null;
+    try {
+      if ((await racine.queryPermission({ mode: 'read' })) !== 'granted') return null;
+      return await (await (await racine.getFileHandle(chemin)).getFile()).text();
+    } catch {
+      return null;
+    }
+  }
+
   // Fichier de l'écurie (pour l'analyser : STL…), en demandant le droit de lecture si besoin (après un clic).
   async function lireFichier(session, chemin) {
     const racine = await dossier(session, 'read');
@@ -100,5 +112,5 @@
     return new Promise((ok) => toile.toBlob(ok, 'image/png'));
   }
 
-  A.medias = { disponible, dossier, ecrire, url, lireFichier, reduireImage };
+  A.medias = { disponible, dossier, ecrire, url, lireTexte, lireFichier, reduireImage };
 })(this);

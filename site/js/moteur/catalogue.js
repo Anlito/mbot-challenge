@@ -4,6 +4,7 @@
 //   definirDefis          ce que mesure le carnet d'essais pour chaque défi (donnees/defis.js)
 //   definirLivrables      séances, affiche, style, vidéos : textes et réglages (donnees/livrables.js)
 //   definirComprendre     vidéos du cours, QCM, 7 fonctions des chaînes (donnees/comprendre.js)
+//   definirNotation       critères, niveaux, coefficients, ajustement individuel (donnees/notation.js)
 // Les classes et le début du chemin des dossiers viennent des réglages du collège (Labo Blocs, donnees/college.js).
 // Le parcours d'exercices « mbot-challenge » vient de Labo Blocs en ligne (definirParcours).
 
@@ -62,4 +63,5 @@
   global.definirDefis = (defis) => (Atelier.defis = defis);
   global.definirLivrables = (reglages) => (Atelier.reglagesLivrables = reglages);
   global.definirComprendre = (contenu) => (Atelier.comprendre = contenu);
+  global.definirNotation = (notation) => (Atelier.notation = notation);
 })(this);

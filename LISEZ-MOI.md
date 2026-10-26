@@ -1,8 +1,7 @@
 # mBot Challenge — mode d’emploi
 
-**Version en cours de construction (jalon 3).** L’espace des écuries est complet : écurie, séances et rapports,
-permis mBot, défis et carnet d’essais, affiche, style du mBot, vidéos, comprendre le mBot. À venir : outil
-professeur, régie du jour J.
+**Version en cours de construction (jalon 4).** Espace des écuries et outil professeur prêts. À venir : régie du
+jour J.
 
 ## Pour les élèves
 
@@ -32,3 +31,15 @@ Internet est nécessaire.
   l’outil. Sur chaque poste, la première fois, l’élève choisit ce dossier (« Choisir le dossier des vidéos »).
 - **Photos du téléphone** : l’élève se les envoie par e-mail, puis « Ajouter un fichier » ; les visages se floutent
   avant l’enregistrement.
+
+## Pour le professeur
+
+- Adresse : https://anlito.github.io/mbot-challenge/prof.html (code professeur : le même que Labo Blocs).
+- « Ouvrir le dossier de la classe » : choisir `… › 3X › COMMUN › TECHNOLOGIE › MBOT CHALLENGE`. Le tableau se met à
+  jour tout seul ; l’encart « À regarder » montre les écuries qui ont besoin de vous.
+- Fiche d’une écurie : onglet **Bilan et note** pour noter (les niveaux se gardent tout seuls), onglet **Séances**
+  pour valider le point de fin avec le chef de projet.
+- **Évaluations › Enregistrer dans un fichier** : choisir un fichier dans votre dossier personnel ; il est réécrit à
+  chaque changement (sinon, les évaluations restent seulement dans ce navigateur).
+- Exports : **Excel** (élèves et écuries), **CSV**, **Pronote** (une ligne par élève, compétences au vocabulaire de
+  Pronote), **Affiches à imprimer** (dernière version de chaque affiche, pour le vote des autres classes).

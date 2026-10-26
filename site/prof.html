@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Professeur · mBot Challenge</title>
+<link rel="icon" href="img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/polices.css">
+<link rel="stylesheet" href="css/atelier.css">
+<link rel="stylesheet" href="css/ecurie.css">
+<link rel="stylesheet" href="css/livrables.css">
+<link rel="stylesheet" href="css/prof.css">
+<!-- Code professeur : arrête les élèves curieux (empreinte seulement, même code que Labo Blocs) -->
+<script src="js/porte-professeur.js"></script>
+<script src="code-professeur.js"></script>
+</head>
+<body class="page-prof">
+
+<header class="prof-bandeau">
+  <div class="marque"><img src="img/logo.svg" alt="" width="36" height="36"><span>mBot Challenge <em>· Professeur</em></span></div>
+  <span class="prof-classe" hidden></span>
+  <span class="prof-direct" aria-live="polite" hidden></span>
+  <span class="bandeau-espace"></span>
+  <nav class="prof-actions" aria-label="Actions" hidden>
+    <button type="button" class="btn-bande btn-bareme" data-icone="reglages">Barème</button>
+    <button type="button" class="btn-bande btn-evaluations" data-icone="disquette">Évaluations</button>
+    <button type="button" class="btn-bande btn-xlsx" data-icone="telecharger">Excel</button>
+    <button type="button" class="btn-bande btn-csv" data-icone="telecharger">CSV</button>
+    <button type="button" class="btn-bande btn-pronote" data-icone="telecharger">Pronote</button>
+    <button type="button" class="btn-bande btn-planche" data-icone="imprimer">Affiches à imprimer</button>
+    <button type="button" class="btn-bande btn-autre-classe" data-icone="dossier">Autre classe</button>
+  </nav>
+  <a class="btn-bande" href="index.html" target="_blank" rel="noopener" data-icone="oeil">Vue élève</a>
+</header>
+
+<main class="prof-contenu">
+
+  <!-- Accueil : choisir la classe -->
+  <section class="vue vue-accueil" aria-labelledby="titre-accueil">
+    <div class="panneau briefing">
+      <div>
+        <p class="surtitre">Espace professeur</p>
+        <h1 id="titre-accueil">Suivre une classe</h1>
+        <p>Ouvrez le dossier <strong>Bureau › Classe › 3X › COMMUN › TECHNOLOGIE › MBOT CHALLENGE</strong> d’une classe : l’outil lit
+          le fichier de chaque écurie et le relit en direct pendant la séance. Vos évaluations restent dans votre fichier, jamais dans les
+          dossiers des élèves.</p>
+      </div>
+    </div>
+    <p class="message-ecart prof-alerte-navigateur" hidden>Ce navigateur ne peut pas ouvrir un dossier : utilisez <strong>Chrome</strong> ou
+      <strong>Edge</strong> pour le suivi en direct, ou importez les fichiers .json.</p>
+    <div class="prof-cartes">
+      <button type="button" class="prof-carte btn-dossier-classe">
+        <span data-icone="dossier"></span>
+        <strong>Ouvrir le dossier de la classe</strong>
+        <span>Suivi en direct : les écuries à regarder s’affichent d’elles-mêmes.</span>
+      </button>
+      <button type="button" class="prof-carte btn-reprendre-suivi" hidden>
+        <span data-icone="recommencer"></span>
+        <strong>Reprendre : <span class="reprendre-dossier"></span></strong>
+        <span>Le dernier dossier suivi, en un clic.</span>
+      </button>
+      <label class="prof-carte">
+        <span data-icone="importer"></span>
+        <strong>Importer des fichiers .json</strong>
+        <span>Une ou plusieurs sauvegardes d’écuries, sans suivi en direct (ni photos).</span>
+        <input type="file" class="entree-fichiers" accept=".json,application/json" multiple hidden>
+      </label>
+    </div>
+    <p class="message-ecart prof-erreur" role="alert" hidden></p>
+  </section>
+
+  <!-- Classe -->
+  <section class="vue vue-classe" aria-labelledby="titre-classe" hidden>
+    <div class="prof-titre-classe"><h1 id="titre-classe"></h1><span class="panneau-note prof-sous-titre"></span></div>
+    <div class="chiffres-cles"></div>
+    <div class="zone-alertes"></div>
+    <div class="panneau tableau-defilant"><table class="tableau-classe"></table></div>
+    <p class="legende">✓ fait · ● en cours · ○ pas commencé — un clic sur une écurie ouvre sa fiche.</p>
+  </section>
+
+  <!-- Fiche d'une écurie -->
+  <section class="vue vue-ecurie" hidden>
+    <div class="fiche-entete">
+      <button type="button" class="btn-secondaire btn-retour-classe"><span data-icone="retour"></span>Classe</button>
+      <span class="fiche-pastille"></span>
+      <div class="fiche-titre"><h1></h1><span class="fiche-membres"></span></div>
+      <span class="bandeau-espace"></span>
+      <button type="button" class="btn-secondaire btn-precedente" aria-label="Écurie précédente">‹</button>
+      <button type="button" class="btn-secondaire btn-suivante" aria-label="Écurie suivante">›</button>
+    </div>
+    <nav class="sous-onglets fiche-onglets" aria-label="Rubriques de l’écurie"></nav>
+    <div class="fiche-contenu"></div>
+  </section>
+
+  <!-- Planche des affiches (impression) -->
+  <section class="vue vue-planche" hidden>
+    <div class="planche-actions">
+      <button type="button" class="btn-secondaire btn-retour-planche"><span data-icone="retour"></span>Classe</button>
+      <button type="button" class="btn-principal btn-imprimer-planche"><span data-icone="imprimer"></span>Imprimer</button>
+      <span class="aide">Dernière version de chaque affiche. Une affiche en PDF s’imprime depuis le dossier de l’écurie (lien sous la carte).</span>
+    </div>
+    <div class="planche"></div>
+  </section>
+</main>
+
+<dialog class="dialogue-prof dialogue-bareme" aria-labelledby="titre-bareme">
+  <form method="dialog" class="bareme-form">
+    <h2 id="titre-bareme">Barème</h2>
+    <p class="aide">Note de groupe : chaque critère évalué de 1 (non atteint) à 4 (dépassé), avec son coefficient ; un critère pas encore évalué reste hors du total. Coefficient 0 : le critère ne compte pas.</p>
+    <div class="bareme-lignes"></div>
+    <div class="accueil-actions"><button type="submit" class="btn-principal" value="ok">Enregistrer</button><button type="submit" class="btn-secondaire" value="annuler">Annuler</button></div>
+  </form>
+</dialog>
+
+<dialog class="dialogue-prof dialogue-evaluations" aria-labelledby="titre-evaluations">
+  <form method="dialog">
+    <h2 id="titre-evaluations">Vos évaluations</h2>
+    <p class="aide evaluations-etat"></p>
+    <div class="accueil-actions">
+      <button type="button" class="btn-principal btn-enregistrer-evaluations"><span data-icone="disquette"></span>Enregistrer dans un fichier</button>
+      <button type="button" class="btn-secondaire btn-ouvrir-evaluations"><span data-icone="importer"></span>Ouvrir un fichier d’évaluations</button>
+      <button type="submit" class="btn-lien">Fermer</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="message-bref" role="status" hidden></div>
+
+<!-- Labo Blocs (en ligne) : moteur et parcours « mbot-challenge » -->
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/labo-blocs-noyau.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/catalogue.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/calendrier.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/progression.js"></script>
+<script type="application/x-atelier" data-src="donnees/projet.js"></script>
+<script type="application/x-atelier" data-src="donnees/calendrier.js"></script>
+<script type="application/x-atelier" data-src="donnees/defis.js"></script>
+<script type="application/x-atelier" data-src="donnees/livrables.js"></script>
+<script type="application/x-atelier" data-src="donnees/comprendre.js"></script>
+<script type="application/x-atelier" data-src="donnees/notation.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/ecurie.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/livrables.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/classe.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/xlsx.js"></script>
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/parcours/mbot-challenge/parcours.js"></script>
+<script type="application/x-atelier" data-src="js/parcours-source.js"></script>
+<script type="application/x-atelier" data-src="js/icones.js"></script>
+<script type="application/x-atelier" data-src="js/dossier-ecurie.js"></script>
+<script type="application/x-atelier" data-src="js/stl-vue.js"></script>
+<script type="application/x-atelier" data-src="js/prof.js"></script>
+<script type="application/x-atelier">Atelier.demarrerProfesseur();</script>
+<script src="js/connexion-labo.js"></script>
+</body>
+</html>

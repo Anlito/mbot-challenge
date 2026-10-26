@@ -105,3 +105,15 @@ test('notes : critères évalués seulement, coefficients, ajustement borné et 
   assert.equal(C.lireEvaluations(JSON.stringify(ev)).ok, true);
   assert.equal(C.lireEvaluations('{"format":"autre"}').ok, false);
 });
+
+test('export Excel : un vrai fichier .xlsx (ZIP) avec les feuilles Élèves et Écuries', () => {
+  const X = require('../site/js/moteur/xlsx.js');
+  const d = ecurie(['Inès', 'Lucas'], 'Foudre');
+  const ev = C.evaluationsVides('3B');
+  const t = C.lignesEleves([{ cle: C.cleEcurie(d), donnees: d }], ev, notation);
+  const octets = X.classeurXlsx([{ nom: 'Élèves', entete: t.entete, lignes: t.lignes }, { nom: 'Écuries', entete: ['Écurie'], lignes: [['Foudre']] }]);
+  assert.equal(String.fromCharCode(octets[0], octets[1]), 'PK');
+  const texte = new TextDecoder().decode(octets);
+  assert.match(texte, /Élèves/);
+  assert.match(texte, /Écuries/);
+});

@@ -12,12 +12,16 @@ test('l’identité du projet est complète', () => {
   assert.equal(projet.maxEleves, 4);
 });
 
-test('la page des élèves charge chaque script local qu’elle cite', () => {
-  const html = fs.readFileSync(path.join(__dirname, '..', 'site', 'index.html'), 'utf8');
+test('les pages des élèves et du professeur chargent chaque script local qu’elles citent', () => {
+  for (const page of ['index.html', 'prof.html']) verifierPage(page);
+});
+
+function verifierPage(page) {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'site', page), 'utf8');
   const locaux = [...html.matchAll(/(?:data-src|src|href)="([^"]+)"/g)].map((m) => m[1]).filter((u) => !/^https?:/.test(u));
   assert.ok(locaux.length > 10);
-  for (const u of locaux) assert.ok(fs.existsSync(path.join(__dirname, '..', 'site', u)), u);
-});
+  for (const u of locaux) assert.ok(fs.existsSync(path.join(__dirname, '..', 'site', u)), page + ' : ' + u);
+}
 
 test('aucune clé du navigateur d’un autre projet', () => {
   const dossier = path.join(__dirname, '..', 'site', 'js');

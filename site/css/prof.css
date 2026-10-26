@@ -1,0 +1,113 @@
+/* mBot Challenge — espace professeur : bandeau, classe en direct, fiche de l'écurie, notation, planche des affiches. */
+
+html.porte-fermee body > :not(.porte-professeur) { visibility: hidden !important; }
+.porte-professeur { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: var(--fond); padding: 1rem; }
+.porte-boite { width: min(28rem, 100%); display: flex; flex-direction: column; gap: 0.75rem; }
+.porte-boite h1 { margin: 0; font-size: 1.75rem; }
+.porte-boite p { margin: 0; color: var(--texte-2); }
+.porte-boite label { display: flex; flex-direction: column; gap: 0.25rem; font-weight: 600; }
+.porte-boite label.case { flex-direction: row; align-items: center; gap: 0.5rem; font-weight: 500; }
+.porte-boite input[type=password] { min-height: 2.75rem; padding: 0 0.75rem; border: 2px solid var(--bord); border-radius: 0.625rem; font: inherit; }
+
+.prof-bandeau {
+  background: var(--nuit); color: #FFFFFF; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; padding: 0.625rem 1.5rem;
+  position: sticky; top: 0; z-index: 20;
+}
+.prof-bandeau .marque em { font-style: normal; color: var(--jaune); }
+.prof-classe { font-family: var(--titres); font-weight: 700; font-size: 1.25rem; padding: 0.125rem 0.625rem; border-radius: 0.5rem; background: rgba(255, 255, 255, 0.12); }
+.prof-direct { font-size: 0.875rem; color: var(--nuit-texte); }
+.prof-actions { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.btn-bande {
+  display: inline-flex; align-items: center; gap: 0.375rem; min-height: 2.5rem; padding: 0 0.75rem; border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.28); background: transparent; color: #FFFFFF; font: 600 0.875rem var(--police);
+  cursor: pointer; text-decoration: none;
+}
+.btn-bande:hover { background: rgba(255, 255, 255, 0.12); }
+.btn-bande .icone { width: 1.125rem; height: 1.125rem; }
+
+.prof-contenu { max-width: 96rem; margin: 0 auto; padding: 1.25rem 1.5rem 2.5rem; }
+.vue { display: flex; flex-direction: column; gap: 1rem; }
+.prof-cartes { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+.prof-carte {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.375rem; padding: 1.125rem 1.25rem; text-align: left;
+  border: 2px solid var(--bord); border-radius: 0.875rem; background: var(--carte); cursor: pointer; font: inherit; color: inherit;
+}
+.prof-carte:hover { border-color: var(--bleu); background: var(--bleu-pale); }
+.prof-carte .icone { width: 2.25rem; height: 2.25rem; stroke: var(--bleu) !important; }
+.prof-carte strong { font-family: var(--titres); font-size: 1.375rem; color: var(--nuit); }
+.prof-carte > span:last-of-type { color: var(--texte-2); }
+
+.prof-titre-classe { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem; }
+.prof-titre-classe h1 { margin: 0; font-size: 2rem; }
+.chiffres-cles { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 0.75rem; }
+.chiffre-cle { background: var(--carte); border: 1px solid var(--bord); border-radius: 0.75rem; padding: 0.75rem 1rem; }
+.chiffre-cle span { display: block; font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--texte-2); }
+.chiffre-cle strong { font-size: 1.75rem; color: var(--nuit); }
+.encart-alertes { background: var(--ambre-fond); border: 1px solid var(--ambre-bord); border-radius: 0.75rem; padding: 0.75rem 1rem; color: #5C3A00; }
+.encart-alertes ul { margin: 0.375rem 0 0; padding-left: 1.25rem; columns: 2 26rem; }
+.encart-alertes li { margin: 0.125rem 0; break-inside: avoid; }
+.encart-alertes .btn-lien { min-height: 0; padding: 0; font-weight: 700; color: #5C3A00; }
+
+.tableau-classe { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+.tableau-classe th, .tableau-classe td { padding: 0.625rem 0.5rem; border-bottom: 1px solid var(--bord); text-align: left; vertical-align: middle; }
+.tableau-classe thead th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--texte-2); }
+.lien-ecurie { display: flex; align-items: center; gap: 0.625rem; border: 0; background: none; padding: 0.25rem; cursor: pointer; text-align: left; font: inherit; color: inherit; border-radius: 0.5rem; }
+.lien-ecurie:hover { background: var(--bleu-pale); }
+.lien-ecurie strong { display: block; }
+.lien-ecurie span span { display: block; font-size: 0.8125rem; color: var(--texte-2); font-weight: 400; }
+.etat-case { white-space: nowrap; }
+
+.fiche-entete { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.fiche-titre h1 { margin: 0; font-size: 2rem; }
+.fiche-membres { color: var(--texte-2); }
+.fiche-contenu { display: flex; flex-direction: column; gap: 1rem; }
+
+.note-groupe { font-size: 2rem; color: var(--nuit); }
+.note-groupe span { font-size: 1rem; color: var(--texte-2); }
+.critere { border: 0; border-top: 1px solid var(--bord); margin: 0; padding: 0.75rem 0 0.5rem; }
+.critere legend { padding: 0; }
+.indice { margin: 0.25rem 0 0.5rem; font-size: 0.875rem; color: var(--texte-2); }
+.niveaux { display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem; }
+.niveau { position: relative; cursor: pointer; }
+.niveau input { position: absolute; opacity: 0; }
+.niveau span {
+  display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 0.75rem; border-radius: 0.5rem; border: 2px solid var(--bord);
+  background: var(--fond); font-weight: 600; font-size: 0.875rem;
+}
+.niveau input:checked + span { border-color: var(--nuit); background: var(--nuit); color: #FFFFFF; }
+.niveau input:checked + span::before { content: '✓ '; }
+.niveau input:focus-visible + span { outline: 3px solid var(--jaune); outline-offset: 2px; }
+.niveau-1 input:checked + span, .niveau-2 input:checked + span { background: var(--ambre-fond); border-color: var(--ambre-texte); color: var(--ambre-texte); }
+.tableau-ajust { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+.tableau-ajust th, .tableau-ajust td { padding: 0.375rem; border-bottom: 1px solid var(--bord); text-align: left; }
+.tableau-ajust input { width: 100%; min-height: 2.5rem; padding: 0 0.5rem; border: 2px solid var(--bord); border-radius: 0.5rem; font: inherit; }
+.tableau-ajust .ajust-valeur { width: 5rem; }
+
+.liste-taches-prof, .liste-controle-prof { margin: 0.25rem 0 0.75rem; padding-left: 1.25rem; }
+.liste-controle-prof { list-style: none; padding-left: 0; }
+.texte-rapport { white-space: pre-line; }
+.liste-plans { padding-left: 1.25rem; }
+.fonctions-prof dt { font-family: var(--chiffres); font-size: 0.875rem; color: var(--bleu); margin-top: 0.5rem; }
+.fonctions-prof dd { margin: 0; }
+.apercu-video video { width: 100%; max-height: 22rem; }
+
+.dialogue-prof { width: min(40rem, calc(100% - 2rem)); border: 0; border-radius: 1rem; padding: 1.25rem 1.5rem; }
+.dialogue-prof::backdrop { background: rgba(11, 37, 69, 0.5); }
+.dialogue-prof h2 { margin-top: 0; }
+.ligne-bareme { flex-direction: row !important; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--bord); }
+.ligne-bareme .aide { display: block; font-weight: 400; }
+.ligne-bareme input { width: 5rem; }
+
+.planche-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.planche { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 1rem; }
+.carte-affiche { margin: 0; background: var(--carte); border: 1px solid var(--bord); border-radius: 0.75rem; padding: 0.75rem; break-inside: avoid; }
+.carte-affiche img { width: 100%; height: auto; display: block; border-radius: 0.375rem; }
+.carte-affiche iframe { width: 100%; height: 20rem; border: 0; }
+.carte-affiche figcaption { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; font-weight: 700; }
+
+@media print {
+  .prof-bandeau, .planche-actions, .message-bref { display: none !important; }
+  .prof-contenu { padding: 0; max-width: none; }
+  .planche { grid-template-columns: repeat(2, 1fr); }
+  body { background: #FFFFFF; }
+}

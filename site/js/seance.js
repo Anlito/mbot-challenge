@@ -130,12 +130,12 @@
         <div class="panneau-entete"><h2 id="titre-historique">Les séances précédentes</h2></div>
         <div class="tableau-defilant">
           <table class="tableau-essais">
-            <thead><tr><th scope="col">Séance</th><th scope="col">Tâches faites</th><th scope="col">Reste à faire</th><th scope="col">Bloquant</th><th scope="col">Rapport</th></tr></thead>
+            <thead><tr><th scope="col">Séance</th><th scope="col">Tâches faites</th><th scope="col">Reste à faire</th><th scope="col">Bloquant</th><th scope="col">Rapport</th><th scope="col">Point avec le professeur</th></tr></thead>
             <tbody>${fermees.slice().reverse().map((s) => {
               const faites = s.depart ? s.depart.taches.filter((t) => t.fait).length : 0;
               const total = s.depart ? s.depart.taches.length : 0;
               const r = d.ecurie.rapports.find((x) => x.seance === s.numero);
-              return `<tr><td class="chiffre">${s.numero}</td><td class="chiffre">${faites} / ${total}</td><td>${echapper(s.fin.reste || '—')}</td><td>${echapper(s.fin.bloquant || '—')}</td><td>${r && r.remisLe ? '✓ remis' : '○ pas remis'}</td></tr>`;
+              return `<tr><td class="chiffre">${s.numero}</td><td class="chiffre">${faites} / ${total}</td><td>${echapper(s.fin.reste || '—')}</td><td>${echapper(s.fin.bloquant || '—')}</td><td>${r && r.remisLe ? '✓ remis' : '○ pas remis'}</td><td class="point-prof" data-seance="${s.numero}">○ pas encore</td></tr>`;
             }).join('')}</tbody>
           </table>
         </div>
@@ -205,6 +205,13 @@
       p.textContent = t || '';
       p.hidden = !t;
     };
+
+    // Points de fin validés par le professeur (validations.json, écrit par l'outil professeur).
+    A.medias.lireTexte(session, 'validations.json').then((t) => {
+      let v = null;
+      try { v = JSON.parse(t); } catch { return; }
+      for (const td of zone.querySelectorAll('.point-prof')) if (v && v.points && v.points[td.dataset.seance]) td.textContent = '✓ fait';
+    });
 
     // Point de départ
     const fDepart = zone.querySelector('.formulaire-depart');

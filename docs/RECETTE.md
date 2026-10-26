@@ -98,3 +98,29 @@ dans le dossier de l'écurie ; la webcam ; la lecture des vidéos depuis le doss
   Vérifié : jaune vif #FFE600 → bandeau et boutons en tons foncés, pastille jaune avec lettre sombre ; tests de
   contraste sur blanc, noir, vert, rouge, jaune, cyan, rose, gris (boutons ≥ 4,5:1, bandeau ≥ 12:1, onglets ≥ 7:1,
   repères jaunes lisibles, pastille ≥ 4,5:1).
+
+## Retour de Thomas : séance (26/10/2026)
+
+- La séance mélangeait le travail du chef de projet et celui du reporter → frise des 5 étapes (qui agit à chacune,
+  étape en cours), zone bleue « Côté chef de projet · À remplir par … » (point de départ, point de fin), zone violette
+  « Côté reporter · À remplir par … » (rapport). Historique : colonne « Point avec le professeur ».
+
+## Jalon 4 — outil professeur (26/10/2026)
+
+Vérifié par Claude :
+- `npm test` : 35 tests (lecture des écuries et copie la plus récente, résumé, alertes dont « exercice raté 6 fois »,
+  notes avec coefficients et ajustement borné, CSV, Pronote, fichier Excel, scripts de prof.html présents).
+- Chrome, 7 écuries fictives importées : tableau de la classe, chiffres clés, « À regarder » ; fiche Foudre : niveaux
+  Atteint + Dépassé → 17,5/20, ajustement +1 avec motif → Inès 18,5 ; les 9 onglets s'affichent ; « Point fait avec
+  le chef de projet » noté ; évaluations gardées dans le navigateur ; planche des 7 affiches.
+
+Pas vérifié par Claude : suivi en direct d'un vrai dossier de classe, écriture de `validations.json` dans le dossier
+d'une écurie, fichier d'évaluations, téléchargement des exports, impression de la planche.
+
+À vérifier par Thomas :
+1. Ouvrir `prof.html`, taper le code professeur, ouvrir le dossier `MBOT CHALLENGE` d'une classe d'essai.
+2. Pendant qu'un poste élève travaille, le tableau se met à jour (« En direct · lu à … »).
+3. Noter une écurie, enregistrer les évaluations dans un fichier, fermer, rouvrir : tout est là.
+4. « Point fait avec le chef de projet » → côté élève, l'historique des séances affiche « ✓ fait ».
+5. Exports Excel, CSV, Pronote ; planche des affiches (aperçu avant impression).
+6. Me dire si les coefficients (tous à 1) et l'ajustement (−2 à +2) te conviennent.

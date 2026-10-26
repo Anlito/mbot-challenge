@@ -5,12 +5,26 @@ autonomie (programmation du mBot avec Labo Blocs, affiche, style du mBot, vidéo
 suit et note leur travail en direct, puis anime le tournoi avec la régie du jour J.
 
 - **Élèves** : `site/index.html` (en ligne : https://anlito.github.io/mbot-challenge/).
-- **Professeur** et **régie du jour J** : jalons 4 et 5.
+- **Professeur** : `site/prof.html` (code professeur : le même que Labo Blocs). **Régie du jour J** : jalon 5.
 
 Plan de construction et décisions : [`docs/PLAN.md`](docs/PLAN.md). Recette : [`docs/RECETTE.md`](docs/RECETTE.md).
 Maquette validée : https://claude.ai/artifact/HxMYDzR9oyhdrdu5gdXG1f
 
-## État — jalon 3 (séances et livrables), 26 octobre 2026
+## État — jalon 4 (outil professeur), 26 octobre 2026
+
+- **Accueil** : ouvrir le dossier `MBOT CHALLENGE` de la classe (suivi en direct, relu toutes les 10 s), reprendre le
+  dernier dossier, ou importer des `.json`.
+- **Classe** : chiffres clés, encart « À regarder » (écurie incomplète, pas de point de départ aujourd’hui, rapport pas
+  remis, blocage noté, affiche en retard, exercice raté 6 fois), tableau des écuries (séance, permis, défis, affiche,
+  style, vidéos, rapports, note, activité).
+- **Fiche de l’écurie** : Bilan et note (7 critères à 4 niveaux avec ce que l’outil constate sous chacun, ajustement
+  individuel de −2 à +2 avec motif, commentaire, historique des rôles), Séances (« Point fait avec le chef de projet »,
+  écrit aussi dans `validations.json` du dossier de l’écurie, que l’écurie voit), Rapports, Permis mBot, Défis,
+  Affiche, Style (aperçu 3D), Vidéos, Comprendre.
+- **Barème** (coefficients, 0 = critère retiré), **Évaluations** (gardées dans le navigateur et réécrites dans un
+  fichier du professeur), exports **Excel**, **CSV**, **Pronote**, **planche des affiches** à imprimer.
+
+## Jalon 3 (séances et livrables), 26 octobre 2026
 
 - **Couleur de l’écurie** : 8 propositions ou n’importe quelle couleur de la palette ; toute l’interface de l’écurie
   (bandeau, onglets, boutons, liens, écran de Labo Blocs) prend un thème tiré de cette couleur, foncé ou éclairci
@@ -50,8 +64,8 @@ Maquette validée : https://claude.ai/artifact/HxMYDzR9oyhdrdu5gdXG1f
 
 | Dossier | Contenu |
 |---|---|
-| `site/donnees/` | `projet.js` (identité du projet), `calendrier.js` (séances par classe), `defis.js` (mesures du carnet d’essais), `livrables.js` (textes et réglages : taille maximale des pièces 3D…), `comprendre.js` (vidéos, chapitres, QCM, chaînes), `college.js` (copie de secours des réglages du collège, rafraîchie à chaque publication) |
-| `site/js/moteur/` | `progression.js` (fichier de l'écurie), `ecurie.js` (identité, rôles, permis, défis, essais), `livrables.js` (séances, rapports, affiche, STL, vidéos, QCM, chaînes), `calendrier.js` (circuit des séances), `catalogue.js` (données), `xlsx.js` (archive ZIP) |
+| `site/donnees/` | `projet.js` (identité du projet), `calendrier.js` (séances par classe), `defis.js` (mesures du carnet d’essais), `livrables.js` (textes et réglages : taille maximale des pièces 3D…), `comprendre.js` (vidéos, chapitres, QCM, chaînes), `notation.js` (critères, compétences, coefficients), `college.js` (copie de secours des réglages du collège, rafraîchie à chaque publication) |
+| `site/js/moteur/` | `progression.js` (fichier de l'écurie), `ecurie.js` (identité, rôles, permis, défis, essais), `livrables.js` (séances, rapports, affiche, STL, vidéos, QCM, chaînes), `classe.js` (outil professeur : lecture, alertes, notes, exports), `calendrier.js` (circuit des séances), `catalogue.js` (données), `xlsx.js` (archive ZIP) |
 | `site/js/` | `accueil.js`, `fichiers.js`, `session.js` (repris du modèle commun de l'atelier du distributeur), `dossier-ecurie.js`, `medias.js` (fichiers du dossier de l'écurie), `paddock.js`, `ecurie-ecran.js`, `programmation.js` (permis, défis, carnet d'essais, écran de Labo Blocs), `seance.js`, `livrables-ecran.js` (affiche, style, vidéos), `comprendre-ecran.js`, `photo-editeur.js` (webcam, flou), `stl-vue.js` (aperçu 3D), `parcours-source.js`, `icones.js`, `connexion-labo.js` |
 | `site/css/` | `atelier.css` (charte), `ecurie.css` (rubriques), `livrables.css` (séance, affiche, style, vidéos, comprendre), `polices.css` |
 | `tools/` | `serve.js` (`npm start`, http://localhost:8080), `exemples-equipes.js` (`npm run exemples`), `archive.js` (`npm run archive`), `polices.js`, `dependances-tests.js` |
