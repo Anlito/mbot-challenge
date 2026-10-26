@@ -105,6 +105,9 @@
     const circuit = K.circuit(ctx.calendrier, d.equipe.classe);
     const numero = derniere ? derniere.numero : 0;
     if (!res.affiches && numero >= circuit.seanceAffiche - 1) liste.push({ sorte: 'affiche', texte: `Affiche pas déposée (à rendre en séance ${circuit.seanceAffiche})` });
+    const versions = L.affiche(d).versions;
+    const derniereAffiche = versions[versions.length - 1];
+    if (derniereAffiche && derniereAffiche.format && derniereAffiche.format.ok === false) liste.push({ sorte: 'format', texte: 'Affiche à reprendre : pas au format A3 portrait' });
     // Un équipier qui essaie sans réussir le même exercice depuis un moment.
     for (const p of d.equipe.eleves) {
       const rubrique = d.ecurie.permis[p] && d.ecurie.permis[p].programmation;

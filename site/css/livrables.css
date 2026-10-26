@@ -179,3 +179,7 @@
 .bandeau-role-titre { display: block; font-family: var(--titres); font-weight: 700; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--texte-2); }
 .bandeau-role strong { display: block; font-family: var(--titres); font-size: 1.375rem; color: var(--nuit); }
 .bandeau-role-ce { display: block; color: var(--encre); }
+
+.format-attendu { margin: 0.5rem 0 0; padding: 0.5rem 0.75rem; border-radius: 0.5rem; background: var(--bleu-pale); color: var(--encre); }
+.format-ok { color: var(--vert-texte); font-weight: 600; }
+.format-ecart { color: var(--ambre-texte); font-weight: 600; }

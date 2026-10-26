@@ -383,7 +383,7 @@
     const der = a.versions[a.versions.length - 1];
     return `<section class="panneau"><div class="panneau-entete"><h2>Affiche</h2><span class="panneau-note">${a.versions.length} version(s) · contrôle ${ctx.livrables.affiche.controle.filter((c) => a.controle[c]).length}/${ctx.livrables.affiche.controle.length}</span></div>
       ${der ? `<div class="apercu-affiche" data-fichier="${echapper(der.chemin)}" data-alt="Affiche de l’écurie ${echapper(A.nomAffiche(d))}">Chargement…</div>` : '<p class="aide">Pas encore déposée.</p>'}
-      <ul class="liste-versions">${a.versions.slice().reverse().map((v, i) => `<li>Version ${a.versions.length - i} · ${date(v.date)} · ${echapper(v.chemin)}</li>`).join('')}</ul>
+      <ul class="liste-versions">${a.versions.slice().reverse().map((v, i) => `<li>Version ${a.versions.length - i} · ${date(v.date)} · ${echapper(v.chemin)}${v.format ? ` · <span class="${v.format.ok === false ? 'format-ecart' : 'format-ok'}">${echapper(v.format.ok === false ? '○ ' + v.format.texte : v.format.texte)}</span>` : ''}</li>`).join('')}</ul>
       <ul class="liste-controle-prof">${ctx.livrables.affiche.controle.map((c) => `<li>${a.controle[c] ? '✓' : '○'} ${echapper(c)}</li>`).join('')}</ul></section>`;
   }
 

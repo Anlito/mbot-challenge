@@ -98,3 +98,16 @@ test('QCM : 15 questions, note sur 20 au demi-point ; chaînes : 7 fonctions', (
   assert.equal(n, 1);
   assert.equal(d.ecurie.comprendre.chaines.traiter, 'court');
 });
+
+test('affiche : format A3 portrait vérifié (image ou PDF), sans bloquer le dépôt', () => {
+  const f = livrables.affiche.format;
+  assert.equal(L.controlerFormatAffiche({ largeur: 3508, hauteur: 4961, sorte: 'image' }, f).ok, true, 'A3 300 dpi');
+  assert.equal(L.controlerFormatAffiche({ largeur: 841.89, hauteur: 1190.55, sorte: 'pdf' }, f).ok, true, 'PDF A3');
+  assert.match(L.controlerFormatAffiche({ largeur: 4961, hauteur: 3508, sorte: 'image' }, f).texte, /paysage/);
+  assert.match(L.controlerFormatAffiche({ largeur: 1080, hauteur: 1920, sorte: 'image' }, f).texte, /proportions/);
+  assert.match(L.controlerFormatAffiche({ largeur: 800, hauteur: 1131, sorte: 'image' }, f).texte, /trop petite/);
+  assert.equal(L.controlerFormatAffiche(null, f).ok, null);
+  const pdf = new TextEncoder().encode('%PDF-1.4\n1 0 obj << /Type /Page /MediaBox [0 0 841.89 1190.55] >>').buffer;
+  assert.deepEqual(L.taillePdf(pdf), { largeur: 841.89, hauteur: 1190.55, sorte: 'pdf' });
+  assert.equal(L.taillePdf(new TextEncoder().encode('%PDF-1.7 compressé').buffer), null);
+});

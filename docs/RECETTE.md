@@ -124,3 +124,11 @@ d'une écurie, fichier d'évaluations, téléchargement des exports, impression 
 4. « Point fait avec le chef de projet » → côté élève, l'historique des séances affiche « ✓ fait ».
 5. Exports Excel, CSV, Pronote ; planche des affiches (aperçu avant impression).
 6. Me dire si les coefficients (tous à 1) et l'ajustement (−2 à +2) te conviennent.
+
+## Retour de Thomas : affiche en A3 portrait (26/10/2026)
+
+- Consigne « Format : A3 portrait (297 × 420 mm) » dans la rubrique Affiche ; à chaque dépôt, contrôle des proportions
+  (à 3 % près), du sens (portrait) et, pour une image, de la largeur (≥ 1 240 px) ; un PDF est lu dans sa /MediaBox
+  quand elle est lisible, sinon « format pas vérifié ». Le dépôt n'est jamais bloqué : l'écart s'affiche en ambre, la
+  fiche de l'écurie le montre et « À regarder » signale « Affiche à reprendre : pas au format A3 portrait ».
+- À vérifier par Thomas : un PDF A3 portrait exporté de Canva → « ✓ A3 portrait ».

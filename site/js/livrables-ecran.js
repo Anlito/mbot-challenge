@@ -49,6 +49,7 @@
           <p class="surtitre">Défi affiche</p>
           <h1>L’affiche de l’écurie</h1>
           <p>Sur Canva, créez l’affiche qui présente votre écurie : les autres classes voteront pour leur préférée. Chaque personne qui vote pour vous devient un fan de l’écurie !</p>
+          <p class="format-attendu"><strong>Format : ${echapper(r.format.nom)}.</strong> Sur Canva, créez le design au format A3 et gardez-le en portrait (plus haut que large).</p>
         </div>
         <div class="encart-date ${reste <= 1 ? 'proche' : ''}">
           <span class="chiffre">Séance ${c.seanceAffiche}</span>
@@ -61,12 +62,12 @@
           <form class="liste-controle">
             ${r.controle.map((x, i) => `<label><input type="checkbox" data-controle="${i}"${a.controle[x] ? ' checked' : ''}> ${echapper(x)}</label>`).join('')}
           </form>
-          <p class="aide">Exportez depuis Canva en PNG ou en PDF (format A3), puis déposez le fichier ici. Chaque dépôt est une nouvelle version : les anciennes restent.</p>
+          <p class="aide">Exportez depuis Canva en PDF (« PDF pour l’impression ») ou en PNG, puis déposez le fichier ici : l’outil vérifie le format A3 portrait. Chaque dépôt est une nouvelle version : les anciennes restent.</p>
         </section>
         <section class="panneau" aria-labelledby="titre-versions">
           <div class="panneau-entete"><h2 id="titre-versions">Les versions</h2><span class="panneau-note">${a.versions.length ? a.versions.length + ' déposée(s)' : 'aucune'}</span></div>
           <div class="apercu-affiche">${derniere ? '<p class="aide">Chargement de l’aperçu…</p>' : '<p class="aide">Pas encore d’affiche déposée.</p>'}</div>
-          <ul class="liste-versions">${a.versions.slice().reverse().map((v, i) => `<li><strong>Version ${a.versions.length - i}</strong> · ${date(v.date)} · <a href="#" data-ouvrir="${echapper(v.chemin)}">ouvrir</a></li>`).join('')}</ul>
+          <ul class="liste-versions">${a.versions.slice().reverse().map((v, i) => `<li><strong>Version ${a.versions.length - i}</strong> · ${date(v.date)}${(v.format ? ` · <span class="${v.format.ok === false ? 'format-ecart' : 'format-ok'}">${echapper(v.format.ok === false ? '○ ' + v.format.texte : v.format.texte)}</span>` : '')} · <a href="#" data-ouvrir="${echapper(v.chemin)}">ouvrir</a></li>`).join('')}</ul>
           <form class="formulaire-affiche" novalidate>
             <div class="accueil-actions"><button type="button" class="btn-principal deposer-affiche">${A.icone('importer', { epaisseur: 2.2 })}Déposer ${a.versions.length ? 'une nouvelle version' : 'l’affiche'}</button></div>
             <p class="message-ecart" role="alert" hidden></p>
@@ -101,14 +102,25 @@
       const f = await choisirFichier('.png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf');
       if (!f) return;
       const c2 = L.cheminAffiche(d, f.name, r.formats);
+      // Taille du fichier pour contrôler le format A3 portrait (image : pixels ; PDF : points de la page).
+      let taille = null;
+      try {
+        if (L.extension(f.name) === 'pdf') taille = L.taillePdf(await f.arrayBuffer());
+        else {
+          const img = await createImageBitmap(f);
+          taille = { largeur: img.width, hauteur: img.height, sorte: 'image' };
+        }
+      } catch { /* format non vérifiable */ }
+      const format = L.controlerFormatAffiche(taille, r.format);
       if (!c2.ok) return ecartDe(form, c2.raison);
       try {
         const chemin = await A.medias.ecrire(session, c2.chemin, f);
         if (!chemin) return;
-        L.ajouterVersionAffiche(d, chemin);
+        L.ajouterVersionAffiche(d, chemin, format);
         session.aEnregistrer(true, true);
-        session.message('L’affiche est rangée dans le dossier de l’écurie.');
         A.paddock.naviguer('affiche');
+        if (format.ok === false) ecartDe(zone.querySelector('.formulaire-affiche'), `Affiche rangée, mais à reprendre : ${format.texte}`);
+        else session.message(format.ok ? 'Affiche rangée : format A3 portrait vérifié.' : 'Affiche rangée. ' + format.texte, 5000);
       } catch (err) {
         ecartDe(form, err && err.message ? err.message : 'L’affiche n’a pas pu être enregistrée.');
       }

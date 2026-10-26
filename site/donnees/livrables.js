@@ -9,6 +9,8 @@ definirLivrables({
   },
   affiche: {
     formats: ['png', 'jpg', 'jpeg', 'pdf'],
+    // Format attendu : A3 en portrait (297 × 420 mm). Image : au moins cette largeur en pixels pour une impression nette.
+    format: { nom: 'A3 portrait (297 × 420 mm)', largeurMm: 297, hauteurMm: 420, largeurMinPx: 1240 },
     controle: [
       'Le nom de l’écurie se lit de loin',
       'Le logo de l’écurie',

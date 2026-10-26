@@ -129,8 +129,30 @@
     if (!formats.includes(ext)) return { ok: false, raison: 'L’affiche doit être une image (PNG, JPG) ou un PDF exporté de Canva.' };
     return { ok: true, chemin: `affiche/affiche-v${affiche(d).versions.length + 1}.${ext === 'jpeg' ? 'jpg' : ext}` };
   }
-  function ajouterVersionAffiche(d, chemin) {
-    affiche(d).versions.push({ chemin, date: P.maintenant() });
+  // Format de l'affiche : proportions d'un A3 en portrait (largeur / hauteur = 297 / 420, à 3 % près) et, pour une image,
+  // assez de pixels pour l'impression. taille : { largeur, hauteur, sorte: 'image' | 'pdf' } (pdf : en points) ou null.
+  //   { ok: true | false | null (pas vérifiable), texte }
+  function controlerFormatAffiche(taille, format) {
+    if (!taille || !(taille.largeur > 0 && taille.hauteur > 0)) return { ok: null, texte: `Format pas vérifié : vérifiez sur Canva que l’affiche est en ${format.nom}.` };
+    const voulu = format.largeurMm / format.hauteurMm;
+    const ratio = taille.largeur / taille.hauteur;
+    if (ratio > 1) return { ok: false, texte: `L’affiche est en paysage : elle doit être en ${format.nom}. Sur Canva, choisissez le format A3 en portrait.` };
+    if (Math.abs(ratio - voulu) / voulu > 0.03) return { ok: false, texte: `L’affiche n’a pas les proportions d’un A3 : sur Canva, choisissez le format ${format.nom}.` };
+    if (taille.sorte === 'image' && taille.largeur < format.largeurMinPx) return { ok: false, texte: `L’image est trop petite pour être imprimée en A3 (${taille.largeur} pixels de large) : exportez-la en PDF ou en PNG en grande taille.` };
+    return { ok: true, texte: `✓ ${format.nom}` };
+  }
+
+  // Taille de la page d'un PDF (en points), lue dans /MediaBox quand elle est lisible ; sinon null.
+  function taillePdf(buffer) {
+    const texte = new TextDecoder('latin1').decode(new Uint8Array(buffer));
+    const m = texte.match(/\/MediaBox\s*\[\s*(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s*\]/);
+    if (!m) return null;
+    const [x0, y0, x1, y1] = m.slice(1).map(Number);
+    return { largeur: Math.abs(x1 - x0), hauteur: Math.abs(y1 - y0), sorte: 'pdf' };
+  }
+
+  function ajouterVersionAffiche(d, chemin, format) {
+    affiche(d).versions.push({ chemin, date: P.maintenant(), format: format || null });
   }
 
   // ---------- Style du mBot ----------
@@ -233,6 +255,8 @@
     cheminPhoto,
     affiche,
     cheminAffiche,
+    controlerFormatAffiche,
+    taillePdf,
     ajouterVersionAffiche,
     style,
     analyserStl,
