@@ -1,6 +1,6 @@
 // Paddock : la page de l'écurie (bandeau, onglets, circuit des séances, rubriques, équipage).
-// Rubriques ouvertes : Écurie (identité et rôles), Programmation (permis mBot), Défis (programmes et carnet d'essais).
-// Séance, affiche, style, vidéos et « Comprendre le mBot » arrivent au jalon 3.
+// Toutes les rubriques s'ouvrent depuis les onglets ou les cartes : écurie, séance, permis mBot, défis, affiche,
+// style du mBot, vidéos, comprendre le mBot.
 (function (global) {
   'use strict';
 
@@ -11,15 +11,20 @@
   const VUES = [
     { id: 'paddock', titre: 'Paddock' },
     { id: 'ecurie', titre: 'Écurie' },
-    { id: 'programmation', titre: 'Programmation' },
+    { id: 'seance', titre: 'Séance' },
+    { id: 'programmation', titre: 'Permis mBot' },
     { id: 'defis', titre: 'Défis' },
+    { id: 'affiche', titre: 'Affiche' },
+    { id: 'style', titre: 'Style' },
+    { id: 'videos', titre: 'Vidéos' },
+    { id: 'comprendre', titre: 'Comprendre' },
   ];
 
   const RUBRIQUES = [
     { id: 'ecurie', titre: 'L’écurie', texte: 'Le nom, la couleur, le logo et les rôles de chaque équipier.', icone: 'drapeau' },
     { id: 'programmation', titre: 'Permis mBot', texte: 'Chaque équipier fait les 8 exercices : LED, bouton, capteur de ligne, ultrasons.', icone: 'robot' },
     { id: 'defis', titre: 'Les défis', texte: 'Ligne noire, obstacles, labyrinthe, Récolte et défilé, avec le carnet d’essais.', icone: 'chrono' },
-    { id: 'seance', titre: 'Séance du jour', texte: 'Le point de départ et le point de fin du chef de projet, le rapport du reporter.', icone: 'horloge' },
+    { id: 'seance', titre: 'Séance du jour', texte: 'Le point de départ et le point de fin du chef de projet, le rapport du reporter.', icone: 'crayon' },
     { id: 'affiche', titre: 'Affiche', texte: 'L’affiche de l’écurie faite sur Canva, pour le vote des autres classes.', icone: 'image' },
     { id: 'style', titre: 'Style du mBot', texte: 'Pièces 3D, carton, photos : un mBot stylé qui se monte et se démonte vite.', icone: 'pinceau' },
     { id: 'videos', titre: 'Vidéos', texte: 'La vidéo de promotion de l’écurie et le reportage du projet.', icone: 'camera' },
@@ -104,6 +109,32 @@
       const faits = Object.values(A.ecurie.etatDefis(d, paquets.defis)).filter((s) => s === 'reussi').length;
       return { texte: `${faits} / ${paquets.defis.exercices.length} prêts`, ton: faits ? 'ok' : 'neutre' };
     }
+    const L = A.livrables;
+    if (id === 'seance') {
+      const s = L.seanceEnCours(d);
+      if (s && s.depart) return { texte: `Séance ${s.numero} en cours`, ton: 'ok' };
+      return { texte: 'Point de départ à faire', ton: 'ambre' };
+    }
+    if (id === 'affiche') {
+      const n = L.affiche(d).versions.length;
+      return n ? { texte: `Version ${n} déposée`, ton: 'ok' } : { texte: 'Pas encore déposée', ton: 'neutre' };
+    }
+    if (id === 'style') {
+      const s = L.style(d);
+      const n = s.pieces.length + s.photos.length;
+      return n ? { texte: `${s.pieces.length} pièce(s) 3D · ${s.photos.length} photo(s)`, ton: 'ok' } : { texte: 'À imaginer', ton: 'neutre' };
+    }
+    if (id === 'videos') {
+      const v = ['promo', 'reportage'].map((x) => L.videos(d, x));
+      const finies = v.filter((x) => x.fichier).length;
+      return finies ? { texte: `${finies} / 2 déposée(s)`, ton: 'ok' } : { texte: v.some((x) => x.storyboard.length) ? 'Storyboard en cours' : 'À préparer', ton: 'neutre' };
+    }
+    if (id === 'comprendre') {
+      const c = L.comprendre(d);
+      const n = A.comprendre.chaines.filter((f) => (c.chaines[f.id] || '').length >= 10).length;
+      const meilleur = c.qcm.reduce((m, e) => Math.max(m, e.note), -1);
+      return { texte: `${meilleur >= 0 ? 'QCM ' + String(meilleur).replace('.', ',') + '/20 · ' : ''}${n} / 7 fonctions`, ton: n === 7 ? 'ok' : 'neutre' };
+    }
     return null;
   }
 
@@ -159,6 +190,11 @@
     if (vue === 'ecurie') A.ecranEcurie.afficher(zone, session);
     else if (vue === 'programmation') A.programmation.afficherPermis(zone, session);
     else if (vue === 'defis') A.programmation.afficherDefis(zone, session);
+    else if (vue === 'seance') A.ecranSeance.afficher(zone, session);
+    else if (vue === 'affiche') A.ecranLivrables.afficherAffiche(zone, session);
+    else if (vue === 'style') A.ecranLivrables.afficherStyle(zone, session);
+    else if (vue === 'videos') A.ecranLivrables.afficherVideos(zone, session);
+    else if (vue === 'comprendre') A.ecranComprendre.afficher(zone, session);
     else vuePaddock(zone);
     scrollTo(0, 0);
   }

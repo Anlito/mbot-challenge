@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://anlito.github.io/labo-blocs/module/labo-blocs.css">
 <link rel="stylesheet" href="css/atelier.css">
 <link rel="stylesheet" href="css/ecurie.css">
+<link rel="stylesheet" href="css/livrables.css">
 </head>
 <body>
 <div class="ecran-accueil" hidden>
@@ -95,11 +96,11 @@
       <span class="pastille-place"></span>
       <span><span class="ecurie-nom"></span><span class="ecurie-membres"></span></span>
     </div>
-    <nav class="paddock-onglets" aria-label="Rubriques de l’écurie"></nav>
     <span class="bandeau-espace"></span>
     <span class="etat-enregistrement" aria-live="polite"></span>
     <button type="button" class="btn-aide btn-enregistrer"><span data-icone="disquette" data-epaisseur="2.4"></span>Enregistrer</button>
   </header>
+  <nav class="paddock-onglets" aria-label="Rubriques de l’écurie"></nav>
   <main class="paddock-contenu"></main>
 </div>
 
@@ -123,7 +124,10 @@
 <script type="application/x-atelier" data-src="donnees/projet.js"></script>
 <script type="application/x-atelier" data-src="donnees/calendrier.js"></script>
 <script type="application/x-atelier" data-src="donnees/defis.js"></script>
+<script type="application/x-atelier" data-src="donnees/livrables.js"></script>
+<script type="application/x-atelier" data-src="donnees/comprendre.js"></script>
 <script type="application/x-atelier" data-src="js/moteur/ecurie.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/livrables.js"></script>
 <!-- Exercices et défis : le parcours publié par Labo Blocs -->
 <script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/parcours/mbot-challenge/parcours.js"></script>
 <script type="application/x-atelier" data-src="js/parcours-source.js"></script>
@@ -137,6 +141,11 @@
 <script type="application/x-atelier" data-src="js/paddock.js"></script>
 <script type="application/x-atelier" data-src="js/ecurie-ecran.js"></script>
 <script type="application/x-atelier" data-src="js/programmation.js"></script>
+<script type="application/x-atelier" data-src="js/photo-editeur.js"></script>
+<script type="application/x-atelier" data-src="js/stl-vue.js"></script>
+<script type="application/x-atelier" data-src="js/seance.js"></script>
+<script type="application/x-atelier" data-src="js/livrables-ecran.js"></script>
+<script type="application/x-atelier" data-src="js/comprendre-ecran.js"></script>
 <script type="application/x-atelier">
   Atelier.ajusterEchelle();
   addEventListener('resize', Atelier.ajusterEchelle);

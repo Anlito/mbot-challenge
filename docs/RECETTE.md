@@ -65,3 +65,28 @@ Pas vérifié par Claude (fenêtres de Windows) : l'enregistrement du logo dans 
 4. Avec un mBot : un équipier finit son permis (8 exercices) → l'onglet **Défis** s'ouvre ; programmer le défi 1 et
    l'envoyer dans le robot.
 5. **Carnet d'essais** : chronométrer un tour, noter l'essai, vérifier le meilleur temps sur la carte du défi.
+
+## Jalon 3 — séances et livrables (26/10/2026)
+
+Vérifié par Claude :
+- `npm test` : 29 tests (points de départ et de fin, reprise du reste à faire, rapport, versions de l'affiche,
+  dimensions STL binaire et texte, contrôle des dimensions avec pièce tournée, storyboard, QCM noté au demi-point,
+  7 fonctions).
+- Chrome, écurie fictive : point de départ (chacun a une tâche), point de fin refusé tant qu'une tâche n'est pas
+  cochée ou que le reste à faire manque, historique ; outil photo : zone glissée sur un texte → mosaïque, JPEG rendu ;
+  affiche : « à rendre à la prochaine séance » en séance 7 ; aperçu 3D d'un STL qui tourne à la souris ; storyboard
+  enregistré (durée totale) ; vidéos : invitation à choisir le dossier ; QCM : question manquante signalée, 12/15 →
+  16/20 avec correction ; largeur téléphone sans défilement horizontal.
+
+Pas vérifié par Claude (fenêtres de Windows, webcam) : l'écriture des photos, de l'affiche, des STL et des vidéos
+dans le dossier de l'écurie ; la webcam ; la lecture des vidéos depuis le dossier du serveur.
+
+À vérifier par Thomas :
+1. **Séance** : point de départ, puis point de fin, puis rapport avec une photo **webcam** et une photo **fichier**,
+   en floutant un visage → les JPG sont dans `rapports/` et la mosaïque cache bien le visage.
+2. **Affiche** : déposer un PNG puis un PDF exporté de Canva → `affiche/affiche-v1.png`, `affiche-v2.pdf`, aperçu.
+3. **Style** : déposer un STL de Tinkercad → dimensions justes, aperçu 3D. Me donner la taille maximale d'une pièce
+   pour l'imprimante (je la règle dans `donnees/livrables.js`).
+4. **Vidéos** : déposer une vidéo de téléphone (MP4) → `videos/promo.mp4`, lecture dans l'outil.
+5. **Comprendre** : choisir le dossier du serveur qui contient `OST-automatise.mp4` et `mbot.mp4` → lecture et
+   chapitres ; QCM ; les 7 fonctions.

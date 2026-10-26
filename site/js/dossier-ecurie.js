@@ -16,12 +16,13 @@
     });
   }
 
-  async function memoriser(d, dossier) {
+  // Dossier rangé sous une clé (« l'écurie », « les vidéos du cours » sur ce poste).
+  async function memoriserCle(cleDossier, dossier) {
     try {
       const db = await base();
       await new Promise((ok, ko) => {
         const t = db.transaction('dossiers', 'readwrite');
-        t.objectStore('dossiers').put(dossier, cle(d));
+        t.objectStore('dossiers').put(dossier, cleDossier);
         t.oncomplete = ok;
         t.onerror = () => ko(t.error);
       });
@@ -31,11 +32,11 @@
     }
   }
 
-  async function retrouver(d) {
+  async function retrouverCle(cleDossier) {
     try {
       const db = await base();
       const h = await new Promise((ok, ko) => {
-        const r = db.transaction('dossiers').objectStore('dossiers').get(cle(d));
+        const r = db.transaction('dossiers').objectStore('dossiers').get(cleDossier);
         r.onsuccess = () => ok(r.result || null);
         r.onerror = () => ko(r.error);
       });
@@ -46,5 +47,8 @@
     }
   }
 
-  A.dossierEcurie = { memoriser, retrouver };
+  const memoriser = (d, dossier) => memoriserCle(cle(d), dossier);
+  const retrouver = (d) => retrouverCle(cle(d));
+
+  A.dossierEcurie = { memoriser, retrouver, memoriserCle, retrouverCle };
 })(this);

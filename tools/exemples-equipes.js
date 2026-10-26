@@ -5,6 +5,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const P = require('../site/js/moteur/progression.js');
 const E = require('../site/js/moteur/ecurie.js');
+const L = require('../site/js/moteur/livrables.js');
+const { lireDonnees } = require('../site/js/moteur/catalogue.js');
+const comprendre = lireDonnees('comprendre.js', 'definirComprendre');
 const LB = require(require('./dependances-tests.js').noyau);
 const { parcours, defis } = require('../site/js/moteur/catalogue.js');
 const { permis } = E.paquets(parcours);
@@ -37,6 +40,18 @@ for (const e of ECURIES) {
   // Avancement varié : le premier équipier va plus vite que les autres.
   e.eleves.forEach((p, i) => reussir(d, p, Math.max(0, (e.avance || 0) - 2 * i)));
   for (const x of e.essais || []) E.ajouterEssai(d, x, defis);
+  // Séances : une par niveau d'avance, avec point de fin et rapport (sauf la dernière, en cours).
+  const nbSeances = Math.min(4, Math.ceil((e.avance || 1) / 2));
+  for (let n = 1; n <= nbSeances; n++) {
+    L.pointDeDepart(d, n, e.eleves.map((p, i) => ({ texte: ['Exercices du permis', 'Affiche sur Canva', 'Carnet d’essais', 'Pièce 3D'][i % 4], qui: p, minutes: 30, livrable: ['Permis mBot', 'Affiche', 'Défis', 'Style du mBot'][i % 4] })));
+    if (n === nbSeances && n > 1) break;
+    const s = L.seanceEnCours(d);
+    const faits = Object.fromEntries(s.depart.taches.map((x, i) => [x.id, i !== 1]));
+    L.pointDeFin(d, faits, 'Finir l’affiche', n === 2 ? 'Le capteur droit voit le carrelage comme du noir' : '');
+    if (e.nom !== 'Orbite' || n === 1) L.remettreRapport(d, n, `Séance ${n} : ${e.eleves[0]} a avancé le permis, ${e.eleves[1]} a travaillé l’affiche. Nous avons noté ce qui reste à faire.`);
+  }
+  if ((e.avance || 0) >= 7) L.ajouterVersionAffiche(d, 'affiche/affiche-v1.png');
+  if ((e.avance || 0) >= 8) L.noterQcm(d, comprendre.qcm, comprendre.qcm.map((q, i) => (i % 5 ? q.bonne : (q.bonne + 1) % 4)), e.eleves[0]);
   const nom = P.nomEquipe(d.equipe.eleves);
   const dossier = path.join(SORTIE, nom);
   fs.mkdirSync(dossier, { recursive: true });

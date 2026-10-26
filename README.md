@@ -10,7 +10,20 @@ suit et note leur travail en direct, puis anime le tournoi avec la régie du jou
 Plan de construction et décisions : [`docs/PLAN.md`](docs/PLAN.md). Recette : [`docs/RECETTE.md`](docs/RECETTE.md).
 Maquette validée : https://claude.ai/artifact/HxMYDzR9oyhdrdu5gdXG1f
 
-## État — jalon 2 (espace de l’écurie), 26 octobre 2026
+## État — jalon 3 (séances et livrables), 26 octobre 2026
+
+- **Séance** : point de départ du chef de projet (tâches, qui, temps prévu, pour quel livrable ; chacun a une tâche ;
+  le reste à faire de la fois précédente est repris), point de fin (fait / pas encore, reste, bloquant), historique.
+- **Rapport du reporter** : texte guidé, photos par webcam ou fichier (`rapports/seance-05-1.jpg`), visages floutés
+  en mosaïque avant l’enregistrement (`js/photo-editeur.js`).
+- **Affiche** : date limite selon la classe, liste de contrôle, versions déposées (`affiche/affiche-v2.png|pdf`), aperçu.
+- **Style du mBot** : cahier des charges, description, plan du défilé, pièces STL (dimensions, aperçu 3D sur canvas
+  `js/stl-vue.js`, contrôle si `dimensionsMax` est réglé dans `donnees/livrables.js`), photos floutées.
+- **Vidéos** : storyboard (plans, image, son, durée) et dépôt de la vidéo de promotion et du reportage (`videos/`).
+- **Comprendre le mBot** : vidéos chapitrées lues depuis le dossier du serveur (choisi une fois par poste), QCM de
+  15 questions noté sur 20 avec correction, 7 fonctions des chaînes à expliquer.
+
+## Jalon 2 (espace de l’écurie), 26 octobre 2026
 
 - **Écurie** : nom (2 à 24 caractères), couleur parmi 8 (lisibles en blanc), logo rangé dans le dossier de l’écurie
   (`logo.png`), rôles (un chef de projet, un reporter, jamais la même personne ; cumul permis ; historique gardé).
@@ -33,10 +46,10 @@ Maquette validée : https://claude.ai/artifact/HxMYDzR9oyhdrdu5gdXG1f
 
 | Dossier | Contenu |
 |---|---|
-| `site/donnees/` | `projet.js` (identité du projet), `calendrier.js` (séances par classe), `defis.js` (mesures du carnet d’essais), `college.js` (copie de secours des réglages du collège, rafraîchie à chaque publication) |
-| `site/js/moteur/` | `progression.js` (fichier de l'écurie), `ecurie.js` (identité, rôles, permis, défis, essais), `calendrier.js` (circuit des séances), `catalogue.js` (données), `xlsx.js` (archive ZIP) |
-| `site/js/` | `accueil.js`, `fichiers.js`, `session.js` (repris du modèle commun de l'atelier du distributeur), `dossier-ecurie.js`, `medias.js` (fichiers du dossier de l'écurie), `paddock.js`, `ecurie-ecran.js`, `programmation.js` (permis, défis, carnet d'essais, écran de Labo Blocs), `parcours-source.js`, `icones.js`, `connexion-labo.js` |
-| `site/css/` | `atelier.css` (charte), `ecurie.css` (rubriques), `polices.css` |
+| `site/donnees/` | `projet.js` (identité du projet), `calendrier.js` (séances par classe), `defis.js` (mesures du carnet d’essais), `livrables.js` (textes et réglages : taille maximale des pièces 3D…), `comprendre.js` (vidéos, chapitres, QCM, chaînes), `college.js` (copie de secours des réglages du collège, rafraîchie à chaque publication) |
+| `site/js/moteur/` | `progression.js` (fichier de l'écurie), `ecurie.js` (identité, rôles, permis, défis, essais), `livrables.js` (séances, rapports, affiche, STL, vidéos, QCM, chaînes), `calendrier.js` (circuit des séances), `catalogue.js` (données), `xlsx.js` (archive ZIP) |
+| `site/js/` | `accueil.js`, `fichiers.js`, `session.js` (repris du modèle commun de l'atelier du distributeur), `dossier-ecurie.js`, `medias.js` (fichiers du dossier de l'écurie), `paddock.js`, `ecurie-ecran.js`, `programmation.js` (permis, défis, carnet d'essais, écran de Labo Blocs), `seance.js`, `livrables-ecran.js` (affiche, style, vidéos), `comprendre-ecran.js`, `photo-editeur.js` (webcam, flou), `stl-vue.js` (aperçu 3D), `parcours-source.js`, `icones.js`, `connexion-labo.js` |
+| `site/css/` | `atelier.css` (charte), `ecurie.css` (rubriques), `livrables.css` (séance, affiche, style, vidéos, comprendre), `polices.css` |
 | `tools/` | `serve.js` (`npm start`, http://localhost:8080), `exemples-equipes.js` (`npm run exemples`), `archive.js` (`npm run archive`), `polices.js`, `dependances-tests.js` |
 
 Labo Blocs (moteur, réglages du collège, bientôt le parcours « mbot-challenge ») est chargé en ligne depuis

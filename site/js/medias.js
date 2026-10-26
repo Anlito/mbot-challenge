@@ -80,6 +80,15 @@
     }
   }
 
+  // Fichier de l'écurie (pour l'analyser : STL…), en demandant le droit de lecture si besoin (après un clic).
+  async function lireFichier(session, chemin) {
+    const racine = await dossier(session, 'read');
+    if (!racine) return null;
+    const morceaux = chemin.split('/');
+    const d = await sousDossier(racine, morceaux.slice(0, -1), false);
+    return (await d.getFileHandle(morceaux[morceaux.length - 1])).getFile();
+  }
+
   // Image choisie par l'élève, réduite pour rester légère (côté le plus long : max px), en PNG.
   async function reduireImage(fichier, max) {
     const image = await createImageBitmap(fichier);
@@ -91,5 +100,5 @@
     return new Promise((ok) => toile.toBlob(ok, 'image/png'));
   }
 
-  A.medias = { disponible, dossier, ecrire, url, reduireImage };
+  A.medias = { disponible, dossier, ecrire, url, lireFichier, reduireImage };
 })(this);
