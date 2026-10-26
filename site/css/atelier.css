@@ -145,9 +145,14 @@ h1, h2, h3 { font-family: var(--titres); color: var(--nuit); line-height: 1.1; }
   background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 0.625rem;
 }
 .ecurie-pastille {
-  width: 2rem; height: 2rem; border-radius: 0.5rem; background: var(--bleu); color: #FFFFFF;
+  width: 2rem; height: 2rem; border-radius: 0.5rem; background: var(--ecurie, var(--bleu)); color: #FFFFFF; flex: none;
   display: flex; align-items: center; justify-content: center; font-family: var(--titres); font-weight: 800; font-size: 1.0625rem;
+  overflow: hidden;
 }
+.ecurie-pastille.grande { width: 6rem; height: 6rem; border-radius: 1rem; font-size: 3rem; }
+.ecurie-pastille.avec-logo { background: #FFFFFF; border: 2px solid var(--ecurie, var(--bleu)); }
+.ecurie-pastille img { width: 100%; height: 100%; object-fit: contain; }
+.pastille-place { display: contents; }
 .ecurie-nom { display: block; font-weight: 700; }
 .ecurie-membres { display: block; font-size: 0.8125rem; color: var(--nuit-texte); }
 .bandeau-espace { flex: 1 1 auto; }

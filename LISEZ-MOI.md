@@ -1,6 +1,8 @@
 # mBot Challenge — mode d’emploi
 
-**Version en cours de construction (jalon 0).** Seuls l’accueil et le paddock de l’écurie sont prêts.
+**Version en cours de construction (jalon 2).** Prêts : accueil, paddock, écurie (nom, couleur, logo, rôles), permis
+mBot (exercices de chaque équipier), défis et carnet d’essais. À venir : séances, rapports, affiche, style, vidéos,
+outil professeur, régie du jour J.
 
 ## Pour les élèves
 
@@ -8,6 +10,9 @@
 - « Nouvelle écurie » : les prénoms (1 à 4) et la classe, puis le dossier `… › 3X › COMMUN › TECHNOLOGIE › MBOT CHALLENGE`.
   L’outil y crée le dossier de l’écurie (`Prénom_Prénom`) et le fichier `Prénom_Prénom.json`, réenregistré tout seul.
 - « Ouvrir notre écurie » : choisir le dossier de l’écurie.
+- **Permis mBot** : chaque équipier clique sur « C’est moi au clavier » et fait les 8 exercices pour lui.
+- **Défis** : ouverts dès qu’un équipier a son permis. « Programmer » ouvre le défi dans Labo Blocs (programme commun à
+  l’écurie) ; « Carnet d’essais » chronomètre et note chaque essai sur la piste.
 
 ## Calendrier des classes
 

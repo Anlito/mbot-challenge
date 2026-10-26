@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="css/polices.css">
 <link rel="stylesheet" href="https://anlito.github.io/labo-blocs/module/labo-blocs.css">
 <link rel="stylesheet" href="css/atelier.css">
+<link rel="stylesheet" href="css/ecurie.css">
 </head>
 <body>
 <div class="ecran-accueil" hidden>
@@ -91,9 +92,10 @@
   <header class="paddock-bandeau">
     <div class="marque"><img src="img/logo.svg" alt="" width="36" height="36"><span>mBot Challenge</span></div>
     <div class="ecurie-badge">
-      <span class="ecurie-pastille" aria-hidden="true"></span>
+      <span class="pastille-place"></span>
       <span><span class="ecurie-nom"></span><span class="ecurie-membres"></span></span>
     </div>
+    <nav class="paddock-onglets" aria-label="Rubriques de l’écurie"></nav>
     <span class="bandeau-espace"></span>
     <span class="etat-enregistrement" aria-live="polite"></span>
     <button type="button" class="btn-aide btn-enregistrer"><span data-icone="disquette" data-epaisseur="2.4"></span>Enregistrer</button>
@@ -101,9 +103,12 @@
   <main class="paddock-contenu"></main>
 </div>
 
+<!-- Exercices et défis : écran de Labo Blocs, posé par js/programmation.js -->
+<div class="ecran-programmation" hidden></div>
+
 <div class="message-bref" role="status" hidden></div>
 
-<!-- Labo Blocs (en ligne) : moteur, réglages du collège ; l'écran d'exercice viendra avec le parcours (jalon 1) -->
+<!-- Labo Blocs (en ligne) : moteur, écran d'exercice, parcours « mbot-challenge », réglages du collège -->
 <script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/blockly/blockly_compressed.js"></script>
 <script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/blockly/fr.js"></script>
 <script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/labo-blocs-noyau.js"></script>
@@ -117,13 +122,21 @@
 <script type="application/x-atelier" data-src="js/moteur/progression.js"></script>
 <script type="application/x-atelier" data-src="donnees/projet.js"></script>
 <script type="application/x-atelier" data-src="donnees/calendrier.js"></script>
+<script type="application/x-atelier" data-src="donnees/defis.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/ecurie.js"></script>
+<!-- Exercices et défis : le parcours publié par Labo Blocs -->
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/parcours/mbot-challenge/parcours.js"></script>
+<script type="application/x-atelier" data-src="js/parcours-source.js"></script>
 <!-- Interface -->
 <script type="application/x-atelier" data-src="js/icones.js"></script>
 <script type="application/x-atelier" data-src="js/fichiers.js"></script>
 <script type="application/x-atelier" data-src="js/dossier-ecurie.js"></script>
 <script type="application/x-atelier" data-src="js/accueil.js"></script>
 <script type="application/x-atelier" data-src="js/session.js"></script>
+<script type="application/x-atelier" data-src="js/medias.js"></script>
 <script type="application/x-atelier" data-src="js/paddock.js"></script>
+<script type="application/x-atelier" data-src="js/ecurie-ecran.js"></script>
+<script type="application/x-atelier" data-src="js/programmation.js"></script>
 <script type="application/x-atelier">
   Atelier.ajusterEchelle();
   addEventListener('resize', Atelier.ajusterEchelle);

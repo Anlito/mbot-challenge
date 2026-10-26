@@ -47,6 +47,7 @@
       rapports: [], // rapports du reporter (jalon 3)
       essais: [], // carnet d'essais des défis (jalon 2)
       livrables: {}, // affiche, style, vidéos (jalon 3)
+      permis: {}, // prénom → { programmation } : exercices 1 à 8 faits par chaque équipier (Labo Blocs)
     };
   }
 

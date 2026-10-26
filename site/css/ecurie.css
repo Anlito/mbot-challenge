@@ -1,0 +1,118 @@
+/* mBot Challenge — rubriques de l'écurie : onglets, identité et rôles, permis mBot, défis et carnet d'essais.
+   Mêmes couleurs que atelier.css ; jamais la couleur seule (symbole ou mot à côté). */
+
+/* ---------- Onglets du paddock ---------- */
+
+.paddock-onglets { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.paddock-onglets button {
+  min-height: 2.75rem; padding: 0 0.875rem; border: 0; border-radius: 0.5rem; background: transparent; color: #FFFFFF;
+  font-weight: 600; font-size: 0.9375rem; cursor: pointer;
+}
+.paddock-onglets button:hover { background: rgba(255, 255, 255, 0.1); }
+.paddock-onglets button[aria-current="page"] { background: #FFFFFF; color: var(--nuit); font-weight: 700; }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.aide { margin: 0.25rem 0 0; font-size: 0.8125rem; color: var(--texte-2); }
+.legende { margin: 0; font-size: 0.875rem; color: var(--texte-2); }
+.chiffre { font-family: var(--chiffres); font-weight: 700; }
+.message-ecart {
+  margin: 0.75rem 0 0; padding: 0.625rem 0.875rem; border-radius: 0.625rem; font-weight: 600;
+  background: var(--ambre-fond); border: 1px solid var(--ambre-bord); color: #5C3A00;
+}
+.briefing { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
+.briefing > div { flex: 1 1 28rem; }
+
+/* Cartes des rubriques : les rubriques ouvertes sont des boutons. */
+.carte-rubrique { display: block; width: 100%; text-align: left; font: inherit; color: inherit; }
+.carte-rubrique.ouverte { cursor: pointer; border-width: 2px; }
+.carte-rubrique.ouverte:hover { border-color: var(--bleu); background: var(--bleu-pale); }
+.carte-titre { font-family: var(--titres); font-weight: 700; font-size: 1.3125rem; color: var(--nuit); flex: 1; }
+.carte-texte { display: block; margin: 0.5rem 0 0; color: var(--texte-2); }
+.ton-ok { background: var(--vert-fond); color: var(--vert-texte); }
+.ton-ambre { background: var(--ambre-fond); color: var(--ambre-texte); }
+
+/* ---------- Écurie : identité et rôles ---------- */
+
+.identite-grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.25rem; align-items: start; }
+.champ { display: flex; flex-direction: column; gap: 0.25rem; font-weight: 600; }
+.champ-titre { font-weight: 600; }
+.champ input, .champ select, .champ textarea {
+  min-height: 2.75rem; padding: 0.5rem 0.75rem; border: 2px solid var(--bord); border-radius: 0.625rem;
+  font: 400 1rem var(--police); background: #FFFFFF; color: var(--encre);
+}
+.champ textarea { resize: vertical; }
+.champ input:focus, .champ select:focus, .champ textarea:focus { border-color: var(--bleu); }
+.choix-couleurs { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.choix-couleurs legend { font-weight: 600; margin-bottom: 0.375rem; padding: 0; }
+.pastille-couleur { position: relative; cursor: pointer; }
+.pastille-couleur input { position: absolute; opacity: 0; }
+.pastille-couleur span[aria-hidden] { display: block; width: 2.75rem; height: 2.75rem; border-radius: 0.625rem; border: 3px solid #FFFFFF; box-shadow: 0 0 0 1px var(--bord-fort); }
+.pastille-couleur input:checked + span { box-shadow: 0 0 0 3px var(--nuit); }
+.pastille-couleur input:checked + span::after { content: '✓'; display: flex; align-items: center; justify-content: center; height: 100%; color: #FFFFFF; font-weight: 800; }
+.pastille-couleur input:focus-visible + span { outline: 3px solid var(--jaune); outline-offset: 2px; }
+.logo-zone { display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+
+.tableau-defilant { overflow-x: auto; }
+.tableau-roles, .tableau-essais { width: 100%; border-collapse: collapse; }
+.tableau-roles th, .tableau-roles td, .tableau-essais th, .tableau-essais td { padding: 0.625rem 0.75rem; border-bottom: 1px solid var(--bord); text-align: left; vertical-align: top; }
+.tableau-roles thead th, .tableau-essais thead th { font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--texte-2); }
+.tableau-roles tbody th { font-weight: 400; min-width: 14rem; }
+.tableau-roles tbody th strong { display: block; }
+.tableau-roles td { text-align: center; vertical-align: middle; }
+.case-role { display: inline-flex; align-items: center; justify-content: center; width: 2.75rem; height: 2.75rem; cursor: pointer; }
+.case-role input { width: 1.375rem; height: 1.375rem; accent-color: var(--bleu); }
+
+/* ---------- Permis mBot ---------- */
+
+.permis-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; }
+.carte-permis { background: var(--carte); border: 1px solid var(--bord); border-radius: 0.875rem; padding: 1rem 1.125rem; display: flex; flex-direction: column; gap: 0.875rem; }
+.carte-permis.fini { border: 2px solid #8FD1AA; }
+.carte-permis-entete { display: flex; align-items: center; gap: 0.75rem; }
+.carte-permis h2 { margin: 0; font-size: 1.375rem; }
+.permis-compte { font-size: 0.875rem; color: var(--texte-2); font-weight: 600; }
+.carte-permis.fini .permis-compte { color: var(--vert-texte); }
+.permis-exos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 0.25rem; }
+.permis-exo {
+  display: flex; flex-direction: column; align-items: center; padding: 0.25rem 0; border-radius: 0.375rem;
+  background: var(--fond); border: 1px solid var(--bord); font-weight: 700; color: var(--texte-2);
+}
+.permis-num { font-family: var(--chiffres); font-size: 0.75rem; }
+.permis-exo.statut-reussi { background: var(--vert-fond); border-color: #B9E0C8; color: var(--vert-texte); }
+.permis-exo.statut-en_cours, .permis-exo.statut-a_faire { background: var(--bleu-pale); border-color: var(--bleu-bord); color: var(--nuit); }
+.permis-exo.statut-a_reverifier { background: var(--ambre-fond); border-color: var(--ambre-bord); color: var(--ambre-texte); }
+.carte-permis .btn-principal { margin-top: auto; }
+
+/* ---------- Défis et carnet d'essais ---------- */
+
+.defis-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; }
+.carte-defi { background: var(--carte); border: 1px solid var(--bord); border-radius: 0.875rem; padding: 1rem 1.125rem; display: flex; flex-direction: column; gap: 0.625rem; }
+.carte-defi.choisi { border: 2px solid var(--bleu); box-shadow: 0 0 0 3px var(--bleu-pale); }
+.carte-defi p { margin: 0; color: var(--texte-2); }
+.carte-defi-entete { display: flex; align-items: center; gap: 0.625rem; }
+.carte-defi h2 { margin: 0; font-size: 1.3125rem; }
+.defi-numero {
+  font-family: var(--chiffres); font-weight: 700; font-size: 0.875rem; padding: 0.25rem 0.5rem; border-radius: 0.375rem;
+  background: var(--nuit); color: var(--jaune);
+}
+.defi-chiffres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; margin: 0; }
+.defi-chiffres div { background: var(--fond); border-radius: 0.5rem; padding: 0.375rem 0.5rem; }
+.defi-chiffres dt { font-size: 0.75rem; color: var(--texte-2); }
+.defi-chiffres dd { margin: 0; font-weight: 700; }
+.carte-defi-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: auto; }
+
+.essai-grille { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-bottom: 1rem; }
+.chrono { flex: 1 1 16rem; background: var(--nuit); color: #FFFFFF; border-radius: 0.875rem; padding: 1rem 1.125rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.chrono-affichage { font-family: var(--chiffres); font-weight: 700; font-size: 3.25rem; line-height: 1; letter-spacing: -0.02em; }
+.chrono-boutons { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chrono .btn-principal.chrono-depart { background: #1E7A4C; min-width: 8rem; }
+.chrono .btn-principal.chrono-depart:hover { background: #17633D; }
+.chrono .aide { color: var(--nuit-texte); }
+.formulaire-essai { flex: 999 1 28rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.875rem; align-content: start; }
+.formulaire-essai .large { grid-column: 1 / -1; }
+.resultat { border: 0; margin: 0; padding: 0; }
+.resultat legend { font-weight: 600; padding: 0; margin-bottom: 0.25rem; }
+.resultat label { display: flex; align-items: center; gap: 0.5rem; min-height: 2rem; font-weight: 500; }
+
+/* ---------- Écran de Labo Blocs posé par-dessus ---------- */
+
+.ecran-programmation { position: fixed; inset: 0; z-index: 40; background: #FFFFFF; }

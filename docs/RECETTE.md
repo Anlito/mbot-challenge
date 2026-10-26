@@ -41,3 +41,27 @@ Vérifié par Claude :
 6. Défi 4 (Récolte) en direct par la clé 2.4G : le mBot recule-t-il assez vite quand il voit la bordure noire
    pendant qu'on pilote ? Si la réaction est trop lente, on adapte la règle.
 7. Défi 5 : un défilé lancé par le bouton de la carte, envoyé dans le robot.
+
+## Jalon 2 — espace de l'écurie (26/10/2026)
+
+Vérifié par Claude :
+- `npm test` : 22 tests (identité, couleurs lisibles en blanc, rôles et historique, parcours coupé en 8 exercices +
+  5 défis, permis propre à chaque équipier et relu depuis le fichier, défis ouverts dès un permis fini, carnet
+  d'essais, meilleur temps, défilé au plus près de 30 s).
+- Chrome, serveur local, écurie fictive : nom et couleur enregistrés (bandeau mis à jour), refus en ambre « Inès ne
+  peut pas être à la fois chef de projet et reporter », rôles enregistrés ; « C'est moi au clavier » ouvre l'écran de
+  Labo Blocs (« Permis de Inès ») ; « J'ai terminé » sur l'exercice 1 → Inès 1/8, les autres 0/8, rien dans les défis
+  de l'écurie ; avec un permis fini, les 5 défis s'ouvrent ; le défi 4 s'ouvre avec Simulateur et En direct seulement ;
+  chrono 2,0 s recopié dans l'essai, essai noté dans le tableau ; largeur téléphone sans défilement horizontal.
+
+Pas vérifié par Claude (fenêtres de Windows) : l'enregistrement du logo dans le dossier de l'écurie.
+
+À vérifier par Thomas :
+1. Créer une écurie d'essai, puis rubrique **Écurie** : nom, couleur, logo (une image PNG) → `logo.png` apparaît dans
+   le dossier de l'écurie et le logo s'affiche dans le bandeau. Fermer l'onglet et rouvrir : le logo revient (le
+   navigateur peut redemander l'autorisation).
+2. Rôles : essayer un chef qui est aussi reporter (refusé), puis une répartition correcte.
+3. **Programmation** : deux équipiers font chacun l'exercice 1 ; chacun retrouve ses propres blocs.
+4. Avec un mBot : un équipier finit son permis (8 exercices) → l'onglet **Défis** s'ouvre ; programmer le défi 1 et
+   l'envoyer dans le robot.
+5. **Carnet d'essais** : chronométrer un tour, noter l'essai, vérifier le meilleur temps sur la carte du défi.

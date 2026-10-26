@@ -1,8 +1,9 @@
 // Données du projet : scripts definirXxx({...}) de site/donnees/, lisibles en ouvrant index.html depuis un dossier.
 //   definirProjetAtelier  identité du projet (donnees/projet.js)
 //   definirCalendrier     circuit des séances par classe (donnees/calendrier.js)
+//   definirDefis          ce que mesure le carnet d'essais pour chaque défi (donnees/defis.js)
 // Les classes et le début du chemin des dossiers viennent des réglages du collège (Labo Blocs, donnees/college.js).
-// Le parcours d'exercices de Labo Blocs arrive au jalon 1.
+// Le parcours d'exercices « mbot-challenge » vient de Labo Blocs en ligne (definirParcours).
 
 (function (global) {
   'use strict';
@@ -25,6 +26,15 @@
     const api = { lireDonnees };
     Object.defineProperty(api, 'projet', { get: () => lireDonnees('projet.js', 'definirProjetAtelier') });
     Object.defineProperty(api, 'calendrier', { get: () => lireDonnees('calendrier.js', 'definirCalendrier') });
+    Object.defineProperty(api, 'defis', { get: () => lireDonnees('defis.js', 'definirDefis') });
+    // Parcours de Labo Blocs téléchargé pour les tests (tools/dependances-tests.js).
+    Object.defineProperty(api, 'parcours', {
+      get: () => {
+        let brut = null;
+        require('node:vm').runInNewContext(require('node:fs').readFileSync(require('../../../tools/dependances-tests.js').parcours, 'utf8'), { definirParcours: (p) => (brut = JSON.parse(JSON.stringify(p))) });
+        return brut;
+      },
+    });
     module.exports = api;
     return;
   }
@@ -47,4 +57,5 @@
     if (global.document) global.document.addEventListener(L.EVENEMENT_COLLEGE || 'labo-blocs:college', appliquer);
   };
   global.definirCalendrier = (calendrier) => (Atelier.calendrier = calendrier);
+  global.definirDefis = (defis) => (Atelier.defis = defis);
 })(this);
