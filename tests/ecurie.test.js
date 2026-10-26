@@ -21,7 +21,7 @@ function reussir(d, prenom, combien) {
 test('identité : nom de 2 à 24 caractères, couleur de la palette', () => {
   const d = nouvelle();
   assert.match(E.changerIdentite(d, { nom: ' F ' }).raison, /au moins 2/);
-  assert.match(E.changerIdentite(d, { nom: 'Foudre', couleur: '#FF0000' }).raison, /couleurs proposées/);
+  assert.match(E.changerIdentite(d, { nom: 'Foudre', couleur: 'rouge' }).raison, /palette/);
   assert.equal(d.ecurie.nom, '');
   assert.deepEqual(E.changerIdentite(d, { nom: '  Les   Castors ', couleur: '#6A4FB3' }), { ok: true });
   assert.equal(d.ecurie.nom, 'Les Castors');
@@ -103,4 +103,23 @@ test('carnet d’essais : vérifications, meilleur temps, défilé au plus près
   E.ajouterEssai(d, { defi: 'mbc-d5', temps: 31, reussi: true }, defis);
   E.ajouterEssai(d, { defi: 'mbc-d5', temps: 40, reussi: true }, defis);
   assert.equal(E.meilleurEssai(d, d5).temps, 31);
+});
+
+test('couleur libre : le thème de l’interface reste lisible, quelle que soit la couleur choisie', () => {
+  const d = nouvelle();
+  assert.deepEqual(E.changerIdentite(d, { nom: 'Les Soleils', couleur: '#ffe600' }), { ok: true });
+  assert.equal(d.ecurie.couleur, '#FFE600');
+  const blanc = '#FFFFFF', jaune = '#FFC21A', encre = '#14202E';
+  for (const c of ['#FFE600', '#FFFFFF', '#000000', '#00FF00', '#FF0000', '#7FDBFF', '#F012BE', '#1565C0', '#808080']) {
+    const t = E.theme(c);
+    assert.ok(E.contraste(t.principal, blanc) >= 4.5, c + ' : bouton (texte blanc)');
+    assert.ok(E.contraste(t.nuit, blanc) >= 12, c + ' : bandeau');
+    assert.ok(E.contraste(t.nuit, jaune) >= 4.5, c + ' : repères jaunes sur le bandeau');
+    assert.ok(E.contraste(t.nuit2, blanc) >= 7, c + ' : onglets');
+    assert.ok(E.contraste(t.nuitTexte, t.nuit) >= 7, c + ' : texte secondaire du bandeau');
+    assert.ok(E.contraste(t.pale, encre) >= 7, c + ' : texte sur fond pâle');
+    assert.ok(E.contraste(t.ecurieFond, t.ecurieTexte) >= 4.5, c + ' : pastille');
+  }
+  assert.equal(E.theme('#1565C0').principal, '#1565C0', 'une couleur déjà lisible n’est pas changée');
+  assert.equal(E.theme('#FFE600').ecurieTexte, encre, 'sur du jaune, la pastille écrit en sombre');
 });

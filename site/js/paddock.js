@@ -46,20 +46,31 @@
     return ((mots[0] || String(nom))[0] || '?').toUpperCase();
   }
 
-  // Pastille de l'écurie : sa couleur et son initiale ; avec le logo quand il est lisible.
-  function pastilleHtml(d, taille) {
-    const couleur = d.ecurie.couleur || A.ecurie.COULEURS[0].valeur;
-    return `<span class="ecurie-pastille ${taille || ''}" style="--ecurie:${couleur}" aria-hidden="true">${echapper(initiale(A.nomAffiche(d)))}</span>`;
+  // Interface aux couleurs de l'écurie : variables de la charte remplacées par le thème lisible de sa couleur.
+  function appliquerTheme(couleur) {
+    const t = A.ecurie.theme(couleur);
+    const s = document.documentElement.style;
+    for (const [variable, valeur] of [['--bleu', t.principal], ['--bleu-survol', t.survol], ['--bleu-pale', t.pale], ['--bleu-bord', t.bord], ['--nuit', t.nuit], ['--nuit-2', t.nuit2], ['--nuit-texte', t.nuitTexte]]) s.setProperty(variable, valeur);
+    return t;
   }
-  async function pastilleHtmlAvecLogo(d, taille) {
+  const stylePastille = (couleur) => {
+    const t = A.ecurie.theme(couleur);
+    return `--ecurie:${t.ecurieFond};--ecurie-texte:${t.ecurieTexte}`;
+  };
+
+  // Pastille de l'écurie : sa couleur et son initiale ; avec le logo quand il est lisible.
+  function pastilleHtml(d, taille, couleurEssai) {
+    return `<span class="ecurie-pastille ${taille || ''}" style="${stylePastille(couleurEssai || d.ecurie.couleur)}" aria-hidden="true">${echapper(initiale(A.nomAffiche(d)))}</span>`;
+  }
+  async function pastilleHtmlAvecLogo(d, taille, couleurEssai) {
     const url = d.ecurie.logo ? await A.medias.url(session, d.ecurie.logo) : null;
-    if (!url) return pastilleHtml(d, taille);
-    const couleur = d.ecurie.couleur || A.ecurie.COULEURS[0].valeur;
-    return `<span class="ecurie-pastille avec-logo ${taille || ''}" style="--ecurie:${couleur}"><img src="${url}" alt="Logo de l’écurie"></span>`;
+    if (!url) return pastilleHtml(d, taille, couleurEssai);
+    return `<span class="ecurie-pastille avec-logo ${taille || ''}" style="${stylePastille(couleurEssai || d.ecurie.couleur)}"><img src="${url}" alt="Logo de l’écurie"></span>`;
   }
 
   async function majBandeau() {
     const d = session.donnees;
+    appliquerTheme(d.ecurie.couleur);
     const racine = $('.ecran-paddock');
     $('.ecurie-nom', racine).textContent = d.ecurie.nom || 'Écurie sans nom';
     $('.ecurie-membres', racine).textContent = d.equipe.eleves.join(', ') + (d.equipe.classe ? ' · ' + d.equipe.classe : '');
@@ -185,6 +196,7 @@
 
   function naviguer(vue) {
     vueCourante = vue;
+    appliquerTheme(session.donnees.ecurie.couleur); // un essai de couleur non enregistré est oublié
     const zone = $('.paddock-contenu');
     for (const b of document.querySelectorAll('.paddock-onglets [data-vue]')) b.setAttribute('aria-current', b.dataset.vue === vue ? 'page' : 'false');
     if (vue === 'ecurie') A.ecranEcurie.afficher(zone, session);
@@ -213,6 +225,6 @@
     naviguer('paddock');
   }
 
-  A.paddock = { pastilleHtml, pastilleHtmlAvecLogo };
+  A.paddock = { pastilleHtml, pastilleHtmlAvecLogo, appliquerTheme };
   Object.assign(A, { ajusterEchelle, demarrerPaddock: demarrer });
 })(this);

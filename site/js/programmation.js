@@ -72,7 +72,7 @@
     ecranOuvert = LB.monterExercice(hote, {
       session: sessionPour(session, quoi.donnees),
       paquet: quoi.paquet,
-      projet: { id: A.projet.id, titre: A.projet.titre, accent: d.ecurie.couleur || A.projet.accent, logo: 'img/logo.svg' },
+      projet: { id: A.projet.id, titre: A.projet.titre, accent: d.ecurie.couleur ? A.ecurie.theme(d.ecurie.couleur).principal : A.projet.accent, logo: 'img/logo.svg' },
       media: MEDIA,
       retour: { texte: quoi.retour === 'defis' ? 'Défis' : 'Permis mBot', action: fermer },
       toutDebloquer: !!quoi.toutDebloquer,

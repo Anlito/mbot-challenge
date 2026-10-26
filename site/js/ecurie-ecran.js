@@ -18,6 +18,7 @@
   function afficher(zone, session) {
     const d = session.donnees;
     const couleur = d.ecurie.couleur || E.COULEURS[0].valeur;
+    const libre = !E.COULEURS.some((c) => c.valeur === couleur);
     zone.innerHTML = `
       <section class="panneau" aria-labelledby="titre-identite">
         <div class="panneau-entete"><h2 id="titre-identite">L’identité de l’écurie</h2></div>
@@ -33,6 +34,12 @@
                   <input type="radio" name="couleur" value="${c.valeur}"${c.valeur === couleur ? ' checked' : ''}>
                   <span style="background:${c.valeur}" aria-hidden="true"></span><span class="sr">${c.nom}</span>
                 </label>`).join('')}
+              <label class="couleur-libre">
+                <input type="radio" name="couleur" value="libre"${libre ? ' checked' : ''}>
+                <input type="color" name="couleurLibre" value="${libre ? couleur.toLowerCase() : '#e8710a'}" aria-label="Choisir une autre couleur dans la palette">
+                <span>Autre couleur…</span>
+              </label>
+              <p class="aide">Toute l’interface de l’écurie prend sa couleur. Si elle est trop claire ou trop vive, l’outil la fonce un peu pour que les textes restent lisibles.</p>
             </fieldset>
             <div class="logo-zone">
               <span class="champ-titre">Logo</span>
@@ -78,7 +85,7 @@
     const fIdentite = zone.querySelector('.formulaire-identite');
     fIdentite.addEventListener('submit', (e) => {
       e.preventDefault();
-      const r = E.changerIdentite(d, { nom: fIdentite.nom.value, couleur: fIdentite.couleur.value });
+      const r = E.changerIdentite(d, { nom: fIdentite.nom.value, couleur: couleurChoisie() });
       ecart(fIdentite, r.ok ? '' : r.raison);
       if (!r.ok) return;
       session.aEnregistrer(true, true);
@@ -86,9 +93,18 @@
       zone.querySelector('.logo-apercu').innerHTML = A.paddock.pastilleHtml(d, 'grande');
       session.message('L’identité de l’écurie est enregistrée.');
     });
-    // Couleur : aperçu tout de suite.
+    // Couleur : aperçu tout de suite sur toute l'interface (gardé seulement avec « Enregistrer l’identité »).
+    const couleurChoisie = () => (fIdentite.couleur.value === 'libre' ? fIdentite.couleurLibre.value : fIdentite.couleur.value);
+    const apercu = async () => {
+      A.paddock.appliquerTheme(couleurChoisie());
+      zone.querySelector('.logo-apercu').innerHTML = await A.paddock.pastilleHtmlAvecLogo(d, 'grande', couleurChoisie());
+    };
     fIdentite.addEventListener('change', (e) => {
-      if (e.target.name === 'couleur') zone.querySelector('.logo-apercu').style.setProperty('--ecurie', e.target.value);
+      if (e.target.name === 'couleur' || e.target.name === 'couleurLibre') apercu();
+    });
+    fIdentite.couleurLibre.addEventListener('input', () => {
+      fIdentite.querySelector('input[value=libre]').checked = true;
+      apercu();
     });
     fIdentite.querySelector('input[type=file]').addEventListener('change', async (e) => {
       const f = e.target.files && e.target.files[0];

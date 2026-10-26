@@ -9,6 +9,7 @@
   --bleu-pale: #E3EEFB;
   --bleu-bord: #C3D8F2;
   --nuit: #0B2545;
+  --nuit-2: #10335C;
   --nuit-texte: #C9D6E6;
   --jaune: #FFC21A;
   --ambre-fond: #FFF3D6;
@@ -64,7 +65,7 @@ h1, h2, h3 { font-family: var(--titres); color: var(--nuit); line-height: 1.1; }
 .ecran-accueil {
   min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem 1rem;
   background:
-    repeating-linear-gradient(90deg, var(--nuit) 0 1.125rem, #10335C 1.125rem 2.25rem) top / 100% 0.5rem no-repeat,
+    repeating-linear-gradient(90deg, var(--nuit) 0 1.125rem, var(--nuit-2) 1.125rem 2.25rem) top / 100% 0.5rem no-repeat,
     linear-gradient(180deg, var(--bleu-pale) 0, var(--fond) 45%);
 }
 .accueil-carte {
@@ -145,7 +146,7 @@ h1, h2, h3 { font-family: var(--titres); color: var(--nuit); line-height: 1.1; }
   background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 0.625rem;
 }
 .ecurie-pastille {
-  width: 2rem; height: 2rem; border-radius: 0.5rem; background: var(--ecurie, var(--bleu)); color: #FFFFFF; flex: none;
+  width: 2rem; height: 2rem; border-radius: 0.5rem; background: var(--ecurie, var(--bleu)); color: var(--ecurie-texte, #FFFFFF); flex: none;
   display: flex; align-items: center; justify-content: center; font-family: var(--titres); font-weight: 800; font-size: 1.0625rem;
   overflow: hidden;
 }

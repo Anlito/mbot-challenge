@@ -11,7 +11,8 @@
   const LB = enNode ? require(require('../../../tools/dependances-tests.js').noyau) : global.LaboBlocs;
   const P = enNode ? require('./progression.js') : global.Atelier;
 
-  // Couleurs d'écurie : toutes lisibles avec un texte blanc (contraste ≥ 4,5:1) ; aucun rouge (réservé à rien).
+  // Couleurs proposées (l'écurie peut aussi choisir n'importe quelle couleur dans la palette) : toutes lisibles avec un
+  // texte blanc (contraste ≥ 4,5:1).
   const COULEURS = [
     { valeur: '#1565C0', nom: 'Bleu mBot' },
     { valeur: '#0E7C7B', nom: 'Turquoise' },
@@ -23,17 +24,66 @@
     { valeur: '#33475B', nom: 'Ardoise' },
   ];
 
+  // ---------- Couleurs et thème de l'interface ----------
+
+  const estCouleur = (x) => /^#[0-9a-f]{6}$/i.test(String(x || ''));
+  const rvb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const versHex = (c) => '#' + c.map((v) => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0')).join('').toUpperCase();
+  // t = 0 : la couleur, t = 1 : l'autre.
+  const melanger = (hex, autre, t) => versHex(rvb(hex).map((v, i) => v + (rvb(autre)[i] - v) * t));
+  function luminance(hex) {
+    const c = rvb(hex).map((v) => v / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function contraste(a, b) {
+    const [x, y] = [luminance(a), luminance(b)].sort((m, n) => n - m);
+    return (x + 0.05) / (y + 0.05);
+  }
+  // Fonce (ou éclaircit) une couleur pas à pas jusqu'au contraste voulu avec le fond.
+  function ajuster(hex, fond, vers, voulu) {
+    let c = hex;
+    for (let i = 0; i < 40 && contraste(c, fond) < voulu; i++) c = melanger(c, vers, 0.08);
+    return c;
+  }
+
+  // Thème de l'interface tiré de la couleur de l'écurie, toujours lisible (WCAG) :
+  //   principal  boutons, liens, icônes sur fond clair (texte blanc dessus ≥ 4,5:1, lisible sur blanc ≥ 4,5:1)
+  //   nuit       bandeau (texte blanc ≥ 12:1, le jaune des repères reste lisible), nuit2 la barre des onglets
+  //   pale, bord fonds et bords clairs ; ecurie la couleur choisie telle quelle ; ecurieFond et ecurieTexte la pastille
+  //   de l'écurie (la couleur choisie, un peu foncée seulement si ni le blanc ni l'encre n'y sont lisibles)
+  function theme(couleur) {
+    const base = estCouleur(couleur) ? couleur.toUpperCase() : COULEURS[0].valeur;
+    const principal = ajuster(base, '#FFFFFF', '#000000', 4.6);
+    const nuit = ajuster(melanger(base, '#000000', 0.55), '#FFFFFF', '#000000', 12);
+    const nuit2 = ajuster(melanger(nuit, base, 0.25), '#FFFFFF', '#000000', 9);
+    const lisible = (c) => Math.max(contraste(c, '#FFFFFF'), contraste(c, '#14202E')) >= 4.5;
+    const ecurieFond = lisible(base) ? base : ajuster(base, '#FFFFFF', '#000000', 4.5);
+    return {
+      ecurie: base,
+      ecurieFond,
+      ecurieTexte: contraste(ecurieFond, '#FFFFFF') >= contraste(ecurieFond, '#14202E') ? '#FFFFFF' : '#14202E',
+      principal,
+      survol: melanger(principal, '#000000', 0.15),
+      nuit,
+      nuit2,
+      nuitTexte: ajuster(melanger('#FFFFFF', base, 0.2), nuit, '#FFFFFF', 7),
+      pale: melanger(base, '#FFFFFF', 0.88),
+      bord: melanger(base, '#FFFFFF', 0.7),
+    };
+  }
+
   // ---------- Identité ----------
 
-  // { ok } ou { ok: false, raison } ; rien n'est modifié si c'est refusé.
+  // { ok } ou { ok: false, raison } ; rien n'est modifié si c'est refusé. Toute couleur est permise : l'interface
+  // s'en sert à travers theme(), qui la rend lisible.
   function changerIdentite(d, identite) {
     const nom = String(identite.nom || '').trim().replace(/\s+/g, ' ');
     if (nom.length < 2) return { ok: false, raison: 'Le nom de l’écurie doit avoir au moins 2 lettres.' };
     if (nom.length > 24) return { ok: false, raison: 'Le nom de l’écurie doit tenir en 24 caractères.' };
     const couleur = identite.couleur || d.ecurie.couleur || COULEURS[0].valeur;
-    if (!COULEURS.some((c) => c.valeur === couleur)) return { ok: false, raison: 'Choisis une des couleurs proposées.' };
+    if (!estCouleur(couleur)) return { ok: false, raison: 'Choisis une couleur dans la palette.' };
     d.ecurie.nom = nom;
-    d.ecurie.couleur = couleur;
+    d.ecurie.couleur = couleur.toUpperCase();
     return { ok: true };
   }
 
@@ -155,6 +205,9 @@
 
   const api = {
     COULEURS,
+    estCouleur,
+    contraste,
+    theme,
     changerIdentite,
     changerRoles,
     aLeRole,

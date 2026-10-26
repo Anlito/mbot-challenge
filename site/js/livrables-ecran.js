@@ -266,7 +266,7 @@
         <p class="aide-bloc">${echapper(x.but)}</p>
         <form class="formulaire-storyboard" data-sorte="${x.id}" novalidate>
           <div class="tableau-defilant">
-            <table class="tableau-taches">
+            <table class="tableau-taches tableau-storyboard">
               <thead><tr><th scope="col">Plan</th><th scope="col">Ce qu’on voit</th><th scope="col">Ce qu’on entend (paroles, musique, texte)</th><th scope="col">Durée (s)</th></tr></thead>
               <tbody>${cases.map((c, i) => `<tr><td class="chiffre">${i + 1}</td><td><input class="sb-image" maxlength="300" value="${echapper(c.image)}" aria-label="Plan ${i + 1} : ce qu’on voit"></td><td><input class="sb-son" maxlength="300" value="${echapper(c.son)}" aria-label="Plan ${i + 1} : ce qu’on entend"></td><td><input class="sb-duree" type="number" min="1" max="600" value="${c.duree || ''}" aria-label="Plan ${i + 1} : durée en secondes"></td></tr>`).join('')}</tbody>
             </table>

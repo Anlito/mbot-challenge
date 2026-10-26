@@ -12,6 +12,10 @@ Maquette validée : https://claude.ai/artifact/HxMYDzR9oyhdrdu5gdXG1f
 
 ## État — jalon 3 (séances et livrables), 26 octobre 2026
 
+- **Couleur de l’écurie** : 8 propositions ou n’importe quelle couleur de la palette ; toute l’interface de l’écurie
+  (bandeau, onglets, boutons, liens, écran de Labo Blocs) prend un thème tiré de cette couleur, foncé ou éclairci
+  automatiquement pour rester lisible (`theme()` dans `js/moteur/ecurie.js`, contrastes testés sur des couleurs extrêmes).
+
 - **Séance** : point de départ du chef de projet (tâches, qui, temps prévu, pour quel livrable ; chacun a une tâche ;
   le reste à faire de la fois précédente est repris), point de fin (fait / pas encore, reste, bloquant), historique.
 - **Rapport du reporter** : texte guidé, photos par webcam ou fichier (`rapports/seance-05-1.jpg`), visages floutés

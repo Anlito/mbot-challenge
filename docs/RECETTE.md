@@ -90,3 +90,11 @@ dans le dossier de l'écurie ; la webcam ; la lecture des vidéos depuis le doss
 4. **Vidéos** : déposer une vidéo de téléphone (MP4) → `videos/promo.mp4`, lecture dans l'outil.
 5. **Comprendre** : choisir le dossier du serveur qui contient `OST-automatise.mp4` et `mbot.mp4` → lecture et
    chapitres ; QCM ; les 7 fonctions.
+
+### Retours de Thomas sur le jalon 3 (26/10/2026)
+
+- Storyboard des vidéos : colonnes mal réparties → corrigé (plan étroit, deux colonnes de texte égales, durée courte).
+- Couleur de l'écurie : palette libre en plus des 8 propositions ; l'interface de l'écurie prend la couleur choisie.
+  Vérifié : jaune vif #FFE600 → bandeau et boutons en tons foncés, pastille jaune avec lettre sombre ; tests de
+  contraste sur blanc, noir, vert, rouge, jaune, cyan, rose, gris (boutons ≥ 4,5:1, bandeau ≥ 12:1, onglets ≥ 7:1,
+  repères jaunes lisibles, pastille ≥ 4,5:1).
