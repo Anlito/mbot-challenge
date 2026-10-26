@@ -1,0 +1,213 @@
+/* mBot Challenge — charte « course » aux couleurs du mBot (maquette validée le 26/10/2026).
+   Bleu mBot, bleu nuit, jaune drapeau ; écarts et rappels en ambre, jamais en rouge ; jamais la couleur seule.
+   Toutes les tailles sont en rem : 1rem = 16 px jusqu'à 1536×864, jusqu'à 20 px en 1920×1080 (js/paddock.js).
+   L'écran d'exercice est celui de Labo Blocs (sa feuille de styles, limitée à .labo-blocs). */
+
+:root {
+  --bleu: #1565C0;
+  --bleu-survol: #0F559F;
+  --bleu-pale: #E3EEFB;
+  --bleu-bord: #C3D8F2;
+  --nuit: #0B2545;
+  --nuit-texte: #C9D6E6;
+  --jaune: #FFC21A;
+  --ambre-fond: #FFF3D6;
+  --ambre-texte: #8A5300;
+  --ambre-bord: #F0D28A;
+  --vert-fond: #E3F4EA;
+  --vert-texte: #1E6B44;
+  --encre: #14202E;
+  --texte-2: #5A6878;
+  --bord: #DCE3EC;
+  --bord-fort: #C9D4E1;
+  --fond: #F2F5F9;
+  --carte: #FFFFFF;
+  --police: 'Barlow', 'Segoe UI', system-ui, sans-serif;
+  --titres: 'Saira Condensed', 'Arial Narrow', 'Segoe UI', sans-serif;
+  --chiffres: 'JetBrains Mono', Consolas, monospace;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--fond); color: var(--encre); font: 400 0.9375rem/1.45 var(--police); }
+button, input, select, textarea { font-family: var(--police); color: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--jaune); outline-offset: 2px; }
+a { color: var(--bleu); }
+.icone { width: 1.375rem; height: 1.375rem; flex: none; display: block; }
+h1, h2, h3 { font-family: var(--titres); color: var(--nuit); line-height: 1.1; }
+
+/* ---------- Boutons et messages ---------- */
+
+.btn-principal, .btn-secondaire, .btn-aide {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 2.75rem; padding: 0 1rem;
+  border-radius: 0.625rem; font-weight: 700; font-size: 1rem; cursor: pointer;
+}
+.btn-principal { border: none; background: var(--bleu); color: #FFFFFF; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.2); }
+.btn-principal:hover { background: var(--bleu-survol); }
+.btn-secondaire, .btn-aide { border: 2px solid var(--bord); background: #FFFFFF; color: var(--encre); }
+.btn-secondaire:hover, .btn-aide:hover { background: var(--fond); }
+.btn-lien { border: none; background: none; color: var(--bleu); text-decoration: underline; cursor: pointer; font-size: 0.9375rem; min-height: 2.75rem; }
+
+.message-bref {
+  position: fixed; left: 50%; bottom: 2rem; transform: translateX(-50%); z-index: 60;
+  background: var(--nuit); color: #FFFFFF; padding: 0.75rem 1.125rem; border-radius: 0.625rem;
+  font-weight: 600; box-shadow: 0 10px 28px rgba(11, 37, 69, 0.3); max-width: min(40rem, calc(100% - 2rem));
+}
+
+.etat-enregistrement { font-size: 0.875rem; white-space: nowrap; }
+.etat-enregistrement.a-faire { color: var(--jaune); font-weight: 700; }
+
+/* ---------- Accueil ---------- */
+
+.ecran-accueil {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem 1rem;
+  background:
+    repeating-linear-gradient(90deg, var(--nuit) 0 1.125rem, #10335C 1.125rem 2.25rem) top / 100% 0.5rem no-repeat,
+    linear-gradient(180deg, var(--bleu-pale) 0, var(--fond) 45%);
+}
+.accueil-carte {
+  width: min(48rem, 100%); background: var(--carte); border: 1px solid var(--bord); border-top: 8px solid var(--bleu);
+  border-radius: 1rem; box-shadow: 0 12px 40px rgba(11, 37, 69, 0.12); padding: 1.5rem 1.75rem 1.75rem;
+}
+.accueil-titre { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.accueil-titre img { flex: none; }
+.accueil-titre h1 { margin: 0; font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; }
+.accueil-titre p { margin: 0.25rem 0 0; color: var(--texte-2); }
+.accueil-panneau h2 { margin: 0 0 0.875rem; font-size: 1.5rem; }
+.accueil-choix { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.875rem; }
+.grand-choix {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.375rem; padding: 1.125rem 1.25rem;
+  border: 2px solid var(--bord); border-radius: 0.875rem; background: #FFFFFF; cursor: pointer; text-align: left; min-height: 8rem;
+}
+.grand-choix:hover { border-color: var(--bleu); background: var(--bleu-pale); }
+.grand-choix .icone { width: 2.25rem; height: 2.25rem; stroke: var(--bleu) !important; }
+.grand-choix strong { font-family: var(--titres); font-size: 1.5rem; color: var(--nuit); }
+.grand-choix span { color: var(--texte-2); }
+.accueil-reprendre {
+  display: flex; align-items: center; gap: 0.875rem; flex-wrap: wrap; margin-bottom: 0.875rem; padding: 0.875rem 1rem;
+  background: var(--bleu-pale); border: 1px solid var(--bleu-bord); border-radius: 0.75rem;
+}
+.accueil-reprendre > div { display: flex; flex-direction: column; flex: 1; min-width: 14rem; }
+.reprendre-date { color: var(--texte-2); font-size: 0.875rem; }
+.btn-ouvrir-fichier { margin-top: 0.875rem; }
+.champs-prenoms { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.75rem; }
+.formulaire-equipe label { display: flex; flex-direction: column; gap: 0.25rem; font-weight: 600; }
+.formulaire-equipe input, .formulaire-equipe select {
+  height: 2.75rem; padding: 0 0.75rem; border: 2px solid var(--bord); border-radius: 0.625rem;
+  font: 400 1.0625rem var(--police); color: var(--encre); background: #FFFFFF;
+}
+.formulaire-equipe input:focus, .formulaire-equipe select:focus { border-color: var(--bleu); }
+.label-classe { margin-top: 0.875rem; width: 12rem; max-width: 100%; }
+.accueil-aide { margin: 0.5rem 0 0; color: var(--texte-2); font-size: 0.875rem; }
+.accueil-actions { display: flex; gap: 0.625rem; margin-top: 1.125rem; flex-wrap: wrap; }
+.accueil-actions .icone { width: 1.25rem; height: 1.25rem; }
+.accueil-erreur, .avertissement {
+  margin: 0.875rem 0 0; padding: 0.75rem 1rem; border-radius: 0.75rem;
+  background: var(--ambre-fond); border: 1px solid var(--ambre-bord); color: #5C3A00;
+}
+.accueil-erreur { font-weight: 600; }
+.avertissement p { margin: 0; }
+.avertissement .accueil-actions { margin-top: 0.75rem; }
+.confirmation {
+  display: flex; gap: 0.75rem; align-items: flex-start; margin-top: 0.875rem; padding: 0.75rem 1rem;
+  border-radius: 0.75rem; background: var(--vert-fond); border: 1px solid #B9E0C8;
+}
+.confirmation p { margin: 0; }
+.confirmation .icone { width: 1.75rem; height: 1.75rem; }
+.chemin { display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem; margin: 0.5rem 0 0.875rem; }
+.chemin-dossier {
+  display: inline-flex; align-items: center; min-height: 2rem; padding: 0 0.625rem; border-radius: 0.5rem;
+  background: var(--fond); border: 1px solid var(--bord); font-weight: 600; font-size: 0.9375rem;
+}
+.chemin-dossier.cible { background: var(--ambre-fond); border: 2px solid var(--jaune); box-shadow: 0 0 0 3px rgba(255, 194, 26, 0.3); }
+.chemin-dossier.equipe { gap: 0.375rem; background: #FFFFFF; border: 2px dashed var(--bord-fort); }
+.chemin-dossier .icone { width: 1.125rem; height: 1.125rem; }
+.chemin-fleche { color: var(--texte-2); font-weight: 700; }
+.dossier-etapes { margin: 0 0 0.75rem; padding-left: 1.375rem; line-height: 1.55; }
+.dossier-equipe-auto { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 0 0 0.5rem; color: var(--texte-2); }
+.sans-acces-inline, .sans-acces-texte { display: none; }
+.sans-acces .sans-acces-inline { display: inline; }
+.sans-acces .sans-acces-texte { display: block; }
+.sans-acces .avec-acces-inline, .sans-acces .avec-acces { display: none; }
+
+/* ---------- Paddock ---------- */
+
+.paddock-bandeau {
+  background: var(--nuit); color: #FFFFFF; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem;
+  padding: 0.75rem 1.75rem;
+}
+.marque { display: flex; align-items: center; gap: 0.75rem; }
+.marque span { font-family: var(--titres); font-weight: 800; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.03em; }
+.ecurie-badge {
+  display: flex; align-items: center; gap: 0.625rem; padding: 0.375rem 0.75rem 0.375rem 0.375rem;
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 0.625rem;
+}
+.ecurie-pastille {
+  width: 2rem; height: 2rem; border-radius: 0.5rem; background: var(--bleu); color: #FFFFFF;
+  display: flex; align-items: center; justify-content: center; font-family: var(--titres); font-weight: 800; font-size: 1.0625rem;
+}
+.ecurie-nom { display: block; font-weight: 700; }
+.ecurie-membres { display: block; font-size: 0.8125rem; color: var(--nuit-texte); }
+.bandeau-espace { flex: 1 1 auto; }
+.paddock-bandeau .etat-enregistrement { color: var(--nuit-texte); }
+.paddock-bandeau .btn-enregistrer { background: transparent; color: #FFFFFF; border-color: rgba(255, 255, 255, 0.35); }
+.paddock-bandeau .btn-enregistrer:hover { background: rgba(255, 255, 255, 0.1); }
+
+.paddock-contenu {
+  max-width: 90rem; margin: 0 auto; padding: 1.5rem 1.75rem 2.5rem; display: flex; flex-direction: column; gap: 1.25rem;
+}
+.panneau { background: var(--carte); border: 1px solid var(--bord); border-radius: 0.875rem; padding: 1.125rem 1.375rem; }
+.panneau-entete { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
+.panneau-entete h2 { margin: 0; font-size: 1.375rem; }
+.panneau-note { font-size: 0.875rem; color: var(--texte-2); }
+.surtitre {
+  margin: 0; font-family: var(--titres); font-weight: 700; font-size: 0.9375rem; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--bleu);
+}
+.briefing h1 { margin: 0.25rem 0 0.375rem; font-size: 2rem; }
+.briefing p:last-child { margin: 0; color: var(--texte-2); max-width: 48rem; }
+
+.circuit-seances {
+  list-style: none; margin: 0; padding: 0; display: grid; gap: 0.375rem;
+  grid-template-columns: repeat(var(--nb, 10), minmax(0, 1fr));
+}
+.seance {
+  min-height: 4.75rem; padding: 0.5rem 0.5rem 0.625rem; border-radius: 0.5rem;
+  background: var(--fond); border: 1px solid var(--bord); color: var(--texte-2); display: flex; flex-direction: column; gap: 0.125rem;
+}
+.seance-numero { font-family: var(--chiffres); font-weight: 700; font-size: 1rem; color: var(--nuit); }
+.seance-titre { font-size: 0.8125rem; line-height: 1.25; }
+.seance-repere { margin-top: auto; font-size: 0.8125rem; font-weight: 700; }
+.seance-affiche { background: var(--ambre-fond); border-color: var(--ambre-bord); color: var(--ambre-texte); }
+.seance-tournoi {
+  background: var(--nuit); border-color: var(--nuit); color: var(--jaune);
+}
+.seance-tournoi .seance-numero { color: #FFFFFF; }
+
+.rubriques { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; }
+.carte-rubrique { background: var(--carte); border: 1px solid var(--bord); border-radius: 0.875rem; padding: 1rem 1.125rem; }
+.carte-rubrique-entete { display: flex; align-items: center; gap: 0.625rem; }
+.carte-rubrique-entete .icone { stroke: var(--bleu) !important; }
+.carte-rubrique h3 { margin: 0; font-size: 1.3125rem; flex: 1; }
+.carte-rubrique p { margin: 0.5rem 0 0; color: var(--texte-2); }
+.pastille-etat {
+  font-size: 0.8125rem; font-weight: 700; border-radius: 0.375rem; padding: 0.1875rem 0.5rem; white-space: nowrap;
+  background: #E6ECF3; color: #33475B;
+}
+
+.equipage { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 0.75rem; }
+.equipage li { display: flex; align-items: center; gap: 0.75rem; border: 1px solid var(--bord); border-radius: 0.75rem; padding: 0.75rem 0.875rem; }
+.avatar {
+  width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--bleu-pale); color: var(--nuit);
+  display: flex; align-items: center; justify-content: center; font-weight: 700; flex: none;
+}
+.equipier-roles { display: block; font-size: 0.8125rem; color: var(--texte-2); }
+
+@media (max-width: 760px) {
+  .paddock-bandeau, .paddock-contenu { padding-left: 1rem; padding-right: 1rem; }
+  .circuit-seances { grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr)); }
+  .accueil-carte { padding: 1.25rem 1rem; }
+  .accueil-titre h1 { font-size: 1.625rem; }
+}

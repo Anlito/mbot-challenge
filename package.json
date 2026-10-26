@@ -1,0 +1,19 @@
+{
+  "name": "mbot-challenge",
+  "version": "0.1.0",
+  "description": "Outil du projet mBot Challenge (3e) : espace des écuries, suivi du professeur et régie du tournoi",
+  "scripts": {
+    "pretest": "node tools/dependances-tests.js",
+    "test": "node --test tests/*.test.js",
+    "start": "node tools/serve.js",
+    "exemples": "node tools/exemples-equipes.js",
+    "archive": "node tools/archive.js",
+    "polices": "node tools/polices.js"
+  },
+  "devDependencies": {
+    "@fontsource/barlow": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/saira-condensed": "^5.3.0"
+  },
+  "private": true
+}

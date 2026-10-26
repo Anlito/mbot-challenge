@@ -1,0 +1,10 @@
+# Dépendances (recréées par « npm install »)
+node_modules/
+# Réglages propres à ce poste
+.claude/
+# Sauvegardes d’exemple (recréées par « npm run exemples »)
+exemples/
+# Archive ZIP (recréée par « npm run archive »)
+dist/
+# Labo Blocs téléchargé pour les tests
+.cache/
