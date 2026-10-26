@@ -3,6 +3,9 @@
 (function (global) {
   'use strict';
 
+  // « mBot sorti » reste « mBot sorti » : seule la première lettre passe en minuscule.
+  const minuscule = (s) => String(s).charAt(0).toLowerCase() + String(s).slice(1);
+
   const CANAL = 'mbot-challenge-ecran';
   const zone = document.querySelector('.ecran');
   const echapper = (s) => String(s === undefined || s === null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -59,7 +62,7 @@
             <div class="poste-ecurie">${pastille(p.ecurie, 'grande')}<strong>${echapper(p.ecurie.nom)}</strong></div>
             <div class="chrono-geant" data-poste="${p.id}">00:00.0</div>
             <div class="poste-infos">
-              ${p.malus ? `<span class="malus">+${p.malus} ${echapper(e.epreuve.malus.libelle.toLowerCase())} · +${p.malus * e.epreuve.malus.secondes} s</span>` : ''}
+              ${p.malus ? `<span class="malus">+${p.malus} ${echapper(minuscule(e.epreuve.malus.libelle))} · +${p.malus * e.epreuve.malus.secondes} s</span>` : ''}
               ${e.epreuve.sorte === 'obstacles' ? `<span>Objets sortis : <strong>${p.objets} / ${e.epreuve.objets}</strong></span>` : ''}
               ${p.abandon ? '<span class="malus">Abandon</span>' : p.fin ? '<span class="arrive">Arrivée !</span>' : p.debut ? '' : '<span>Prêt au départ</span>'}
             </div>

@@ -160,6 +160,7 @@
           <p class="surtitre">Les défis du tournoi</p>
           <h1>Programmer, essayer, régler</h1>
           <p>Pour chaque défi : écrivez l’algorithme, programmez-le, puis essayez-le sur la vraie piste. Chaque essai se note dans le carnet : temps, réglage, résultat, et votre hypothèse quand ça ne marche pas.</p>
+          <p><a href="fiches.html#tournoi" target="_blank" rel="noopener">Les règles du tournoi</a> (épreuves, malus, points).</p>
         </div>
       </section>
       <section class="defis-grille" aria-label="Les 5 défis">

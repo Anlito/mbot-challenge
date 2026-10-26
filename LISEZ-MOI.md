@@ -1,6 +1,6 @@
 # mBot Challenge — mode d’emploi
 
-**Version en cours de construction (jalon 5).** Espace des écuries, outil professeur et régie du tournoi prêts.
+**Version complète (jalon 6).** Espace des écuries, outil professeur, régie du tournoi et fiches à imprimer.
 
 ## Pour les élèves
 
@@ -55,3 +55,8 @@ Internet est nécessaire.
    « Suspense » cache le classement général jusqu’au dernier jour.
 5. Le 2ᵉ jour : rouvrir la régie sur le même PC, « Reprendre le tournoi » (ou « Ouvrir un fichier de tournoi » sur un
    autre PC si vous l’avez enregistré dans un fichier).
+
+## Fiches à imprimer
+
+https://anlito.github.io/mbot-challenge/fiches.html (ou « Fiches à imprimer » dans l’outil professeur) : démarrage
+élève, règles du tournoi, affiche et style du mBot. Une fiche par page A4 ; « Imprimer » les imprime toutes.

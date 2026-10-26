@@ -5,6 +5,9 @@
 (function (global) {
   'use strict';
 
+  // « mBot sorti » reste « mBot sorti » : seule la première lettre passe en minuscule.
+  const minuscule = (s) => String(s).charAt(0).toLowerCase() + String(s).slice(1);
+
   const A = global.Atelier;
   const T = A.tournoi;
   const $ = (sel, racine) => (racine || document).querySelector(sel);
@@ -315,7 +318,7 @@
         </div>
         <div class="poste-boutons">
           <button type="button" class="btn-geant ${fini ? 'btn-attente' : lance ? 'btn-arrivee' : 'btn-depart'}" data-action="principal"${!x || fini ? ' disabled' : ''}>${fini ? 'Arrivé' : lance ? (obstacles ? 'Arrêt' : 'Arrivée') : 'Départ'}${p.id === 'A' ? '<span class="touche">Espace</span>' : ''}</button>
-          <button type="button" class="btn-malus" data-action="malus"${!lance || fini ? ' disabled' : ''}>+1 ${echapper(e.malus.libelle.toLowerCase())}${p.id === 'A' ? '<span class="touche">M</span>' : ''}</button>
+          <button type="button" class="btn-malus" data-action="malus"${!lance || fini ? ' disabled' : ''}>+1 ${echapper(minuscule(e.malus.libelle))}${p.id === 'A' ? '<span class="touche">M</span>' : ''}</button>
           ${obstacles ? `<button type="button" class="btn-malus btn-objet" data-action="objet"${!lance || p.objets >= e.objets ? ' disabled' : ''}>+1 objet sorti${p.id === 'A' ? '<span class="touche">O</span>' : ''}</button>` : ''}
         </div>
         <div class="poste-secondaires">

@@ -5,12 +5,20 @@ autonomie (programmation du mBot avec Labo Blocs, affiche, style du mBot, vidéo
 suit et note leur travail en direct, puis anime le tournoi avec la régie du jour J.
 
 - **Élèves** : `site/index.html` (en ligne : https://anlito.github.io/mbot-challenge/).
-- **Professeur** : `site/prof.html` ; **régie du tournoi** : `site/regie.html`, qui ouvre l’**écran projeté** `site/ecran.html` (code professeur : le même que Labo Blocs).
+- **Professeur** : `site/prof.html` ; **régie du tournoi** : `site/regie.html`, qui ouvre l’**écran projeté** `site/ecran.html` (code professeur : le même que Labo Blocs) ; **fiches à imprimer** : `site/fiches.html`.
 
 Plan de construction et décisions : [`docs/PLAN.md`](docs/PLAN.md). Recette : [`docs/RECETTE.md`](docs/RECETTE.md).
 Maquette validée : https://claude.ai/artifact/HxMYDzR9oyhdrdu5gdXG1f
 
-## État — jalon 5 (régie du jour J), 26 octobre 2026
+## État — jalon 6 (mise en service), 26 octobre 2026
+
+- **Fiches à imprimer** : `site/fiches.html` (démarrage élève, règles du tournoi, affiche et style), construites à
+  partir des données de l’outil (un malus ou un cahier des charges changé change aussi la fiche) ; lien dans
+  l’outil professeur et dans la rubrique Défis.
+- Archive : `npm run archive` → `dist/mbot-challenge.zip` (le site et le mode d’emploi).
+- Fiche « mBot Challenge » ajoutée sur https://anlito.github.io (élèves ; professeur : outil, régie, fiches).
+
+## Jalon 5 (régie du jour J), 26 octobre 2026
 
 - **Préparation** : écuries lues dans le dossier de la classe (ou des `.json`), ordre de passage (tiré au sort ou
   réglé à la main), jour de chaque épreuve (classes à 1 h : jour 1 style, ligne, obstacles ; jour 2 labyrinthe,

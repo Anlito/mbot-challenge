@@ -13,12 +13,12 @@ test('l’identité du projet est complète', () => {
 });
 
 test('les pages des élèves et du professeur chargent chaque script local qu’elles citent', () => {
-  for (const page of ['index.html', 'prof.html', 'regie.html', 'ecran.html']) verifierPage(page);
+  for (const page of ['index.html', 'prof.html', 'regie.html', 'ecran.html', 'fiches.html']) verifierPage(page);
 });
 
 function verifierPage(page) {
   const html = fs.readFileSync(path.join(__dirname, '..', 'site', page), 'utf8');
-  const locaux = [...html.matchAll(/(?:data-src|src|href)="([^"]+)"/g)].map((m) => m[1]).filter((u) => !/^https?:/.test(u));
+  const locaux = [...html.matchAll(/(?:data-src|src|href)="([^"]+)"/g)].map((m) => m[1]).filter((u) => !/^(https?:|#)/.test(u));
   assert.ok(locaux.length >= 4, page);
   for (const u of locaux) assert.ok(fs.existsSync(path.join(__dirname, '..', 'site', u)), page + ' : ' + u);
 }

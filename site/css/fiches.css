@@ -1,0 +1,38 @@
+/* Fiches à imprimer : une fiche = une page A4, lisible en noir et blanc (cases à cocher, traits, pas de couleur seule). */
+@page { size: A4 portrait; margin: 14mm; }
+
+.page-fiches { background: var(--fond); }
+.fiches-barre { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; padding: 0.75rem 1.5rem; background: var(--nuit); color: #FFFFFF; position: sticky; top: 0; z-index: 5; }
+.fiches-barre .marque span { font-size: 1.25rem; }
+.fiches-barre nav { display: flex; flex-wrap: wrap; gap: 0.75rem; flex: 1; }
+.fiches-barre a { color: #FFFFFF; font-weight: 600; }
+.fiches { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding: 1.5rem 1rem 3rem; }
+.fiche { width: min(210mm, 100%); min-height: 270mm; background: #FFFFFF; color: #14202E; padding: 14mm; box-shadow: 0 6px 24px rgba(11, 37, 69, 0.15); font-size: 11.5pt; line-height: 1.45; }
+.fiche-entete { display: flex; align-items: center; gap: 1rem; border-bottom: 3px solid #14202E; padding-bottom: 0.75rem; margin-bottom: 1rem; }
+.fiche-entete h1 { margin: 0; font-size: 24pt; color: #0B2545; }
+.fiche-entete .surtitre { margin: 0; }
+.fiche-entete .sous { margin: 0.25rem 0 0; color: #33475B; }
+.fiche h2 { font-size: 15pt; margin: 1.1rem 0 0.4rem; color: #0B2545; }
+.encart-adresse { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1rem; border: 2px solid #14202E; border-radius: 0.5rem; padding: 0.6rem 1rem; margin-bottom: 1rem; }
+.encart-adresse strong { font-family: var(--chiffres); font-size: 14pt; }
+.etapes { padding-left: 1.4rem; margin: 0 0 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.chemin-fiche { font-family: var(--chiffres); font-size: 9.5pt; background: #EEF2F7; padding: 0 0.25rem; }
+.deux { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.75rem; }
+.encart { border: 1px solid #9FB3C8; border-radius: 0.5rem; padding: 0.6rem 0.8rem; }
+.encart p { margin: 0.25rem 0 0; }
+.encart-fort { border: 2px solid #14202E; }
+.regles { width: 100%; border-collapse: collapse; font-size: 10.5pt; }
+.regles th, .regles td { border: 1px solid #9FB3C8; padding: 0.45rem 0.55rem; text-align: left; vertical-align: top; }
+.regles thead th { background: #EEF2F7; }
+.regles tbody th { width: 24%; }
+.note { font-size: 10pt; color: #33475B; margin-top: 0.75rem; }
+.cases { list-style: none; padding: 0; margin: 0.3rem 0 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.cases li::before { content: '☐ '; font-size: 13pt; }
+
+@media print {
+  .fiches-barre { display: none; }
+  .page-fiches, .fiches { background: #FFFFFF; padding: 0; gap: 0; }
+  .fiche { box-shadow: none; padding: 0; width: auto; min-height: 0; break-after: page; }
+  .fiche:last-child { break-after: auto; }
+}
+@media (max-width: 640px) { .deux { grid-template-columns: 1fr; } .fiche { padding: 1.25rem; } }

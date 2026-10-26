@@ -153,3 +153,13 @@ enregistrement du tournoi dans un fichier et reprise le 2ᵉ jour sur un autre p
 3. Récolte : jouer un match ; votes ; classement du jury par glisser.
 4. Fermer et rouvrir la régie : « Reprendre le tournoi » retrouve tout.
 5. Me dire si le malus de 5 s te convient (réglable dans `site/donnees/tournoi.js`).
+
+## Jalon 6 — mise en service (26/10/2026)
+
+Vérifié par Claude :
+- `npm test` : 43 tests (dont les scripts des 5 pages : élèves, professeur, régie, écran, fiches).
+- Fiches : démarrage élève, règles du tournoi (malus +5 s, points 10…1, défi 2 en 2 min, Récolte 2 × 90 s), affiche
+  A3 portrait et cahier des charges du style ; « mBot » garde sa majuscule dans les libellés de malus.
+- Archive `dist/mbot-challenge.zip` sans les données d'essai.
+
+À vérifier par Thomas : aperçu avant impression des fiches (une fiche par page A4).

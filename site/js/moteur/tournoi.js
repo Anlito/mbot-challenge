@@ -9,6 +9,9 @@
 (function (global) {
   'use strict';
 
+  // « mBot sorti » reste « mBot sorti » : seule la première lettre passe en minuscule.
+  const minuscule = (s) => String(s).charAt(0).toLowerCase() + String(s).slice(1);
+
   const enNode = typeof module === 'object' && module.exports;
   const FORMAT = 'mbot-challenge/tournoi';
   const maintenant = () => new Date().toISOString().slice(0, 19);
@@ -135,7 +138,7 @@
       lignes = Object.entries(res).map(([cle, r]) => {
         const ok = reussi(e, r);
         const tr = tempsRetenu(e, r);
-        const detail = [r.temps === null ? '' : `${String(r.temps).replace('.', ',')} s`, r.malus ? `+${r.malus} ${e.malus.libelle.toLowerCase()}` : '', e.sorte === 'obstacles' ? `${r.objets}/${e.objets} objets` : '', r.abandon ? 'abandon' : ''].filter(Boolean).join(' · ');
+        const detail = [r.temps === null ? '' : `${String(r.temps).replace('.', ',')} s`, r.malus ? `+${r.malus} ${minuscule(e.malus.libelle)}` : '', e.sorte === 'obstacles' ? `${r.objets}/${e.objets} objets` : '', r.abandon ? 'abandon' : ''].filter(Boolean).join(' · ');
         return { cle, reussi: ok, cleTri: ok ? tr : Infinity, valeur: ok ? `${String(tr).replace('.', ',')} s` : e.sorte === 'obstacles' && !r.abandon ? 'non validé' : 'abandon', detail };
       });
       lignes.sort((a, b) => a.cleTri - b.cleTri);
