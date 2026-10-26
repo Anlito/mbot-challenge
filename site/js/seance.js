@@ -43,12 +43,10 @@
     const taches = s && s.depart ? s.depart.taches : (reste ? reste.taches.map((t) => Object.assign({}, t, { id: null, fait: null })) : []);
     const lignes = (taches.length ? taches : d.equipe.eleves.map((p) => ({ texte: '', qui: p }))).map((t) => ligneTache(d, t)).join('');
     const numero = s ? s.numero : L.prochainNumero(d);
-    const chef = A.ecurie.avecRole(d, 'chef');
     return `
       <section class="panneau" aria-labelledby="titre-depart">
         <div class="panneau-entete">
-          <h2 id="titre-depart">1 · Le point de départ</h2>
-          <span class="panneau-note">${chef ? `Chef de projet : ${echapper(chef)}` : 'Choisissez d’abord un chef de projet (rubrique Écurie).'}</span>
+          <h2 id="titre-depart">Point de départ</h2>
         </div>
         <p class="aide-bloc">Toute l’écurie ensemble : listez ce qu’il reste à faire, répartissez-le pour que chacun avance en parallèle, estimez le temps.</p>
         ${reste && !(s && s.depart) ? `<div class="encart-reprise"><strong>Repris de la séance ${reste.numero} :</strong> ${echapper(reste.reste || 'rien de noté')}${reste.taches.length ? ` · ${reste.taches.length} tâche(s) pas finie(s), déjà dans la liste.` : ''}</div>` : ''}
@@ -75,7 +73,7 @@
     return `
       <section class="panneau" aria-labelledby="titre-fin">
         <div class="panneau-entete">
-          <h2 id="titre-fin">2 · Le point de fin</h2>
+          <h2 id="titre-fin">Point de fin</h2>
           <span class="panneau-note">Séance ${s.numero} lancée à ${heure(s.depart.date)}. Ensuite, le chef de projet montre cet écran au professeur.</span>
         </div>
         <form class="formulaire-fin" novalidate>
@@ -101,13 +99,12 @@
 
   function rapportHtml(d, numero) {
     const r = L.rapportDe(d, numero);
-    const reporter = A.ecurie.avecRole(d, 'reporter');
     const aide = A.reglagesLivrables.seance.aideRapport;
     return `
       <section class="panneau rapport" aria-labelledby="titre-rapport">
         <div class="panneau-entete">
           <h2 id="titre-rapport">Le rapport de la séance ${numero}</h2>
-          <span class="panneau-note">${reporter ? 'Reporter : ' + echapper(reporter) : 'Choisissez un reporter (rubrique Écurie).'}${r.remisLe ? ' · ✓ remis à ' + heure(r.remisLe) : ''}</span>
+          <span class="panneau-note">${r.remisLe ? '✓ remis à ' + heure(r.remisLe) : '○ pas encore remis'}</span>
         </div>
         <form class="formulaire-rapport" novalidate>
           <label class="champ">Ce que l’écurie a fait aujourd’hui<textarea name="texte" rows="6" maxlength="4000">${echapper(r.texte)}</textarea></label>
@@ -145,6 +142,40 @@
       </section>`;
   }
 
+  // ---------- Qui fait quoi ----------
+
+  // Frise de la séance : chaque étape, qui la fait, où on en est (symbole et mot, jamais la couleur seule).
+  function friseHtml(d, s, rapport) {
+    const chef = A.ecurie.avecRole(d, 'chef') || 'le chef de projet';
+    const reporter = A.ecurie.avecRole(d, 'reporter') || 'le reporter';
+    const lancee = !!(s && s.depart);
+    const finie = !!(s && s.fin);
+    const etapes = [
+      { titre: 'Point de départ', qui: `${chef} · chef de projet`, fait: lancee || finie },
+      { titre: 'Au travail', qui: 'Toute l’écurie', fait: finie },
+      { titre: 'Point de fin', qui: `${chef} · chef de projet`, fait: finie },
+      { titre: 'Rapport', qui: `${reporter} · reporter`, fait: !!(rapport && rapport.remisLe) },
+      { titre: 'Point avec le professeur', qui: `${chef} · chef de projet`, fait: false },
+    ];
+    const courante = etapes.findIndex((e) => !e.fait);
+    return `<ol class="frise-seance" aria-label="Les étapes de la séance">${etapes.map((e, i) => `
+      <li class="${e.fait ? 'faite' : i === courante ? 'courante' : ''}"${i === courante ? ' aria-current="step"' : ''}>
+        <span class="frise-num">${e.fait ? '✓' : i + 1}</span>
+        <span><strong>${e.titre}</strong><span class="frise-qui">${echapper(e.qui)}</span>${i === courante ? '<span class="frise-etat">← maintenant</span>' : ''}</span>
+      </li>`).join('')}</ol>`;
+  }
+
+  // Bandeau d'une zone : à qui elle revient.
+  function bandeauRole(d, role, ce) {
+    const nom = A.ecurie.avecRole(d, role);
+    const titre = role === 'chef' ? 'Chef de projet' : 'Reporter';
+    return `<div class="bandeau-role">
+      ${A.icone(role === 'chef' ? 'drapeau' : 'crayon', { epaisseur: 2.2 })}
+      <div><span class="bandeau-role-titre">Côté ${titre.toLowerCase()}</span>
+      <strong>À remplir par ${nom ? echapper(nom) : `le ${titre.toLowerCase()} (à choisir dans la rubrique Écurie)`}</strong>
+      <span class="bandeau-role-ce">${ce}</span></div></div>`;
+  }
+
   // ---------- Écran ----------
 
   function afficher(zone, session) {
@@ -158,11 +189,15 @@
         <div>
           <p class="surtitre">Séance du jour</p>
           <h1>${enCours ? `Séance ${s.numero} · au travail` : 'Lancer la séance'}</h1>
-          <p>${enCours ? `Lancée le ${jour(s.depart.date)} à ${heure(s.depart.date)}. En fin de séance : le point de fin, puis le rapport du reporter.` : 'Le chef de projet fait le point de départ avec toute l’écurie.'}</p>
+          <p>${enCours ? `Lancée le ${jour(s.depart.date)} à ${heure(s.depart.date)}.` : 'Chaque séance suit les mêmes étapes. Chacun regarde la sienne.'}</p>
         </div>
+        ${friseHtml(d, enCours ? s : derniere && derniere.fin ? derniere : null, numeroRapport ? L.rapportDe(d, numeroRapport) : null)}
       </section>
-      ${enCours ? finHtml(d, s) + `<details class="repli-plan"><summary>Voir ou modifier le plan de la séance ${s.numero}</summary>${departHtml(d, s)}</details>` : departHtml(d, s)}
-      ${numeroRapport ? rapportHtml(d, numeroRapport) : ''}
+      <div class="zone-role zone-chef">
+        ${bandeauRole(d, 'chef', enCours ? 'En fin de séance : cocher ce qui est fait, noter ce qui reste, puis aller voir le professeur avec cet écran.' : 'En début de séance, avec toute l’écurie : lister les tâches et les répartir.')}
+        ${enCours ? finHtml(d, s) + `<details class="repli-plan"><summary>Voir ou modifier le plan de la séance ${s.numero}</summary>${departHtml(d, s)}</details>` : departHtml(d, s)}
+      </div>
+      ${numeroRapport ? `<div class="zone-role zone-reporter">${bandeauRole(d, 'reporter', 'En fin de séance : raconter ce que l’écurie a fait, avec des photos.')}${rapportHtml(d, numeroRapport)}</div>` : ''}
       ${historiqueHtml(d)}`;
 
     const ecart = (form, t) => {
