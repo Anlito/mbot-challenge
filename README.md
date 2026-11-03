@@ -5,10 +5,18 @@ autonomie (programmation du mBot avec Labo Blocs, affiche, style du mBot, vidéo
 suit et note leur travail en direct, puis anime le tournoi avec la régie du jour J.
 
 - **Élèves** : `site/index.html` (en ligne : https://anlito.github.io/mbot-challenge/).
-- **Professeur** : `site/prof.html` ; **régie du tournoi** : `site/regie.html`, qui ouvre l’**écran projeté** `site/ecran.html` (code professeur : le même que Labo Blocs) ; **fiches à imprimer** : `site/fiches.html`.
+- **Professeur** : `site/prof.html` ; **régie du tournoi** : `site/regie.html`, qui ouvre l’**écran projeté** `site/ecran.html` (code professeur : le même que Labo Blocs) ; **fiches à imprimer** : `site/fiches.html` ; **présentation du projet** (première séance) : `site/presentation.html`.
 
 Plan de construction et décisions : [`docs/PLAN.md`](docs/PLAN.md). Recette : [`docs/RECETTE.md`](docs/RECETTE.md).
 Maquette validée : https://claude.ai/artifact/HxMYDzR9oyhdrdu5gdXG1f
+
+## Présentation du projet, 3 novembre 2026
+
+- `site/presentation.html` : 19 diapositives 16:9 à projeter en première séance (défi, compétences, écurie et
+  rôles, séance type, circuit des séances 1 h / 1 h 30, outil, permis mBot, défis, Récolte et défilé, affiche A3,
+  style, vidéos, chaînes, méthode de dépannage, tournoi et points, évaluation, outils, premières étapes).
+- Flèches ← →, espace, F (plein écran), glisser sur un écran tactile ; `#6` dans l’adresse ouvre la 6ᵉ diapositive.
+- Règles, malus, points, critères et format de l’affiche lus dans `site/donnees/` : la présentation reste fidèle à l’outil.
 
 ## État — jalon 6 (mise en service), 26 octobre 2026
 

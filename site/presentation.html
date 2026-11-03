@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Présentation du projet · mBot Challenge</title>
+<link rel="icon" href="img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/polices.css">
+<link rel="stylesheet" href="css/presentation.css">
+</head>
+<body>
+<main class="scene" aria-live="polite"></main>
+<nav class="commandes" aria-label="Diaporama">
+  <button type="button" class="btn-prec" aria-label="Diapositive précédente">‹</button>
+  <span class="compteur" aria-live="polite"></span>
+  <button type="button" class="btn-suiv" aria-label="Diapositive suivante">›</button>
+  <button type="button" class="btn-plein">Plein écran</button>
+</nav>
+<div class="progression" aria-hidden="true"><span></span></div>
+<script src="js/moteur/catalogue.js"></script>
+<script src="js/moteur/calendrier.js"></script>
+<script src="donnees/projet.js"></script>
+<script src="donnees/calendrier.js"></script>
+<script src="donnees/livrables.js"></script>
+<script src="donnees/notation.js"></script>
+<script src="donnees/tournoi.js"></script>
+<script src="js/presentation.js"></script>
+</body>
+</html>

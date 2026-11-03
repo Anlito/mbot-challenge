@@ -13,7 +13,7 @@ test('l’identité du projet est complète', () => {
 });
 
 test('les pages des élèves et du professeur chargent chaque script local qu’elles citent', () => {
-  for (const page of ['index.html', 'prof.html', 'regie.html', 'ecran.html', 'fiches.html']) verifierPage(page);
+  for (const page of ['index.html', 'prof.html', 'regie.html', 'ecran.html', 'fiches.html', 'presentation.html']) verifierPage(page);
 });
 
 function verifierPage(page) {

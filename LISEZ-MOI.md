@@ -60,3 +60,9 @@ Internet est nécessaire.
 
 https://anlito.github.io/mbot-challenge/fiches.html (ou « Fiches à imprimer » dans l’outil professeur) : démarrage
 élève, règles du tournoi, affiche et style du mBot. Une fiche par page A4 ; « Imprimer » les imprime toutes.
+
+## Présentation du projet (première séance)
+
+https://anlito.github.io/mbot-challenge/presentation.html (ou « Présentation du projet » dans l’outil professeur).
+Flèches ← → ou espace pour avancer, F pour le plein écran. Sur la diapositive du calendrier, choisir « Séances de 1 h »
+ou « Séances de 1 h 30 » selon la classe.
