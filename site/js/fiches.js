@@ -26,7 +26,7 @@
         <li><strong>Affiche, style du mBot, vidéos, comprendre le mBot :</strong> déposez vos fichiers dans leur rubrique.</li>
       </ol>
       <div class="deux">
-        <div class="encart"><strong>Une photo prise au téléphone ?</strong><p>Envoyez-la-vous par e-mail, ouvrez le message sur le poste, enregistrez la pièce jointe, puis « Ajouter un fichier ». Les visages se floutent avant l’enregistrement.</p></div>
+        <div class="encart"><strong>Prendre une photo : deux possibilités</strong><p><strong>Webcam du poste :</strong> « Prendre avec la webcam ». <strong>Téléphone :</strong> envoyez-vous la photo par e-mail, ouvrez le message sur le poste, enregistrez la pièce jointe, puis « Ajouter un fichier ». Les visages se floutent avant l’enregistrement.</p></div>
         <div class="encart"><strong>Ça ne marche pas ?</strong><p>Formulez une hypothèse (programme, branchement, batterie, capteur), proposez un essai pour la vérifier, testez, corrigez. Notez-le dans le carnet d’essais.</p></div>
       </div>
     </section>`;

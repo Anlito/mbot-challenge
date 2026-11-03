@@ -110,7 +110,7 @@
           <ol class="liste-grande petite">
             <li><strong>Première séance :</strong> « Nouvelle écurie », vos prénoms, votre classe, puis le dossier <code>MBOT CHALLENGE</code> de la classe.</li>
             <li><strong>Ensuite :</strong> « Reprendre » ou « Ouvrir notre écurie ». Tout s’enregistre tout seul.</li>
-            <li><strong>Photo au téléphone :</strong> envoyez-la-vous par e-mail, puis « Ajouter un fichier ». Les visages sont floutés.</li>
+            <li><strong>Photos :</strong> avec la webcam du poste, ou au téléphone puis envoyée par e-mail et « Ajouter un fichier ». Les visages sont floutés.</li>
           </ol>
           <div class="tuiles">${['Écurie', 'Séance', 'Permis mBot', 'Défis', 'Affiche', 'Style', 'Vidéos', 'Comprendre'].map((x) => `<span>${x}</span>`).join('')}</div>
         </div>`,

@@ -115,7 +115,7 @@
             <button type="button" class="btn-secondaire photo-webcam"${r.photos.length >= A.reglagesLivrables.seance.photosMax ? ' disabled' : ''}>${A.icone('camera', { epaisseur: 2.2 })}Prendre avec la webcam</button>
             <button type="button" class="btn-secondaire photo-fichier"${r.photos.length >= A.reglagesLivrables.seance.photosMax ? ' disabled' : ''}>${A.icone('importer', { epaisseur: 2.2 })}Ajouter un fichier</button>
           </div>
-          <p class="aide">Photo prise au téléphone : envoie-la-toi par e-mail, ouvre le message sur ce poste, enregistre la pièce jointe, puis « Ajouter un fichier ». Les visages se floutent avant l’enregistrement.</p>
+          <p class="aide">Deux possibilités : la webcam du poste, ou ton téléphone. Photo prise au téléphone : envoie-la-toi par e-mail, ouvre le message sur ce poste, enregistre la pièce jointe, puis « Ajouter un fichier ». Les visages se floutent avant l’enregistrement.</p>
           <div class="accueil-actions"><button type="submit" class="btn-principal">${r.remisLe ? 'Mettre à jour le rapport' : 'Remettre le rapport'}</button></div>
           <p class="message-ecart" role="alert" hidden></p>
         </form>
