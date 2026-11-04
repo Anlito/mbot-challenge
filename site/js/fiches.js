@@ -8,13 +8,14 @@
 
   const A = global.Atelier;
   const echapper = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-  const adresse = 'https://anlito.github.io/mbot-challenge/';
+  // Où trouver l'outil : le raccourci rangé dans le dossier de la classe (pas l'adresse en ligne).
+  const raccourci = A.projet.raccourci.map((x) => x.replace('{classe}', '3X')).join(' › ');
   const entete = (titre, sous) => `<div class="fiche-entete"><img src="img/logo.svg" alt="" width="44" height="44"><div><p class="surtitre">mBot Challenge · 3e</p><h1>${titre}</h1>${sous ? `<p class="sous">${sous}</p>` : ''}</div></div>`;
 
   function demarrage() {
     return `<section class="fiche" id="demarrage">
       ${entete('Démarrer avec l’outil', 'Tout le travail de l’écurie est rangé dans l’outil et dans le dossier de l’écurie.')}
-      <div class="encart-adresse"><span>Adresse</span><strong>${adresse}</strong><span>Chrome ou Edge</span></div>
+      <div class="encart-adresse"><span>Le raccourci « mBot Challenge »</span><strong>${echapper(raccourci)}</strong><span>s’ouvre dans Chrome ou Edge</span></div>
       <ol class="etapes">
         <li><strong>Première séance : « Nouvelle écurie ».</strong> Écrivez vos prénoms (1 à 4), choisissez la classe, puis le dossier
           <span class="chemin-fiche">Bureau › Classe › 3X › COMMUN › TECHNOLOGIE › MBOT CHALLENGE</span>. L’outil y crée le dossier de l’écurie.</li>

@@ -45,7 +45,7 @@
     try {
       const dossier = await dossierVideos(demander);
       if (!dossier) {
-        etat.innerHTML = `<p>Les vidéos sont dans le dossier du serveur où se trouve le raccourci de l’outil. Choisissez ce dossier une fois sur ce poste.</p><button type="button" class="btn-principal choisir-videos">${A.icone('dossier', { epaisseur: 2.2 })}Choisir le dossier des vidéos</button>`;
+        etat.innerHTML = `<p>Les vidéos sont dans le dossier ${echapper(A.projet.raccourci.map((x) => x.replace('{classe}', '3X')).join(' › '))}, à côté du raccourci de l’outil. Choisissez ce dossier une fois sur ce poste.</p><button type="button" class="btn-principal choisir-videos">${A.icone('dossier', { epaisseur: 2.2 })}Choisir le dossier des vidéos</button>`;
         lecteur.hidden = true;
         return;
       }

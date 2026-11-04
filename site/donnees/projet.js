@@ -4,6 +4,8 @@
 //   niveaux     : les classes proposées à l'accueil sont celles de ces niveaux (« 3 » → 3B, 3D1…)
 //   parcours    : identifiant du parcours d'exercices de Labo Blocs (jalon 1)
 //   maxEleves   : nombre de prénoms proposés pour une écurie
+//   raccourci   : où les élèves trouvent le raccourci de l'outil (et les vidéos du cours) sur le réseau du collège ;
+//                 {classe} s'affiche « 3X » (fiche de démarrage, présentation, dossier des vidéos)
 definirProjetAtelier({
   id: 'mbot-challenge',
   titre: 'mBot Challenge',
@@ -13,4 +15,5 @@ definirProjetAtelier({
   parcours: 'mbot-challenge',
   accent: '#1565C0',
   maxEleves: 4,
+  raccourci: ['Classe', '{classe}', 'MATIERES', 'TECHNOLOGIE', 'TABLEAU', 'MBOT CHALLENGE'],
 });

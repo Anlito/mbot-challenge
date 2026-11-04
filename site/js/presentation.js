@@ -12,6 +12,8 @@
   const N = A.notation;
   const epreuve = (id) => T.epreuves.find((e) => e.id === id);
   let modele = 'une-heure'; // circuit montré : séances de 1 h ou de 1 h 30
+  // Où trouver l'outil : le raccourci du dossier de la classe.
+  const raccourci = A.projet.raccourci.map((x) => x.replace('{classe}', '3X')).join(' › ');
 
   const ROLES = [
     ['Chef de projet', 'Lance chaque séance, fait le point de fin, fait le lien avec le professeur.', 'fixe'],
@@ -105,7 +107,7 @@
       html: () => `
         <p class="surtitre">L’outil de l’écurie</p>
         <h2>Tout le travail au même endroit</h2>
-        <div class="adresse">anlito.github.io/mbot-challenge</div>
+        <div class="adresse"><span>Le raccourci « mBot Challenge »</span>${echapper(raccourci)}</div>
         <div class="deux">
           <ol class="liste-grande petite">
             <li><strong>Première séance :</strong> « Nouvelle écurie », vos prénoms, votre classe, puis le dossier <code>MBOT CHALLENGE</code> de la classe.</li>
@@ -238,7 +240,7 @@
             <li>Nom, couleur, rôles</li>
             <li>Premier point de départ</li>
           </ol>
-          <p class="sous">anlito.github.io/mbot-challenge</p>
+          <p class="sous">Le raccourci : ${echapper(raccourci)}</p>
         </div>`,
     },
   ];
