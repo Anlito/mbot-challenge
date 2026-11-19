@@ -56,6 +56,15 @@ Internet est nécessaire.
 5. Le 2ᵉ jour : rouvrir la régie sur le même PC, « Reprendre le tournoi » (ou « Ouvrir un fichier de tournoi » sur un
    autre PC si vous l’avez enregistré dans un fichier).
 
+## Le tournoi light (sans les dossiers des écuries)
+
+https://anlito.github.io/mbot-challenge/regie-light.html (ou « Régie light » dans l’outil professeur). Vous tapez la
+classe et les équipes, une par ligne, puis quatre épreuves en une séance : **affiche** (nombre de votes), **suivre la
+ligne**, **sortir les obstacles** et **labyrinthe**, chronométrés avec les mêmes malus (+5 s) et les mêmes touches que
+la régie du jour J. Mêmes points par place, même écran projeté, même export CSV. Dans « Préparation », on peut encore
+ajouter une équipe (elle passe en dernier) ou en retirer une tant qu’elle n’a aucun résultat. Réglages :
+`site/donnees/tournoi-light.js`.
+
 ## Fiches à imprimer
 
 https://anlito.github.io/mbot-challenge/fiches.html (ou « Fiches à imprimer » dans l’outil professeur) : démarrage

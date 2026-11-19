@@ -117,3 +117,12 @@
 .poste-secondaires .btn-geant { min-height: 3.5rem; padding: 0 1.75rem; font-size: 1.25rem; }
 .tableau-general th[scope=row] { white-space: nowrap; }
 .tableau-general th[scope=row] .ecurie-pastille { display: inline-flex; vertical-align: middle; margin-right: 0.5rem; }
+
+/* Régie light : la classe et les équipes tapées par le professeur. */
+.regie-light { max-width: 44rem; }
+.champ-light { display: flex; flex-direction: column; gap: 0.375rem; margin: 0.75rem 0; font-weight: 600; }
+.champ-light input, .champ-light textarea { min-height: 2.75rem; border-radius: 0.5rem; border: 1px solid var(--bord-fort); background: #0E1621; color: var(--encre); padding: 0.5rem 0.75rem; font: 400 1rem var(--police); }
+.champ-light textarea { resize: vertical; line-height: 1.5; }
+.champ-light input:focus-visible, .champ-light textarea:focus-visible { outline: 3px solid #FFC21A; outline-offset: 1px; }
+.form-ajout { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.5rem; margin-top: 0.75rem; }
+.form-ajout .champ-light { flex: 1; min-width: 12rem; margin: 0; }

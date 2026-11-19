@@ -2,7 +2,7 @@
 // la classe et classement de toutes les classes. Le fichier du tournoi est gardé par la régie (navigateur + fichier du
 // professeur) et se reprend le deuxième jour.
 //
-//   tournoi : { format, version, classe, creeLe, ecuries: [{ cle, nom, couleur, eleves }], ordre: [clé],
+//   tournoi : { format, version, formule ('complet' | 'light'), classe, creeLe, ecuries: [{ cle, nom, couleur, eleves }], ordre: [clé],
 //     jours: { épreuve: 1 | 2 }, resultats: { <épreuve chrono ou obstacles>: { clé: { temps, malus, objets, abandon, date } },
 //     recolte: { matchs: [{ id, a, b, scoreA, scoreB, fini }] }, affiche: { clé: votes }, style: { classement: [clé] } } }
 
@@ -22,6 +22,7 @@
     return {
       format: FORMAT,
       version: 1,
+      formule: config.formule || 'complet', // 'light' : régie light (équipes tapées, 4 épreuves)
       classe: classe || '',
       creeLe: maintenant(),
       ecuries: ecuries.map((e) => ({ cle: e.cle, nom: e.nom, couleur: e.couleur || null, eleves: (e.eleves || []).slice() })),
@@ -29,6 +30,35 @@
       jours,
       resultats: { recolte: { matchs: [] }, affiche: {}, style: { classement: [] } },
     };
+  }
+
+  // Tournoi « light » : les équipes tapées par le professeur, une par ligne. Lignes vides et doublons ignorés ; chaque
+  // équipe reçoit une couleur de la liste, à tour de rôle. [{ cle, nom, couleur, eleves: [] }]
+  function equipesDepuisTexte(texte, couleurs) {
+    const vus = new Set();
+    const noms = String(texte || '').split(/\r?\n/).map((n) => n.trim().replace(/\s+/g, ' ')).filter((n) => n && !vus.has(n.toLowerCase()) && vus.add(n.toLowerCase()));
+    return noms.map((nom, i) => ({ cle: 'eq' + (i + 1), nom, couleur: couleurs && couleurs.length ? couleurs[i % couleurs.length] : null, eleves: [] }));
+  }
+  // Ajout d'une équipe en cours de tournoi : elle passe en dernier. Renvoie l'équipe, ou null (nom vide ou déjà pris).
+  function ajouterEquipe(t, nom, couleurs) {
+    nom = String(nom || '').trim().replace(/\s+/g, ' ');
+    if (!nom || t.ecuries.some((e) => e.nom.toLowerCase() === nom.toLowerCase())) return null;
+    let n = t.ecuries.length + 1;
+    while (t.ecuries.some((e) => e.cle === 'eq' + n)) n++;
+    const e = { cle: 'eq' + n, nom, couleur: couleurs && couleurs.length ? couleurs[t.ecuries.length % couleurs.length] : null, eleves: [] };
+    t.ecuries.push(e);
+    t.ordre.push(e.cle);
+    return e;
+  }
+  // Retrait d'une équipe : seulement si elle n'a encore aucun résultat.
+  function aDesResultats(t, cle) {
+    return Object.entries(t.resultats).some(([id, x]) => (id === 'recolte' ? x.matchs.some((m) => m.fini && (m.a === cle || m.b === cle)) : id === 'style' ? (x.classement || []).length > 0 : !!x && x[cle] !== undefined));
+  }
+  function retirerEquipe(t, cle) {
+    if (aDesResultats(t, cle)) return false;
+    t.ecuries = t.ecuries.filter((e) => e.cle !== cle);
+    t.ordre = t.ordre.filter((c) => c !== cle);
+    return true;
   }
 
   function lireTournoi(texte) {
@@ -40,6 +70,7 @@
     }
     if (!t || t.format !== FORMAT) return { ok: false, raison: 'Ce fichier n’est pas un tournoi du mBot Challenge.' };
     if (t.version > 1) return { ok: false, raison: 'Ce tournoi vient d’une version plus récente de l’outil.' };
+    t.formule = t.formule || 'complet';
     t.resultats = Object.assign({ recolte: { matchs: [] }, affiche: {}, style: { classement: [] } }, t.resultats);
     return { ok: true, tournoi: t };
   }
@@ -213,6 +244,10 @@
   const api = {
     FORMAT,
     creerTournoi,
+    equipesDepuisTexte,
+    ajouterEquipe,
+    aDesResultats,
+    retirerEquipe,
     lireTournoi,
     melanger,
     tirerOrdre,

@@ -2,6 +2,7 @@
 // (un ou deux postes), Récolte, votes de l'affiche, classement du jury, classement général et de toutes les classes.
 // Commande l'écran projeté (ecran.html, dans une 2ᵉ fenêtre) par BroadcastChannel. Le tournoi est gardé dans le
 // navigateur à chaque saisie, et dans un fichier du professeur s'il en a choisi un : il se reprend le 2ᵉ jour.
+// Régie light (regie-light.html, donnees/tournoi-light.js) : le professeur tape les équipes, quatre épreuves, une séance.
 (function (global) {
   'use strict';
 
@@ -14,7 +15,8 @@
   const echapper = (s) => String(s === undefined || s === null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   const nombreFr = (x) => String(x).replace('.', ',');
   const CANAL = 'mbot-challenge-ecran';
-  const PREFIXE = 'mbot-challenge-tournoi-';
+  let PREFIXE = 'mbot-challenge-tournoi-';
+  let light = false; // régie light : équipes tapées par le professeur
 
   let config = null;
   let t = null; // tournoi
@@ -86,7 +88,7 @@
         const k = localStorage.key(i);
         if (k.startsWith(PREFIXE)) {
           const r = T.lireTournoi(localStorage.getItem(k));
-          if (r.ok) l.push(r.tournoi);
+          if (r.ok && (r.tournoi.formule === 'light') === light) l.push(r.tournoi);
         }
       }
     } catch { /* rien */ }
@@ -113,17 +115,17 @@
     }
     return [...parCle.entries()].map(([cle, d]) => ({ cle, nom: A.nomAffiche(d), couleur: d.ecurie.couleur, eleves: d.equipe.eleves, classe: d.equipe.classe }));
   }
-  function nouveauTournoi(ecuries) {
+  function nouveauTournoi(ecuries, classeTapee) {
     if (!ecuries.length) return message('Aucune écurie trouvée : choisissez le dossier MBOT CHALLENGE de la classe.', 5000);
-    const classe = [...new Set(ecuries.map((e) => e.classe).filter(Boolean))].join(' · ') || 'Classe';
+    const classe = classeTapee || [...new Set(ecuries.map((e) => e.classe).filter(Boolean))].join(' · ') || 'Classe';
     const garde = tournoisGardes().find((x) => x.classe === classe);
     if (garde && confirm(`Un tournoi de ${classe} est déjà en cours dans ce navigateur (commencé le ${new Date(garde.creeLe).toLocaleDateString('fr-FR')}). Le reprendre ?\n\nAnnuler : commencer un nouveau tournoi (l’ancien sera remplacé).`)) {
       t = garde;
     } else {
       t = T.creerTournoi(ecuries, classe, config);
       // Classe à 1 h 30 : tout le tournoi en une séance.
-      const circuit = A.calendrierClasse.circuit(A.calendrier, classe.split(' · ')[0]);
-      if (circuit.tournoi.length < 2) for (const e of config.epreuves) t.jours[e.id] = 1;
+      const circuit = light ? null : A.calendrierClasse.circuit(A.calendrier, classe.split(' · ')[0]);
+      if (circuit && circuit.tournoi.length < 2) for (const e of config.epreuves) t.jours[e.id] = 1;
     }
     commencer();
   }
@@ -162,6 +164,7 @@
   // ---------- Accueil (pas encore de tournoi) ----------
 
   function accueil(zone) {
+    if (light) return accueilLight(zone);
     const gardes = tournoisGardes();
     zone.innerHTML = `
       <section class="regie-panneau">
@@ -193,11 +196,52 @@
       commencer();
     });
   }
+  function accueilLight(zone) {
+    const gardes = tournoisGardes();
+    zone.innerHTML = `
+      <section class="regie-panneau regie-light">
+        <h1>Préparer le tournoi light</h1>
+        <p>Tapez la classe et les équipes. Quatre épreuves : l’affiche, suivre la ligne, sortir les obstacles et le labyrinthe, avec les malus.</p>
+        <form class="form-equipes">
+          <label class="champ-light"><span>Classe</span><input type="text" class="entree-classe" maxlength="30" placeholder="ex. 3B" autocomplete="off"></label>
+          <label class="champ-light"><span>Les équipes, une par ligne</span><textarea class="entree-equipes" rows="8" placeholder="Les Flèches&#10;Turbo Team&#10;Robo Racers"></textarea></label>
+          <p class="aide compte-equipes" aria-live="polite">0 équipe</p>
+          <div class="accueil-actions">
+            <button type="submit" class="btn-principal" data-icone="drapeau">Commencer le tournoi</button>
+            <button type="button" class="btn-secondaire btn-ouvrir-tournoi" data-icone="disquette">Ouvrir un fichier de tournoi</button>
+          </div>
+        </form>
+        ${gardes.length ? `<h2>Reprendre un tournoi de ce navigateur</h2><div class="liste-reprendre">${gardes.map((g) => `<button type="button" class="btn-principal" data-reprendre="${echapper(g.classe)}">Tournoi ${echapper(g.classe)} · ${g.ecuries.length} équipes</button>`).join('')}</div>` : ''}
+      </section>`;
+    poserIcones(zone);
+    const equipes = () => T.equipesDepuisTexte($('.entree-equipes', zone).value, A.ecurie.COULEURS.map((c) => c.valeur));
+    $('.entree-equipes', zone).addEventListener('input', () => {
+      const n = equipes().length;
+      $('.compte-equipes', zone).textContent = `${n} équipe${n > 1 ? 's' : ''}`;
+    });
+    $('.form-equipes', zone).addEventListener('submit', (e) => {
+      e.preventDefault();
+      const classe = $('.entree-classe', zone).value.trim();
+      const l = equipes();
+      if (!classe) {
+        message('Tapez le nom de la classe.');
+        return $('.entree-classe', zone).focus();
+      }
+      if (l.length < 2) return message('Tapez au moins deux équipes, une par ligne.', 4000);
+      nouveauTournoi(l, classe);
+    });
+    $('.btn-ouvrir-tournoi', zone).addEventListener('click', ouvrirFichierTournoi);
+    for (const b of zone.querySelectorAll('[data-reprendre]')) b.addEventListener('click', () => {
+      t = tournoisGardes().find((x) => x.classe === b.dataset.reprendre);
+      commencer();
+    });
+  }
   async function ouvrirFichierTournoi() {
     try {
       const [h] = await global.showOpenFilePicker({ id: A.projet.id + '-tournoi', types: [{ description: 'Tournoi', accept: { 'application/json': ['.json'] } }] });
       const r = T.lireTournoi(await (await h.getFile()).text());
       if (!r.ok) return message(r.raison, 5000);
+      if ((r.tournoi.formule === 'light') !== light) return message(light ? 'Ce fichier vient de la régie du jour J : ouvrez-le dans « Régie du jour J ».' : 'Ce fichier vient de la régie light : ouvrez-le dans « Régie light ».', 6000);
       t = r.tournoi;
       fichierTournoi = h;
       commencer();
@@ -210,22 +254,26 @@
 
   function preparation(zone) {
     const deuxJours = Object.values(t.jours).some((j) => j === 2);
+    const avecRecolte = config.epreuves.some((e) => e.sorte === 'duel');
     zone.innerHTML = `
       <div class="regie-deux">
         <section class="regie-panneau">
           <div class="regie-entete"><h2>Ordre de passage</h2><button type="button" class="btn-secondaire btn-tirer-ordre" data-icone="recommencer">Tirer au sort</button></div>
           <ol class="liste-ordre">${t.ordre.map((c, i) => `<li>${pastille(ecurie(c))}<span class="nom">${echapper(ecurie(c).nom)}</span>
             <button type="button" class="btn-petit" data-monter="${i}" aria-label="Monter ${echapper(ecurie(c).nom)}"${i ? '' : ' disabled'}>↑</button>
-            <button type="button" class="btn-petit" data-descendre="${i}" aria-label="Descendre ${echapper(ecurie(c).nom)}"${i < t.ordre.length - 1 ? '' : ' disabled'}>↓</button></li>`).join('')}</ol>
+            <button type="button" class="btn-petit" data-descendre="${i}" aria-label="Descendre ${echapper(ecurie(c).nom)}"${i < t.ordre.length - 1 ? '' : ' disabled'}>↓</button>${light ? `
+            <button type="button" class="btn-petit" data-retirer="${echapper(c)}" aria-label="Retirer ${echapper(ecurie(c).nom)}"${T.aDesResultats(t, c) ? ' disabled title="Cette équipe a déjà un résultat."' : ''}>✕</button>` : ''}</li>`).join('')}</ol>
+          ${light ? `<form class="form-ajout"><label class="champ-light"><span>Ajouter une équipe (elle passe en dernier)</span><input type="text" class="entree-ajout" maxlength="40" autocomplete="off"></label><button type="submit" class="btn-secondaire">Ajouter</button></form>` : ''}
         </section>
         <section class="regie-panneau">
-          <h2>Jour de chaque épreuve</h2>
+          ${light ? '' : `<h2>Jour de chaque épreuve</h2>
           <p class="aide">Classes à 1 h : tournoi sur deux séances. Le classement général n’apparaît à l’écran qu’à la fin si le suspense est coché.</p>
           <div class="liste-jours">${config.epreuves.map((e) => `<label><span>${echapper(e.titre)}</span><select data-jour="${e.id}"><option value="1"${t.jours[e.id] === 1 ? ' selected' : ''}>Jour 1</option><option value="2"${t.jours[e.id] === 2 ? ' selected' : ''}>Jour 2</option></select></label>`).join('')}</div>
+`}
           ${deuxJours ? `<p class="choix-jour">Aujourd’hui : <button type="button" class="${jour === 1 ? 'actif' : ''}" data-aujourdhui="1">Jour 1</button><button type="button" class="${jour === 2 ? 'actif' : ''}" data-aujourdhui="2">Jour 2</button></p>` : ''}
-          <h2>Récolte · les matchs</h2>
+          ${avecRecolte ? `<h2>Récolte · les matchs</h2>
           ${t.resultats.recolte.matchs.length ? `<ol class="liste-matchs">${t.resultats.recolte.matchs.map((m) => `<li>${echapper(ecurie(m.a).nom)} <span class="contre">contre</span> ${echapper(ecurie(m.b).nom)}${m.fini ? ` · ✓ ${m.scoreA}–${m.scoreB}` : ''}</li>`).join('')}</ol>` : '<p class="aide">Pas encore tirés : chaque écurie jouera 2 matchs contre 2 adversaires différents.</p>'}
-          <div class="accueil-actions"><button type="button" class="btn-secondaire btn-tirer-matchs" data-icone="recommencer">${t.resultats.recolte.matchs.length ? 'Tirer à nouveau' : 'Tirer les matchs'}</button></div>
+          <div class="accueil-actions"><button type="button" class="btn-secondaire btn-tirer-matchs" data-icone="recommencer">${t.resultats.recolte.matchs.length ? 'Tirer à nouveau' : 'Tirer les matchs'}</button></div>` : ''}
           <h2>Sauvegarde</h2>
           <p class="aide">${fichierTournoi ? `Le tournoi est réécrit à chaque saisie dans « ${echapper(fichierTournoi.name)} ».` : 'Le tournoi est gardé dans ce navigateur. Pour le reprendre sur un autre poste, enregistrez-le dans un fichier.'}</p>
           <div class="accueil-actions">
@@ -235,13 +283,20 @@
         </section>
       </div>`;
     poserIcones(zone);
-    zone.addEventListener('click', async (e) => {
+    zone.onclick = async (e) => {
       const b = e.target.closest('button');
       if (!b) return;
       if (b.dataset.monter !== undefined || b.dataset.descendre !== undefined) {
         const i = Number(b.dataset.monter !== undefined ? b.dataset.monter : b.dataset.descendre);
         const j = b.dataset.monter !== undefined ? i - 1 : i + 1;
         [t.ordre[i], t.ordre[j]] = [t.ordre[j], t.ordre[i]];
+        sauver();
+        return naviguer('preparation');
+      }
+      if (b.dataset.retirer) {
+        const nom = ecurie(b.dataset.retirer).nom;
+        if (!confirm(`Retirer l’équipe « ${nom} » du tournoi ?`)) return;
+        if (!T.retirerEquipe(t, b.dataset.retirer)) return message('Cette équipe a déjà un résultat : elle reste dans le tournoi.', 4000);
         sauver();
         return naviguer('preparation');
       }
@@ -264,7 +319,7 @@
       }
       if (b.classList.contains('btn-fichier')) {
         try {
-          fichierTournoi = await global.showSaveFilePicker({ id: A.projet.id + '-tournoi', suggestedName: `mbot-challenge-tournoi-${t.classe.replace(/[^\w-]+/g, '-')}.json`, types: [{ description: 'Tournoi', accept: { 'application/json': ['.json'] } }] });
+          fichierTournoi = await global.showSaveFilePicker({ id: A.projet.id + '-tournoi', suggestedName: `mbot-challenge-tournoi${light ? '-light' : ''}-${t.classe.replace(/[^\w-]+/g, '-')}.json`, types: [{ description: 'Tournoi', accept: { 'application/json': ['.json'] } }] });
           if (await ecrireFichier(true)) message('Tournoi enregistré : il sera réécrit à chaque saisie.');
           naviguer('preparation');
         } catch (err) {
@@ -278,13 +333,22 @@
         $('.regie-classe').textContent = '· tournoi';
         naviguer('preparation');
       }
+    };
+    const ajout = $('.form-ajout', zone);
+    if (ajout) ajout.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const x = T.ajouterEquipe(t, $('.entree-ajout', zone).value, A.ecurie.COULEURS.map((c) => c.valeur));
+      if (!x) return message('Tapez un nom d’équipe qui n’est pas déjà dans la liste.', 4000);
+      sauver();
+      naviguer('preparation');
+      $('.entree-ajout').focus();
     });
-    zone.addEventListener('change', (e) => {
+    zone.onchange = (e) => {
       if (!e.target.dataset.jour) return;
       t.jours[e.target.dataset.jour] = Number(e.target.value);
       sauver();
       naviguer('preparation');
-    });
+    };
   }
 
   // ---------- Épreuves chronométrées ----------
@@ -602,7 +666,7 @@
       const texte = '﻿' + lignes.map((l) => l.map((v) => (/[;"\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : v)).join(';')).join('\r\n');
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([texte], { type: 'text/csv;charset=utf-8' }));
-      a.download = `mbot-challenge-tournoi-${t.classe.replace(/[^\w-]+/g, '-')}.csv`;
+      a.download = `mbot-challenge-tournoi${light ? '-light' : ''}-${t.classe.replace(/[^\w-]+/g, '-')}.csv`;
       a.click();
     });
     $('.entree-autres', zone).addEventListener('change', async (ev) => {
@@ -655,8 +719,10 @@
 
   // ---------- Démarrage ----------
 
-  function demarrer() {
+  function demarrer(options) {
     config = A.reglagesTournoi;
+    light = !!(options && options.light);
+    if (light) PREFIXE = 'mbot-challenge-light-';
     poserIcones(document);
     $('.regie-onglets').addEventListener('click', (e) => {
       const b = e.target.closest('[data-vue]');

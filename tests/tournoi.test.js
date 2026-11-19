@@ -100,3 +100,32 @@ test('jury du style, classement général sur deux jours, toutes classes', () =>
   const x = tc.find((l) => l.nom === 'X');
   assert.ok(x.place <= 2, JSON.stringify(tc));
 });
+
+test('tournoi light : équipes tapées une par ligne, 4 épreuves, ajout et retrait d’une équipe', () => {
+  const light = lireDonnees('tournoi-light.js', 'definirTournoi');
+  assert.equal(light.formule, 'light');
+  assert.deepEqual(light.epreuves.map((e) => e.id), ['affiche', 'ligne', 'obstacles', 'labyrinthe']);
+  for (const id of ['ligne', 'obstacles', 'labyrinthe']) assert.equal(light.epreuves.find((e) => e.id === id).malus.secondes, 5);
+  const equipes = T.equipesDepuisTexte('  Les Flèches \n\nTurbo   Team\nles flèches\r\nRobo Racers\n', ['#111111', '#222222']);
+  assert.deepEqual(equipes.map((e) => e.nom), ['Les Flèches', 'Turbo Team', 'Robo Racers']);
+  assert.deepEqual(equipes.map((e) => e.couleur), ['#111111', '#222222', '#111111']);
+  const t = T.creerTournoi(equipes, '3B', light);
+  assert.equal(t.formule, 'light');
+  assert.equal(T.lireTournoi(JSON.stringify(t)).tournoi.formule, 'light');
+  assert.equal(T.lireTournoi(JSON.stringify(nouv(['A', 'B']))).tournoi.formule, 'complet');
+  // Ajout : passe en dernier, nom déjà pris refusé.
+  const x = T.ajouterEquipe(t, 'Mega Bots', ['#111111']);
+  assert.equal(t.ordre[t.ordre.length - 1], x.cle);
+  assert.equal(T.ajouterEquipe(t, 'turbo team'), null);
+  // Retrait : refusé dès qu'il y a un résultat.
+  T.noterPassage(t, light, 'ligne', 'eq1', { temps: 30, malus: 1 });
+  assert.equal(T.retirerEquipe(t, 'eq1'), false);
+  assert.equal(T.retirerEquipe(t, 'eq2'), true);
+  assert.deepEqual(t.ecuries.map((e) => e.nom), ['Les Flèches', 'Robo Racers', 'Mega Bots']);
+  // Classement : 30 s + 1 malus de 5 s = 35 s, 1ʳᵉ ; votes de l'affiche comptés.
+  t.resultats.affiche.eq3 = 12;
+  const g = T.classementGeneral(t, light);
+  assert.equal(g.find((l) => l.cle === 'eq1').points.ligne, 10);
+  assert.equal(g.find((l) => l.cle === 'eq3').points.affiche, 10);
+  assert.equal(T.classementEpreuve(t, light, 'ligne')[0].valeur, '35 s');
+});

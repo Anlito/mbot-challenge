@@ -5,7 +5,7 @@ autonomie (programmation du mBot avec Labo Blocs, affiche, style du mBot, vidéo
 suit et note leur travail en direct, puis anime le tournoi avec la régie du jour J.
 
 - **Élèves** : `site/index.html` (en ligne : https://anlito.github.io/mbot-challenge/).
-- **Professeur** : `site/prof.html` ; **régie du tournoi** : `site/regie.html`, qui ouvre l’**écran projeté** `site/ecran.html` (code professeur : le même que Labo Blocs) ; **fiches à imprimer** : `site/fiches.html` ; **présentation du projet** (première séance) : `site/presentation.html`.
+- **Professeur** : `site/prof.html` ; **régie du tournoi** : `site/regie.html` (et `site/regie-light.html` : équipes tapées, affiche + 3 défis chronométrés), qui ouvre l’**écran projeté** `site/ecran.html` (code professeur : le même que Labo Blocs) ; **fiches à imprimer** : `site/fiches.html` ; **présentation du projet** (première séance) : `site/presentation.html`.
 
 Plan de construction et décisions : [`docs/PLAN.md`](docs/PLAN.md). Recette : [`docs/RECETTE.md`](docs/RECETTE.md).
 Maquette validée : https://claude.ai/artifact/HxMYDzR9oyhdrdu5gdXG1f

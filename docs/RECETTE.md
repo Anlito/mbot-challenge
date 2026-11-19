@@ -163,3 +163,16 @@ Vérifié par Claude :
 - Archive `dist/mbot-challenge.zip` sans les données d'essai.
 
 À vérifier par Thomas : aperçu avant impression des fiches (une fiche par page A4).
+
+## Régie light (19/11/2026)
+
+Demande de Thomas : une version légère du tournoi, en plus de la régie du jour J. Le professeur tape les équipes ;
+épreuves : affiche, suivre la ligne, sortir les obstacles, labyrinthe (chronométrés, avec les malus).
+
+- [ ] « Régie light » dans le bandeau de l’outil professeur ouvre `regie-light.html` (code professeur).
+- [ ] Classe + équipes une par ligne : lignes vides et doublons ignorés, compteur d’équipes ; « Commencer le tournoi ».
+- [ ] Préparation : ordre de passage (tirage, ↑ ↓), ajouter une équipe, retirer une équipe sans résultat (✕ grisé sinon).
+- [ ] Les trois défis : espace / M / O, malus +5 s, 2 min et 3 objets pour le défi 2 ; « Valider le passage ».
+- [ ] Affiche : votes saisis, points par place.
+- [ ] Classement général, CSV, écran projeté (passage en direct, résultats, classement, podium).
+- [ ] Un tournoi light ne se mélange pas avec la régie du jour J (fichier refusé avec un message, reprises séparées).
