@@ -174,5 +174,6 @@ Demande de Thomas : une version légère du tournoi, en plus de la régie du jou
 - [ ] Préparation : ordre de passage (tirage, ↑ ↓), ajouter une équipe, retirer une équipe sans résultat (✕ grisé sinon).
 - [ ] Les trois défis : espace / M / O, malus +5 s, 2 min et 3 objets pour le défi 2 ; « Valider le passage ».
 - [ ] Affiche : votes saisis, points par place.
+- [ ] Personnalisation du mBot (ajout du 19/11) : le jury classe les mBot du 1er au dernier (glisser ou ↑ ↓), « Valider ».
 - [ ] Classement général, CSV, écran projeté (passage en direct, résultats, classement, podium).
 - [ ] Un tournoi light ne se mélange pas avec la régie du jour J (fichier refusé avec un message, reprises séparées).

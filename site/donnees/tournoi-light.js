@@ -1,11 +1,12 @@
-// Le tournoi « light » (regie-light.html) : le professeur tape les noms des équipes, quatre épreuves en une séance.
+// Le tournoi « light » (regie-light.html) : le professeur tape les noms des équipes, cinq épreuves en une séance.
 // Mêmes règles que le grand tournoi (donnees/tournoi.js) pour l'affiche et les trois défis chronométrés, mêmes malus.
-//   sorte : 'chrono' (temps + malus), 'obstacles' (temps, validé si tous les objets sont sortis à temps),
-//           'votes' (affiche : nombre de votes)
+//   sorte : 'votes' (affiche : nombre de votes), 'jury' (personnalisation : le jury classe les mBot du 1er au dernier),
+//           'chrono' (temps + malus), 'obstacles' (temps, validé si tous les objets sont sortis à temps)
 definirTournoi({
   formule: 'light',
   epreuves: [
     { id: 'affiche', titre: 'Affiche · votes', sorte: 'votes', jour: 1, aide: 'Nombre de votes pour l’affiche de chaque équipe.' },
+    { id: 'style', titre: 'Personnalisation du mBot', sorte: 'jury', jour: 1, aide: 'Le jury classe les mBot du mieux personnalisé (1er) au dernier.' },
     { id: 'ligne', titre: 'Défi 1 · Suivre la ligne', sorte: 'chrono', jour: 1, malus: { libelle: 'Sortie de piste', secondes: 5 }, aide: 'Un tour. Sortie de piste : malus, on replace le mBot.' },
     { id: 'obstacles', titre: 'Défi 2 · Sortir les obstacles', sorte: 'obstacles', jour: 1, objets: 3, tempsMax: 120, malus: { libelle: 'mBot sorti de la zone', secondes: 5 }, aide: 'Les 3 objets dehors en 2 minutes ; sinon le défi n’est pas validé.' },
     { id: 'labyrinthe', titre: 'Défi 3 · Le labyrinthe', sorte: 'chrono', jour: 1, malus: { libelle: 'Contact avec un obstacle', secondes: 5 }, aide: 'Pilotage au clavier. Chaque contact avec un obstacle : malus.' },

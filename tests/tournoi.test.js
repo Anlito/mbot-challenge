@@ -101,10 +101,10 @@ test('jury du style, classement général sur deux jours, toutes classes', () =>
   assert.ok(x.place <= 2, JSON.stringify(tc));
 });
 
-test('tournoi light : équipes tapées une par ligne, 4 épreuves, ajout et retrait d’une équipe', () => {
+test('tournoi light : équipes tapées une par ligne, 5 épreuves, ajout et retrait d’une équipe', () => {
   const light = lireDonnees('tournoi-light.js', 'definirTournoi');
   assert.equal(light.formule, 'light');
-  assert.deepEqual(light.epreuves.map((e) => e.id), ['affiche', 'ligne', 'obstacles', 'labyrinthe']);
+  assert.deepEqual(light.epreuves.map((e) => e.id), ['affiche', 'style', 'ligne', 'obstacles', 'labyrinthe']);
   for (const id of ['ligne', 'obstacles', 'labyrinthe']) assert.equal(light.epreuves.find((e) => e.id === id).malus.secondes, 5);
   const equipes = T.equipesDepuisTexte('  Les Flèches \n\nTurbo   Team\nles flèches\r\nRobo Racers\n', ['#111111', '#222222']);
   assert.deepEqual(equipes.map((e) => e.nom), ['Les Flèches', 'Turbo Team', 'Robo Racers']);
@@ -128,4 +128,9 @@ test('tournoi light : équipes tapées une par ligne, 4 épreuves, ajout et retr
   assert.equal(g.find((l) => l.cle === 'eq1').points.ligne, 10);
   assert.equal(g.find((l) => l.cle === 'eq3').points.affiche, 10);
   assert.equal(T.classementEpreuve(t, light, 'ligne')[0].valeur, '35 s');
+  // Personnalisation : le classement du jury donne les points par place ; plus de retrait ensuite.
+  t.resultats.style.classement = ['eq4', 'eq3', 'eq1'];
+  const p = T.classementEpreuve(t, light, 'style');
+  assert.deepEqual(p.map((l) => [l.cle, l.place, l.points]), [['eq4', 1, 10], ['eq3', 2, 8], ['eq1', 3, 6]]);
+  assert.equal(T.retirerEquipe(t, 'eq4'), false);
 });

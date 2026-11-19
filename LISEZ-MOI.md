@@ -59,8 +59,8 @@ Internet est nécessaire.
 ## Le tournoi light (sans les dossiers des écuries)
 
 https://anlito.github.io/mbot-challenge/regie-light.html (ou « Régie light » dans l’outil professeur). Vous tapez la
-classe et les équipes, une par ligne, puis quatre épreuves en une séance : **affiche** (nombre de votes), **suivre la
-ligne**, **sortir les obstacles** et **labyrinthe**, chronométrés avec les mêmes malus (+5 s) et les mêmes touches que
+classe et les équipes, une par ligne, puis cinq épreuves en une séance : **affiche** (nombre de votes), **personnalisation du mBot**
+(le jury classe les mBot du 1er au dernier), **suivre la ligne**, **sortir les obstacles** et **labyrinthe**, chronométrés avec les mêmes malus (+5 s) et les mêmes touches que
 la régie du jour J. Mêmes points par place, même écran projeté, même export CSV. Dans « Préparation », on peut encore
 ajouter une équipe (elle passe en dernier) ou en retirer une tant qu’elle n’a aucun résultat. Réglages :
 `site/donnees/tournoi-light.js`.

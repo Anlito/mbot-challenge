@@ -2,7 +2,7 @@
 // (un ou deux postes), Récolte, votes de l'affiche, classement du jury, classement général et de toutes les classes.
 // Commande l'écran projeté (ecran.html, dans une 2ᵉ fenêtre) par BroadcastChannel. Le tournoi est gardé dans le
 // navigateur à chaque saisie, et dans un fichier du professeur s'il en a choisi un : il se reprend le 2ᵉ jour.
-// Régie light (regie-light.html, donnees/tournoi-light.js) : le professeur tape les équipes, quatre épreuves, une séance.
+// Régie light (regie-light.html, donnees/tournoi-light.js) : le professeur tape les équipes, cinq épreuves, une séance.
 (function (global) {
   'use strict';
 
@@ -201,7 +201,7 @@
     zone.innerHTML = `
       <section class="regie-panneau regie-light">
         <h1>Préparer le tournoi light</h1>
-        <p>Tapez la classe et les équipes. Quatre épreuves : l’affiche, suivre la ligne, sortir les obstacles et le labyrinthe, avec les malus.</p>
+        <p>Tapez la classe et les équipes. Cinq épreuves : l’affiche, la personnalisation du mBot, suivre la ligne, sortir les obstacles et le labyrinthe (avec les malus).</p>
         <form class="form-equipes">
           <label class="champ-light"><span>Classe</span><input type="text" class="entree-classe" maxlength="30" placeholder="ex. 3B" autocomplete="off"></label>
           <label class="champ-light"><span>Les équipes, une par ligne</span><textarea class="entree-equipes" rows="8" placeholder="Les Flèches&#10;Turbo Team&#10;Robo Racers"></textarea></label>
