@@ -4,7 +4,8 @@
 //
 //   tournoi : { format, version, formule ('complet' | 'light'), classe, creeLe, ecuries: [{ cle, nom, couleur, eleves }], ordre: [clé],
 //     jours: { épreuve: 1 | 2 }, resultats: { <épreuve chrono ou obstacles>: { clé: { temps, malus, objets, abandon, date } },
-//     recolte: { matchs: [{ id, a, b, scoreA, scoreB, fini }] }, affiche: { clé: votes }, style: { classement: [clé] } } }
+//     recolte: { matchs: [{ id, a, b, scoreA, scoreB, fini }] }, affiche: { clé: votes }, style: { classement: [clé] } },
+//     disqualifies: { épreuve: { clé: true } } }   (pas de programme, pas d'affiche, mBot pas personnalisé…)
 
 (function (global) {
   'use strict';
@@ -22,14 +23,26 @@
     return {
       format: FORMAT,
       version: 1,
-      formule: config.formule || 'complet', // 'light' : régie light (équipes tapées, 4 épreuves)
+      formule: config.formule || 'complet', // 'light' : régie light (équipes tapées)
       classe: classe || '',
       creeLe: maintenant(),
       ecuries: ecuries.map((e) => ({ cle: e.cle, nom: e.nom, couleur: e.couleur || null, eleves: (e.eleves || []).slice() })),
       ordre: ecuries.map((e) => e.cle),
       jours,
       resultats: { recolte: { matchs: [] }, affiche: {}, style: { classement: [] } },
+      disqualifies: {},
     };
+  }
+
+  // Disqualification d'une écurie à une épreuve (pas de programme, pas d'affiche, mBot pas personnalisé…) : elle n'est
+  // pas classée et reçoit config.pointsDisqualifie (0 par défaut). oui = false : elle est rétablie.
+  const estDisqualifie = (t, idEpreuve, cle) => !!(t.disqualifies && t.disqualifies[idEpreuve] && t.disqualifies[idEpreuve][cle]);
+  function disqualifier(t, idEpreuve, cle, oui) {
+    t.disqualifies = t.disqualifies || {};
+    const d = (t.disqualifies[idEpreuve] = t.disqualifies[idEpreuve] || {});
+    if (oui) d[cle] = true;
+    else delete d[cle];
+    return !!oui;
   }
 
   // Tournoi « light » : les équipes tapées par le professeur, une par ligne. Lignes vides et doublons ignorés ; chaque
@@ -52,6 +65,7 @@
   }
   // Retrait d'une équipe : seulement si elle n'a encore aucun résultat.
   function aDesResultats(t, cle) {
+    if (Object.values(t.disqualifies || {}).some((d) => d[cle])) return true;
     return Object.entries(t.resultats).some(([id, x]) => (id === 'recolte' ? x.matchs.some((m) => m.fini && (m.a === cle || m.b === cle)) : id === 'style' ? (x.classement || []).length > 0 : !!x && x[cle] !== undefined));
   }
   function retirerEquipe(t, cle) {
@@ -71,6 +85,7 @@
     if (!t || t.format !== FORMAT) return { ok: false, raison: 'Ce fichier n’est pas un tournoi du mBot Challenge.' };
     if (t.version > 1) return { ok: false, raison: 'Ce tournoi vient d’une version plus récente de l’outil.' };
     t.formule = t.formule || 'complet';
+    t.disqualifies = t.disqualifies || {};
     t.resultats = Object.assign({ recolte: { matchs: [] }, affiche: {}, style: { classement: [] } }, t.resultats);
     return { ok: true, tournoi: t };
   }
@@ -163,10 +178,11 @@
   // encore passées sont à la fin, sans place ni points.
   function classementEpreuve(t, config, idEpreuve) {
     const e = epreuve(config, idEpreuve);
+    const dq = (cle) => estDisqualifie(t, idEpreuve, cle);
     let lignes = [];
     if (e.sorte === 'chrono' || e.sorte === 'obstacles') {
       const res = t.resultats[idEpreuve] || {};
-      lignes = Object.entries(res).map(([cle, r]) => {
+      lignes = Object.entries(res).filter(([cle]) => !dq(cle)).map(([cle, r]) => {
         const ok = reussi(e, r);
         const tr = tempsRetenu(e, r);
         const detail = [r.temps === null ? '' : `${String(r.temps).replace('.', ',')} s`, r.malus ? `+${r.malus} ${minuscule(e.malus.libelle)}` : '', e.sorte === 'obstacles' ? `${r.objets}/${e.objets} objets` : '', r.abandon ? 'abandon' : ''].filter(Boolean).join(' · ');
@@ -175,13 +191,13 @@
       lignes.sort((a, b) => a.cleTri - b.cleTri);
     } else if (e.sorte === 'duel') {
       const b = bilanRecolte(t);
-      lignes = Object.entries(b).map(([cle, x]) => ({ cle, reussi: true, x, valeur: `${String(x.victoires).replace('.', ',')} victoire${x.victoires >= 2 ? 's' : ''}`, detail: `${x.balles} balle${x.balles > 1 ? 's' : ''} · ${x.joues} match${x.joues > 1 ? 's' : ''}` }));
+      lignes = Object.entries(b).filter(([cle]) => !dq(cle)).map(([cle, x]) => ({ cle, reussi: true, x, valeur: `${String(x.victoires).replace('.', ',')} victoire${x.victoires >= 2 ? 's' : ''}`, detail: `${x.balles} balle${x.balles > 1 ? 's' : ''} · ${x.joues} match${x.joues > 1 ? 's' : ''}` }));
       lignes.sort((a, b2) => b2.x.victoires - a.x.victoires || b2.x.balles - a.x.balles);
     } else if (e.sorte === 'votes') {
-      lignes = Object.entries(t.resultats.affiche || {}).filter(([, v]) => v !== null && v !== '').map(([cle, v]) => ({ cle, reussi: true, votes: Number(v), valeur: `${v} vote${Number(v) > 1 ? 's' : ''}`, detail: '' }));
+      lignes = Object.entries(t.resultats.affiche || {}).filter(([cle, v]) => v !== null && v !== '' && !dq(cle)).map(([cle, v]) => ({ cle, reussi: true, votes: Number(v), valeur: `${v} vote${Number(v) > 1 ? 's' : ''}`, detail: '' }));
       lignes.sort((a, b) => b.votes - a.votes);
     } else if (e.sorte === 'jury') {
-      lignes = (t.resultats.style.classement || []).map((cle, i) => ({ cle, reussi: true, rang: i, valeur: `${i + 1}${i ? 'ᵉ' : 'ᵉʳ'} du jury`, detail: '' }));
+      lignes = (t.resultats.style.classement || []).filter((cle) => !dq(cle)).map((cle, i) => ({ cle, reussi: true, rang: i, valeur: `${i + 1}${i ? 'ᵉ' : 'ᵉʳ'} du jury`, detail: '' }));
     }
     const egal = {
       chrono: (a, b) => a.reussi === b.reussi && (a.reussi ? a.cleTri === b.cleTri : true),
@@ -195,9 +211,11 @@
       l.nom = nomDe(t, l.cle);
       l.points = l.reussi ? pointsDePlace(config, l.place) : config.pointsNonReussi;
     }
-    const passes = new Set(lignes.map((l) => l.cle));
+    const pointsDq = config.pointsDisqualifie === undefined ? 0 : config.pointsDisqualifie;
+    const disq = t.ordre.filter(dq).map((cle) => ({ cle, nom: nomDe(t, cle), place: null, points: pointsDq, reussi: false, disqualifie: true, valeur: 'disqualifié', detail: '' }));
+    const passes = new Set(lignes.map((l) => l.cle).concat(disq.map((l) => l.cle)));
     const attente = t.ordre.filter((c) => !passes.has(c)).map((cle) => ({ cle, nom: nomDe(t, cle), place: null, points: null, reussi: null, valeur: 'pas encore passé', detail: '' }));
-    return lignes.concat(attente);
+    return lignes.concat(attente, disq);
   }
 
   // Classement général de la classe : somme des points des épreuves (jour : seulement les épreuves de ce jour et des
@@ -244,6 +262,8 @@
   const api = {
     FORMAT,
     creerTournoi,
+    estDisqualifie,
+    disqualifier,
     equipesDepuisTexte,
     ajouterEquipe,
     aDesResultats,

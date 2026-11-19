@@ -351,6 +351,20 @@
     };
   }
 
+  // ---------- Disqualification (pas de programme, pas d'affiche, mBot pas personnalisé) ----------
+
+  const RAISONS = { chrono: 'pas de programme', obstacles: 'pas de programme', votes: 'pas d’affiche', jury: 'mBot pas personnalisé' };
+  function boutonDq(e, cle) {
+    const oui = T.estDisqualifie(t, e.id, cle);
+    return `<button type="button" class="btn-petit btn-dq" data-disqualifier="${echapper(cle)}" aria-pressed="${oui}" title="${oui ? 'Remettre l’écurie dans l’épreuve' : 'Par exemple : ' + (RAISONS[e.sorte] || 'épreuve pas faite') + ' → ' + pointsDq() + ' point'}">${oui ? 'Rétablir' : 'Disqualifier'}</button>`;
+  }
+  const pointsDq = () => (config.pointsDisqualifie === undefined ? 0 : config.pointsDisqualifie);
+  function basculerDq(e, cle) {
+    const oui = T.disqualifier(t, e.id, cle, !T.estDisqualifie(t, e.id, cle));
+    sauver();
+    message(oui ? `${ecurie(cle).nom} : disqualifiée pour « ${e.titre} » (${pointsDq()} point).` : `${ecurie(cle).nom} : de nouveau dans « ${e.titre} ».`, 4000);
+  }
+
   // ---------- Épreuves chronométrées ----------
 
   function resultatsHtml(e) {
@@ -358,9 +372,9 @@
     return `<ol class="liste-passages">${t.ordre.map((cle) => {
       const l = c.find((x) => x.cle === cle);
       const enPiste = postes.find((p) => p.cle === cle && p.epreuve === e.id);
-      return `<li class="${enPiste ? 'en-piste' : ''}">${pastille(ecurie(cle))}<span class="nom">${echapper(ecurie(cle).nom)}${l.detail ? `<span class="detail">${echapper(l.detail)}</span>` : ''}</span>
+      return `<li class="${enPiste ? 'en-piste' : ''}${l.disqualifie ? ' disqualifie' : ''}">${pastille(ecurie(cle))}<span class="nom">${echapper(ecurie(cle).nom)}${l.detail ? `<span class="detail">${echapper(l.detail)}</span>` : ''}</span>
         <span class="valeur">${l.place ? `<strong>${l.place === 1 ? '1re' : l.place + 'e'}</strong> · ` : ''}${echapper(l.valeur)}${l.points !== null ? ` · <strong>${l.points} pts</strong>` : ''}</span>
-        <span class="actions">${postes.slice(0, deuxPostes ? 2 : 1).map((p) => `<button type="button" class="btn-petit" data-en-piste="${echapper(cle)}" data-poste="${p.id}">${enPiste && enPiste.id === p.id ? '● ' : ''}${deuxPostes ? 'Poste ' + p.id : 'En piste'}</button>`).join('')}</span></li>`;
+        <span class="actions">${postes.slice(0, deuxPostes ? 2 : 1).map((p) => `<button type="button" class="btn-petit" data-en-piste="${echapper(cle)}" data-poste="${p.id}"${l.disqualifie ? ' disabled' : ''}>${enPiste && enPiste.id === p.id ? '● ' : ''}${deuxPostes ? 'Poste ' + p.id : 'En piste'}</button>`).join('')}${boutonDq(e, cle)}</span></li>`;
     }).join('')}</ol>`;
   }
 
@@ -409,6 +423,14 @@
     zone.onclick = (ev) => {
       const b = ev.target.closest('button');
       if (!b) return;
+      if (b.dataset.disqualifier) {
+        const p = postes.find((x) => x.cle === b.dataset.disqualifier && x.epreuve === e.id);
+        if (p && p.debut && !p.fin) return message('Cette écurie a un passage en cours : validez-le ou annulez-le d’abord.');
+        if (p) Object.assign(p, nouveauPoste(p.id), { epreuve: e.id });
+        basculerDq(e, b.dataset.disqualifier);
+        envoyer();
+        return naviguer(e.id);
+      }
       if (b.dataset.enPiste) {
         const p = postes.find((x) => x.id === b.dataset.poste);
         if (p.debut && !p.fin) return message('Ce poste a un passage en cours : validez-le ou annulez-le d’abord.');
@@ -463,7 +485,7 @@
       // L'écurie suivante (pas encore passée, pas sur l'autre poste) monte en piste.
       const passes = new Set(Object.keys(t.resultats[e.id] || {}));
       const autre = postes.find((x) => x !== p && x.epreuve === e.id && x.cle);
-      const suivante = t.ordre.find((c) => !passes.has(c) && (!autre || autre.cle !== c));
+      const suivante = t.ordre.find((c) => !passes.has(c) && !T.estDisqualifie(t, e.id, c) && (!autre || autre.cle !== c));
       Object.assign(p, nouveauPoste(p.id), { epreuve: e.id, cle: suivante || null });
       sauver();
     }
@@ -575,11 +597,21 @@
     zone.innerHTML = `
       <div class="regie-entete"><h1>${echapper(e.titre)}</h1><span class="aide">${echapper(e.aide)}</span></div>
       <div class="regie-deux">
-        <section class="regie-panneau"><form class="liste-votes">${t.ordre.map((c) => `<label>${pastille(ecurie(c))}<span class="nom">${echapper(ecurie(c).nom)}</span><input type="number" min="0" step="1" inputmode="numeric" data-votes="${echapper(c)}" value="${t.resultats.affiche[c] === undefined ? '' : t.resultats.affiche[c]}" aria-label="Votes pour ${echapper(ecurie(c).nom)}"></label>`).join('')}</form></section>
+        <section class="regie-panneau"><form class="liste-votes">${t.ordre.map((c) => {
+          const dq = T.estDisqualifie(t, e.id, c);
+          return `<div class="ligne-votes${dq ? ' disqualifie' : ''}"><label>${pastille(ecurie(c))}<span class="nom">${echapper(ecurie(c).nom)}</span>${dq ? '<span class="etiquette-dq">disqualifiée · ' + pointsDq() + ' point</span>' : `<input type="number" min="0" step="1" inputmode="numeric" data-votes="${echapper(c)}" value="${t.resultats.affiche[c] === undefined ? '' : t.resultats.affiche[c]}" aria-label="Votes pour ${echapper(ecurie(c).nom)}">`}</label>${boutonDq(e, c)}</div>`;
+        }).join('')}</form></section>
         <section class="regie-panneau"><h2>Classement des affiches</h2><div class="zone-court">${classementCourt(e.id)}</div></section>
       </div>`;
+    zone.onclick = (ev) => {
+      const b = ev.target.closest('[data-disqualifier]');
+      if (!b) return;
+      basculerDq(e, b.dataset.disqualifier);
+      naviguer(e.id);
+    };
     zone.querySelector('.liste-votes').addEventListener('input', (ev) => {
       const c = ev.target.dataset.votes;
+      if (!c) return;
       const v = ev.target.value === '' ? undefined : Math.max(0, Math.round(Number(ev.target.value) || 0));
       if (v === undefined) delete t.resultats.affiche[c];
       else t.resultats.affiche[c] = v;
@@ -592,6 +624,10 @@
 
   function jury(zone, e) {
     brouillonStyle = brouillonStyle || (t.resultats.style.classement.length ? t.resultats.style.classement.slice() : t.ordre.slice());
+    // Écuries ajoutées, retirées ou disqualifiées depuis : le brouillon suit.
+    const dqJury = (c) => T.estDisqualifie(t, e.id, c);
+    brouillonStyle = brouillonStyle.filter((c) => t.ordre.includes(c) && !dqJury(c)).concat(t.ordre.filter((c) => !brouillonStyle.includes(c) && !dqJury(c)));
+    const disqualifiees = t.ordre.filter(dqJury);
     const valide = t.resultats.style.classement.length > 0;
     zone.innerHTML = `
       <div class="regie-entete"><h1>${echapper(e.titre)}</h1><span class="aide">${echapper(e.aide)} Glissez les écuries ou utilisez ↑ ↓ : en haut, la plus stylée.</span></div>
@@ -599,7 +635,8 @@
         <section class="regie-panneau">
           <ol class="liste-ordre liste-jury">${brouillonStyle.map((c, i) => `<li draggable="true" data-cle="${echapper(c)}"><strong class="rang">${i + 1}</strong>${pastille(ecurie(c))}<span class="nom">${echapper(ecurie(c).nom)}</span>
             <button type="button" class="btn-petit" data-monter="${i}" aria-label="Monter ${echapper(ecurie(c).nom)}"${i ? '' : ' disabled'}>↑</button>
-            <button type="button" class="btn-petit" data-descendre="${i}" aria-label="Descendre ${echapper(ecurie(c).nom)}"${i < brouillonStyle.length - 1 ? '' : ' disabled'}>↓</button></li>`).join('')}</ol>
+            <button type="button" class="btn-petit" data-descendre="${i}" aria-label="Descendre ${echapper(ecurie(c).nom)}"${i < brouillonStyle.length - 1 ? '' : ' disabled'}>↓</button>${boutonDq(e, c)}</li>`).join('')}</ol>
+          ${disqualifiees.length ? `<h2>Disqualifiées · ${pointsDq()} point</h2><ul class="liste-ordre liste-dq">${disqualifiees.map((c) => `<li class="disqualifie">${pastille(ecurie(c))}<span class="nom">${echapper(ecurie(c).nom)}</span>${boutonDq(e, c)}</li>`).join('')}</ul>` : ''}
           <div class="accueil-actions"><button type="button" class="btn-principal btn-valider-jury">${valide ? 'Mettre à jour le classement du jury' : 'Valider le classement du jury'}</button></div>
         </section>
         <section class="regie-panneau"><h2>Points</h2>${valide ? classementCourt(e.id) : '<p class="aide">Pas encore validé : les points arrivent avec la validation.</p>'}</section>
@@ -626,6 +663,13 @@
         const i = Number(b.dataset.monter !== undefined ? b.dataset.monter : b.dataset.descendre);
         const j = b.dataset.monter !== undefined ? i - 1 : i + 1;
         [brouillonStyle[i], brouillonStyle[j]] = [brouillonStyle[j], brouillonStyle[i]];
+        return naviguer(e.id);
+      }
+      if (b.dataset.disqualifier) {
+        basculerDq(e, b.dataset.disqualifier);
+        // Classement déjà validé : l'écurie en sort tout de suite (rétablie : elle revient au prochain « Valider »).
+        t.resultats.style.classement = t.resultats.style.classement.filter((c) => !dqJury(c));
+        sauver();
         return naviguer(e.id);
       }
       if (b.classList.contains('btn-valider-jury')) {

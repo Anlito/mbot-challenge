@@ -126,3 +126,12 @@
 .champ-light input:focus-visible, .champ-light textarea:focus-visible { outline: 3px solid #FFC21A; outline-offset: 1px; }
 .form-ajout { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.5rem; margin-top: 0.75rem; }
 .form-ajout .champ-light { flex: 1; min-width: 12rem; margin: 0; }
+
+/* Disqualification : ligne en pointillés, mention en ambre (jamais en rouge), le texte reste lisible. */
+.disqualifie { border-style: dashed !important; }
+.liste-passages li.disqualifie .valeur, .etiquette-dq { color: #FFC21A; font-weight: 700; }
+.btn-dq[aria-pressed="true"] { border-color: #FFC21A; color: #FFC21A; }
+.ligne-votes { display: flex; align-items: center; gap: 0.625rem; }
+.ligne-votes > label { flex: 1; }
+.ligne-votes.disqualifie { padding: 0.25rem 0.5rem; border: 1px dashed var(--bord-fort); border-radius: 0.625rem; }
+.liste-dq { margin-bottom: 0.75rem; }

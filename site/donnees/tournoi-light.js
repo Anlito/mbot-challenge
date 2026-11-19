@@ -15,4 +15,6 @@ definirTournoi({
   points: [10, 8, 6, 5, 4, 3, 2, 1],
   // Épreuve passée sans être réussie (défi 2 non validé, abandon) : ce nombre de points.
   pointsNonReussi: 1,
+  // Écurie disqualifiée à une épreuve (pas de programme, pas d’affiche, mBot pas personnalisé) : ce nombre de points.
+  pointsDisqualifie: 0,
 });

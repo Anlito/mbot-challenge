@@ -134,3 +134,44 @@ test('tournoi light : équipes tapées une par ligne, 5 épreuves, ajout et retr
   assert.deepEqual(p.map((l) => [l.cle, l.place, l.points]), [['eq4', 1, 10], ['eq3', 2, 8], ['eq1', 3, 6]]);
   assert.equal(T.retirerEquipe(t, 'eq4'), false);
 });
+
+test('disqualification à une épreuve (pas de programme, pas d’affiche, mBot pas personnalisé) : 0 point, hors classement', () => {
+  const light = lireDonnees('tournoi-light.js', 'definirTournoi');
+  assert.equal(light.pointsDisqualifie, 0);
+  assert.equal(config.pointsDisqualifie, 0);
+  const t = T.creerTournoi(T.equipesDepuisTexte('A\nB\nC\nD'), '3B', light);
+  // Défi 1 : eq2 n'a pas de programme. Les autres sont classées entre elles.
+  T.noterPassage(t, light, 'ligne', 'eq1', { temps: 40, malus: 0 });
+  T.noterPassage(t, light, 'ligne', 'eq3', { temps: 30, malus: 0 });
+  T.disqualifier(t, 'ligne', 'eq2', true);
+  assert.equal(T.estDisqualifie(t, 'ligne', 'eq2'), true);
+  let c = T.classementEpreuve(t, light, 'ligne');
+  assert.deepEqual(c.map((l) => [l.cle, l.place, l.points]), [['eq3', 1, 10], ['eq1', 2, 8], ['eq4', null, null], ['eq2', null, 0]]);
+  assert.equal(c[3].valeur, 'disqualifié');
+  // Même avec un temps noté, la disqualification l'emporte ; rétablie, elle retrouve son temps.
+  T.noterPassage(t, light, 'ligne', 'eq2', { temps: 10, malus: 0 });
+  assert.equal(T.classementEpreuve(t, light, 'ligne').find((l) => l.cle === 'eq2').points, 0);
+  T.disqualifier(t, 'ligne', 'eq2', false);
+  assert.equal(T.classementEpreuve(t, light, 'ligne')[0].cle, 'eq2');
+  // Affiche : pas d'affiche ; personnalisation : sortie du classement du jury, les places suivantes remontent.
+  t.resultats.affiche = { eq1: 3, eq2: 9, eq3: 5, eq4: 1 };
+  T.disqualifier(t, 'affiche', 'eq2', true);
+  assert.deepEqual(T.classementEpreuve(t, light, 'affiche').filter((l) => l.place).map((l) => l.cle), ['eq3', 'eq1', 'eq4']);
+  t.resultats.style.classement = ['eq4', 'eq1', 'eq3', 'eq2'];
+  T.disqualifier(t, 'style', 'eq4', true);
+  c = T.classementEpreuve(t, light, 'style');
+  assert.deepEqual(c.filter((l) => l.place).map((l) => [l.cle, l.place, l.points]), [['eq1', 1, 10], ['eq3', 2, 8], ['eq2', 3, 6]]);
+  // Classement général : 0 point pour l'épreuve ; une écurie disqualifiée ne peut plus être retirée.
+  const g = T.classementGeneral(t, light);
+  assert.equal(g.find((l) => l.cle === 'eq2').points.affiche, 0);
+  assert.equal(g.find((l) => l.cle === 'eq4').points.style, 0);
+  assert.equal(T.retirerEquipe(t, 'eq4'), false);
+  // Le fichier garde les disqualifications ; un ancien fichier sans elles se lit.
+  assert.equal(T.estDisqualifie(T.lireTournoi(JSON.stringify(t)).tournoi, 'style', 'eq4'), true);
+  const ancien = JSON.parse(JSON.stringify(t));
+  delete ancien.disqualifies;
+  assert.deepEqual(T.lireTournoi(JSON.stringify(ancien)).tournoi.disqualifies, {});
+  // Toutes classes : la disqualifiée ne marque rien à cette épreuve.
+  const tc = T.classementToutesClasses([t], light);
+  assert.equal(tc.length, 4);
+});

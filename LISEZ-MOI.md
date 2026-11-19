@@ -56,6 +56,10 @@ Internet est nécessaire.
 5. Le 2ᵉ jour : rouvrir la régie sur le même PC, « Reprendre le tournoi » (ou « Ouvrir un fichier de tournoi » sur un
    autre PC si vous l’avez enregistré dans un fichier).
 
+**Disqualifier** (dans les deux régies) : à côté de chaque écurie, dans chaque épreuve sauf la Récolte. Pour une écurie
+sans programme, sans affiche ou avec un mBot pas personnalisé : elle n’est pas classée à cette épreuve et marque
+0 point (`pointsDisqualifie` dans `site/donnees/tournoi.js` et `tournoi-light.js`). « Rétablir » annule.
+
 ## Le tournoi light (sans les dossiers des écuries)
 
 https://anlito.github.io/mbot-challenge/regie-light.html (ou « Régie light » dans l’outil professeur). Vous tapez la
